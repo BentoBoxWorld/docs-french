@@ -8,4 +8,4 @@ Créé par [Awakened-Redstone](https://github.com/Awakened-Redstone) et maintenu
 
 ## Traductions
 
-{{ translations(3842, ["cs", "zh-CN", "hu", "vi"]) }}
+{{ translations("DimensionalTrees") }}

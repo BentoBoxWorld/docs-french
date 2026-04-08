@@ -15,6 +15,7 @@ L'objectif du format Blueprint BentoBox est de nous donner la possibilité de s�
 | Version | Date | Version de BentoBox | Description
 |---|---|---|---|
 | 1 | 2019-06-09 | [1.5.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/1.5.0) | Version initiale, dérivée du format BentoBox Schem
+| 1.1 | 2026 | 2.x | Le format de stockage est passé du binaire compressé (zippé) au JSON brut ; `.blueprint` est désormais l'extension principale ; les anciens fichiers `.blu` (zippés) restent chargeables pour assurer la compatibilité ascendante
 
 ## Définitions
 
@@ -26,11 +27,13 @@ Un [Matériau](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 
 ### Format
 
-La structure spécifiée par cette spécification est persistante à la méthode de stockage choisie par l'utilisateur en utilisant le format [JavaScript Object Notation](https://json.org) (JSON). Les données doivent ensuite être compressées en utilisant l'algorithme de compression...
+La structure spécifiée par cette spécification est persistante à la méthode de stockage choisie par l'utilisateur en utilisant le format [JavaScript Object Notation](https://json.org) (JSON). Depuis BentoBox 2.x, les fichiers Blueprint sont stockés en **JSON brut (non compressé)** avec l'extension `.blueprint`.
+
+Les anciens fichiers Blueprint utilisaient un format binaire compressé (zippé) avec l'extension `.blu`. BentoBox continue de charger les fichiers `.blu` pour la compatibilité ascendante, mais tous les nouveaux Blueprints sauvegardés utilisent le format JSON brut `.blueprint`.
 
 Les fichiers utilisant cette spécification doivent utiliser l'une des extensions de fichier suivantes :
-* `.blueprint` ;
-* `.blu`
+* `.blueprint` — JSON brut (actuel, recommandé)
+* `.blu` — JSON zippé/compressé (ancien)
 
 Tous les noms de champs dans la spécification sont **sensibles à la casse**.
 

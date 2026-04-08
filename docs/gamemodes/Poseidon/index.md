@@ -30,3 +30,7 @@ Les commandes peuvent être trouvées [ici](Commands).
 ## Placeholders
 
 Les placeholders peuvent être trouvés [ici](Placeholders).
+
+## Traductions
+
+{{ translations("Poseidon") }}

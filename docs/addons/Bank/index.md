@@ -117,4 +117,4 @@ Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir p
 
 ## Traductions
 
-{{ translations(5451, ["cs", "de", "es", "et", "fr", "ja", "tr", "zh-CN", "id", "ko", "vi", "uk"]) }}
+{{ translations("Bank") }}

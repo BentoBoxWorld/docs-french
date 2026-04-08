@@ -257,7 +257,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ## Traductions
 
-{{ translations(2894, ["lv", "zh-CN", "fr", "pl", "es", "uk"]) }}
+{{ translations("Biomes") }}
 
 ## API
 

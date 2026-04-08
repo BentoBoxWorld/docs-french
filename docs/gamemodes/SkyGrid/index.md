@@ -33,4 +33,4 @@ Les placeholders peuvent être trouvés [ici](Placeholders).
 
 ## Traductions
 
-{{ translations(2970, ["cs", "de", "id", "ja", "ro", "zh-CN", "fr", "ru"]) }}
+{{ translations("SkyGrid") }}

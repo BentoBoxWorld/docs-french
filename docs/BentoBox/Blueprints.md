@@ -45,8 +45,8 @@ Les commandes sont presque les mêmes que les commandes de schematic WorldEdit. 
 * /bsb bp copy - copiez les blocs et les entités à l'intérieur de la boîte dans le presse-papiers
 * /bsb bp copy air - copiez les blocs, les entités et l'air à l'intérieur de la boîte dans le presse-papiers. C'est important si vous prévoyez de coller l'île dans l'eau (AcidIsland) ou la roche (CaveBlock).
 * /bsb bp paste - collez le presse-papiers à votre emplacement
-* /bsb bp save <name> - enregistre le presse-papiers dans un fichier (ajoute un suffixe .schem)
-* /bsb bp load <name> - chargez un fichier blueprint (n'ajoutez pas le suffixe .schem)
+* /bsb bp save <name> - enregistre le presse-papiers dans un fichier (sauvegardé en tant que fichier `.blueprint` JSON brut)
+* /bsb bp load <name> - chargez un fichier blueprint (n'ajoutez pas le suffixe `.blueprint` ou `.blu`)
 * /bsb bp - ouvrez l'Interface Graphique du Gestionnaire de Blueprint
 
 Pour AcidIsland, utilisez /acid à la place de /bsb.
@@ -77,10 +77,13 @@ Pour supprimer un bundle, cliquez avec le bouton droit sur le TNT.
 Les Bundles et les Blueprints doivent être renommés dans l'Interface Graphique. N'essayez pas de les renommer en utilisant le système de fichiers.
 
 ## Fichiers et Édition
-Quand vous utilisez des blueprints dans le jeu, utilisez toujours juste le nom du blueprint. Sur le système de fichiers, les blueprints sont enregistrés dans un format compressé avec le suffixe **.blu** et les bundles de blueprint sont enregistrés en tant que fichiers texte **.json**. Vous pouvez éditer les bundles de blueprint JSON avec un éditeur de texte, mais vous ne devriez jamais éditer les fichiers .blu en dehors du jeu.
+Quand vous utilisez des blueprints dans le jeu, utilisez toujours juste le nom du blueprint. Sur le système de fichiers, les blueprints sont désormais enregistrés en tant que **fichiers texte JSON brut** avec le suffixe `.blueprint`. Les bundles de blueprint sont également enregistrés en tant que fichiers texte `.json`. Les fichiers `.blueprint` et les bundles `.json` peuvent être édités avec n'importe quel éditeur de texte.
+
+!!! note "Anciens fichiers `.blu`"
+    Les fichiers Blueprint utilisaient auparavant un format binaire compressé `.blu`. BentoBox chargera automatiquement les anciens fichiers `.blu` pour la compatibilité ascendante, mais tous les nouveaux blueprints sont sauvegardés au format `.blueprint` (JSON brut). Vous pouvez versionner et comparer les fichiers `.blueprint` normalement. N'essayez pas de créer ou d'éditer des fichiers `.blu` à la main.
 
 ## Bundles Incomplets
-Les Bundles doivent toujours avoir un blueprint du monde Overworld/Normal. S'ils ne l'ont pas, le blueprint d'île par défaut (island.blu) sera utilisé et une erreur sera enregistrée dans la console.
+Les Bundles doivent toujours avoir un blueprint du monde Overworld/Normal. S'ils ne l'ont pas, le blueprint d'île par défaut sera utilisé et une erreur sera enregistrée dans la console.
 Les Bundles ne doivent pas avoir de blueprints du monde Nether ou End, mais s'ils ne l'ont pas, aucune île ne sera collée dans ces mondes (évidemment).
 
 ## Entités

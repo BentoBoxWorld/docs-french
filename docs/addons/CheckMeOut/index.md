@@ -208,3 +208,7 @@ Vous devez juste ajouter CheckMeOut à votre projet en tant que dépendance. Vou
             Location location = event.getLocation();
         }
         ```
+
+## Traductions
+
+{{ translations("CheckMeOut") }}

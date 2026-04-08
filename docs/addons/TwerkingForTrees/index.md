@@ -55,3 +55,7 @@ effects:
   twerk: MOBSPAWNER_FLAMES
 
 ```
+
+## Traductions
+
+{{ translations("TwerkingForTrees") }}

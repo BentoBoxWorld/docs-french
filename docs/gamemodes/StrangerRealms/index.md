@@ -19,3 +19,7 @@ La commande joueur principale est `/strange` ou `/st` et la commande admin est `
 ## Permissions
 
 Les permissions peuvent être trouvées [ici](Permissions).
+
+## Traductions
+
+{{ translations("StrangerRealms") }}

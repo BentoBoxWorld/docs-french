@@ -193,4 +193,4 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ## Traductions
 
-{{ translations(2976, ["lv", "zh-CN"]) }}
+{{ translations("CauldronWitchery") }}

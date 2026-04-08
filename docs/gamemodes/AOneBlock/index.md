@@ -476,7 +476,7 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
 
 ## Traductions
 
-{{ translations(4481, ["cs", "de", "es", "fr", "hr", "hu", "id", "it", "ja", "tr", "vi", "zh-CN", "zh-TW", "pl", "pt", "ro", "ru", "uk"]) }}
+{{ translations("AOneBlock") }}
 
 ## Api
 

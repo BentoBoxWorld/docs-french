@@ -95,6 +95,21 @@ Les administrateurs peuvent plus tard afficher le Drapeau en réitérant la mêm
 
 ## Panneau des Paramètres d'Administration
 
+Le **Panneau des Paramètres d'Administration** est accessible via `/[admin_command] settings` (sans argument). Il contient trois onglets :
+
 ### Paramètres Mondiaux
 
+Bascule les flags de paramètres au niveau du monde qui s'appliquent à l'ensemble du monde de jeu.
+
 ### Protection Par Défaut du Monde
+
+Contrôle quels flags de protection sont actifs en dehors des limites de toute île (c'est-à-dire pour les visiteurs dans la nature).
+
+### Paramètres Par Défaut des Îles
+
+!!! new "Ajouté dans BentoBox 3.14.0"
+    L'onglet **Paramètres Par Défaut des Îles** est un nouvel onglet du Panneau des Paramètres d'Administration qui permet aux administrateurs de définir les valeurs par défaut des flags appliquées aux **îles nouvellement créées**.
+
+Auparavant, ces valeurs par défaut ne pouvaient être modifiées que dans le `config.yml` du mode de jeu. Elles peuvent désormais être modifiées directement en jeu en ouvrant `/[admin_command] settings` et en naviguant vers l'onglet **Paramètres Par Défaut des Îles** (onglet 3).
+
+Chaque flag de protection est listé avec son rang par défaut actuel — cliquer le fait défiler dans l'échelle des rangs. Chaque flag de paramètre d'île affiche son état `true`/`false` par défaut actuel — cliquer le bascule. Les changements sont sauvegardés immédiatement dans les paramètres du monde et prennent effet pour toutes les **nouvelles** îles créées après le changement. Les îles existantes ne sont pas affectées.

@@ -75,4 +75,4 @@ Vous pouvez trouver le dernier fichier config : [config.yml](https://github.com/
 
 ## Traductions
 
-{{ translations(4728, ["cs", "de", "es", "fr", "ja", "lv", "zh-CN", "hu", "id", "it", "ko", "pl", "pt", "ro", "ru", "tr", "vi"]) }}
+{{ translations("IslandFly") }}

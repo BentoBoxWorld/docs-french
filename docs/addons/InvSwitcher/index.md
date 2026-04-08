@@ -40,3 +40,7 @@ L'inventaire, la santé, le niveau de nourriture, les avancées et l'expérience
 
 **Veuillez noter :**
 - Ce n'est pas limité aux mondes BentoBox. Cela s'applique à tous les mondes du serveur (pour l'instant).
+
+## Traductions
+
+{{ translations("InvSwitcher") }}

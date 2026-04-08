@@ -139,7 +139,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ## Traductions
 
-{{ translations(3013, ["cs", "de", "es", "fr", "hu", "id", "lv", "pl", "ro", "tr", "zh-CN", "ko", "pt", "vi", "ru"]) }}
+{{ translations("TopBlock") }}
 
 ## API
 

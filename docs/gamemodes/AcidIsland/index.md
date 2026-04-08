@@ -36,4 +36,4 @@ Les placeholders peuvent être trouvés [ici](Placeholders).
 
 ## Traductions
 
-{{ translations(2854, ["cs", "de", "es", "hu", "it", "ja", "lv", "pl", "zh-CN", "fr", "id", "ko", "ro", "ru", "tr", "vi", "uk"]) }}
+{{ translations("AcidIsland") }}

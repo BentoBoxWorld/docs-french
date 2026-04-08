@@ -283,7 +283,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
     Il existe également une option pour traduire des parties via le fichier [locales](https://github.com/BentoBoxWorld/Challenges/blob/develop/src/main/resources/locales/en-US.yml#L1248-L1270)
 
-{{ translations(2896, ["lv", "zh-CN", "zh-TW", "cs", "fr", "de", "hu", "pl", "pt", "ru"]) }}
+{{ translations("Challenges") }}
 
 ## API
 

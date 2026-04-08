@@ -64,13 +64,25 @@ Les traductions pour BentoBox et ses compléments sont contribuées par la commu
 
 ## Comment Contribuer une Traduction
 
-Si votre langue n'est pas encore disponible, ou si la traduction existante a besoin d'amélioration :
+La plupart des traductions sont désormais générées avec l'aide de l'IA, donc
+l'essentiel du travail est déjà fait — mais **l'IA n'est pas parfaite**. La
+chose la plus utile que la communauté puisse faire est de **signaler les
+erreurs** et de **suggérer des corrections**.
 
-1. Visitez la page de traduction pour BentoBox ou le complément spécifique sur [GitLocalize](https://gitlocalize.com/repo/2855).
-2. Sélectionnez votre langue (ou demandez-en une nouvelle sur notre [Discord](https://discord.bentobox.world)).
-3. Traduisez les chaînes — ne **traduisez pas** le texte à l'intérieur de crochets, par ex. `[name]` doit rester tel quel.
-4. Soumettez votre travail. Les traducteurs gagnent un badge de communauté spécial !
+* **Vous avez repéré une erreur ?** Ouvrez une issue ou une PR sur le dépôt
+  concerné via [bentobox.world](https://bentobox.world) (un lien court vers
+  notre organisation GitHub), ou prévenez-nous sur
+  [Discord](https://discord.bentobox.world).
+* **Vous voulez corriger une chaîne ?** Modifiez le fichier de locale dans
+  `src/main/resources/locales/` du dépôt concerné et ouvrez une PR. Ne
+  **traduisez pas** le texte à l'intérieur de crochets — par ex. `[name]`
+  doit rester tel quel.
+* **Vous voulez ajouter une toute nouvelle langue ?** Ouvrez une PR ajoutant
+  un nouveau fichier de locale à côté des existants, ou demandez sur Discord
+  et nous vous aiderons à démarrer.
 
-Un outil d'assistance à la traduction est disponible sur [download.bentobox.world/translate.html](https://download.bentobox.world/translate.html) — il s'exécute entièrement dans votre navigateur.
+Un outil d'assistance à la traduction est disponible sur
+[download.bentobox.world/translate.html](https://download.bentobox.world/translate.html)
+— il s'exécute entièrement dans votre navigateur. Les traducteurs gagnent un badge de communauté spécial !
 
 Voir la liste complète des pages de traduction des compléments sur [Traduire BentoBox et les Compléments](../Translate-BentoBox-and-addons.md).

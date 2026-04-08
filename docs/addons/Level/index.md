@@ -360,40 +360,42 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/Level/issues).
 
 ??? question "Comment faire que le `level-cost` augmente après chaque niveau ?"
-    Vous ne pouvez pas le faire directement car le calcul du niveau de BentoBox se fait d'un seul coup, et non de manière itérative pour chaque niveau.
+    Le paramètre `level-cost` est une valeur fixe et ne peut pas être configuré pour augmenter de manière itérative niveau par niveau, car BentoBox calcule les niveaux d'île en appliquant une seule formule au nombre total de blocs — et non en itérant niveau par niveau.
 
-    Cependant, cela peut être fait en utilisant la formule `level-calc`, si vous savez quelle formule vous avez besoin. Si nous utilisons votre exemple pour rendre chaque niveau 50% plus difficile à atteindre que le niveau précédent, la formule approximative pour cela est :
+    La façon d'obtenir des coûts de niveau croissants est d'utiliser la formule `level-calc`. Par exemple, pour rendre chaque niveau 50 % plus difficile à atteindre que le précédent (c.-à-d. niveau 1 coûte 100 blocs, niveau 2 coûte 150, niveau 3 coûte 225, etc.), la formule est :
 
     `level-calc: 2.4661 * log(blocks) - (2.4661 * log(level_cost) - 1)`
 
-    où `level_cost` est le coût en blocs pour atteindre le niveau 1. par exemple, si le niveau 1 coûte 100 blocs, le niveau 2 coûte 150 blocs, le niveau 3 coûte 225, etc.
+    où `level_cost` est le nombre de blocs nécessaires pour atteindre le niveau 1.
 
-    Voici le graphique :
+    Voici le graphique de cette progression :
 
     ![template](https://user-images.githubusercontent.com/4407265/212771452-edc943fe-c861-4ba1-b581-8ec987e52f94.png){: loading=lazy }
 
-    Notez que cette formule particulière commence à asymptote autour du niveau 25, c.-à-d. qu'il devient vraiment difficile d'atteindre le niveau 26 ou 27 car tellement de blocs sont nécessaires, donc avoir cette règle particulière pourrait ne pas être une très bonne approche car finalement presque tout le monde finira par avoir le même niveau.
+    !!! warning
+        Cette formule commence à atteindre une asymptote autour du niveau 25 — atteindre le niveau 26 ou 27 nécessite un nombre extrêmement élevé de blocs, ce qui peut amener la plupart des joueurs à converger vers le même niveau maximum au fil du temps. Tenez-en compte lors du choix de votre courbe de progression.
 
-    Quoi qu'il en soit, bien que je comprenne ce que vous demandez, la formule `level-calc` devrait en fait être capable de fournir ce que vous voulez tant qu'elle supporte la bonne formule. Avoir le `next-levelcost` est problématique d'un point de vue programmation car les calculs de niveau devraient être faits de manière itérative au lieu de simplement appliquer une seule formule aux blocs comptés. Je ne peux pas tout à fait comprendre comment faire cela maintenant, mais je sais que la méthode actuelle d'avoir une formule pour comment vous voulez que les niveaux augmentent fonctionne certainement.
+    **Dériver une formule personnalisée**
 
-    Comment puis-je déterminer une formule pour les niveaux ?
+    Pour construire une formule adaptée à une courbe de progression spécifique :
 
-    La meilleure façon est de commencer par une formule et de la tracer pour voir si elle a du sens, par exemple, en utilisant quelque chose comme Excel. Si vous voulez déterminer la formule dont vous avez besoin à partir de, disons, un tableau de valeurs, alors Excel (ou peut-être un autre tableur) peut le faire aussi : faire un graphique des niveaux et combien de blocs pour chaque niveau, puis tracer un graphique du tableau (X Y Plot). Faites un clic droit sur le graphique pour ajouter une ligne de tendance, sélectionnez l'approximation, par exemple linéaire, log, exponentielle, etc. qui correspond le mieux, puis sélectionnez "Display equation on chart" pour afficher la formule et remplacez `blocks` par `x`. Voici des captures d'écran de ce que j'ai fait pour déterminer l'équation pour augmenter de 50% à chaque fois avec un coût initial de 100 blocs.
+    1. Créez un tableau des niveaux cibles et de leurs coûts en blocs correspondants dans un tableur (par ex. Excel ou Google Sheets).
+    2. Tracez un graphique X/Y du tableau.
+    3. Faites un clic droit sur le graphique et ajoutez une courbe de tendance. Choisissez le type d'approximation (linéaire, logarithmique, exponentielle, etc.) qui correspond le mieux à la courbe, puis activez « Afficher l'équation sur le graphique ».
+    4. Dans l'équation obtenue, remplacez `blocks` par `x` et utilisez-la comme valeur de `level-calc`.
 
-    ![template](https://user-images.githubusercontent.com/4407265/212773894-6f635ed4-f337-4936-b50f-3b616b6bf041.png){: loading=lazy }
-    ![template](https://user-images.githubusercontent.com/4407265/212773929-b51ae6b3-5df3-43ae-b35f-bc6fcb42d78f.png){: loading=lazy }
-
-    Donc, pour cela, ce serait :
+    Par exemple, la progression de 50 % ci-dessus a été dérivée de cette manière et donne :
 
     `level-calc: 2.4661 * log(blocks) - 10.357`
 
-    J'espère que cela aide.
+    ![template](https://user-images.githubusercontent.com/4407265/212773894-6f635ed4-f337-4936-b50f-3b616b6bf041.png){: loading=lazy }
+    ![template](https://user-images.githubusercontent.com/4407265/212773929-b51ae6b3-5df3-43ae-b35f-bc6fcb42d78f.png){: loading=lazy }
 
 
 
 ## Translations
 
-{{ translations(3013, ["cs", "de", "es", "fr", "hu", "id", "lv", "pl", "ro", "tr", "zh-CN", "ko", "pt", "vi", "ru"]) }}
+{{ translations("Level") }}
 
 
 

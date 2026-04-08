@@ -38,4 +38,4 @@ Les placeholders peuvent être trouvés [ici](Placeholders).
 
 ## Traductions
 
-{{ translations(2953, ["cs", "de", "es", "fr", "hu", "id", "it", "ja", "ko", "lv", "nl", "pl", "pt", "zh-CN", "zh-TW", "hr", "ro", "ru", "tr", "vi", "uk"]) }}
+{{ translations("BSkyBlock") }}

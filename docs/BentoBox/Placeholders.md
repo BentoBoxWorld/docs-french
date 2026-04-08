@@ -81,6 +81,24 @@ Tous les compléments de mode de jeu obtiennent automatiquement certains placeho
 | %[gamemode]_deaths% | Nombre de fois que le joueur est mort | 1.12.0 |
 | %[gamemode]_on_island% | Si le joueur est sur une île dont il fait partie ou non | 1.13.0 |
 
+### Placeholders de flags
+
+Chaque flag de protection et flag de paramètre enregistré dans un mode de jeu expose également un placeholder. Le nom du placeholder est `flag_` suivi de l'identifiant du flag en minuscules :
+
+| Placeholder | Description |
+|-------------|-------------|
+| %[gamemode]_flag_[flag_id]% | La valeur dépend du type de flag : **PROTECTION** → nom traduit du rang minimum autorisé (par ex. `Membre`) ; **SETTING** → `true` ou `false` ; **WORLD_SETTING** → `true` ou `false` |
+
+**Exemples :**
+
+```
+%bskyblock_flag_pvp_overworld%   → "false"
+%bskyblock_flag_break_blocks%    → "Membre"
+%bskyblock_flag_ender_chest%     → "true"
+```
+
+Les flags définis par les compléments sont enregistrés automatiquement lorsque le flag est ajouté à l'exécution.
+
 ## Voir aussi
 Les Gamemodes et les Compléments peuvent également apporter leurs propres placeholders. Nous vous recommandons vivement de consulter les pages suivantes, qui sont probablement plus adaptées à vos besoins.
 

@@ -76,4 +76,4 @@ Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir p
 
 ## Traductions
 
-{{ translations(3680, ["cs", "de", "es", "fr", "ja", "tr", "zh-CN", "hu", "it", "lv", "pl", "ru", "vi"]) }}
+{{ translations("Chat") }}

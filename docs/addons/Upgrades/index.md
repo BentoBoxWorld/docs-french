@@ -148,3 +148,7 @@ entity-limits-upgrade:
 
 !!! tip "Entités"
     Une liste d'entités peut être trouvée [ici](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)
+
+## Traductions
+
+{{ translations("Upgrades") }}

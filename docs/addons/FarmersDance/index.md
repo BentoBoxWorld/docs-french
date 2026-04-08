@@ -49,3 +49,7 @@ Vous pouvez trouver le dernier fichier config : [config.yml](https://github.com/
 L'addon est construit sur Minecraft 1.19.2 et BentoBox version 1.20.0.
 
 L'addon supporte tous les addons Game mode.
+
+## Traductions
+
+{{ translations("FarmersDance") }}

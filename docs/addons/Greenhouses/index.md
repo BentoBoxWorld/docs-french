@@ -123,4 +123,4 @@ La permission peut être n'importe quoi que vous aimez, par exemple, une permiss
 
 ## Traductions
 
-{{ translations(3680, ["cs", "hu", "ja", "zh-CN", "fr", "de", "it", "lv", "pl", "ru", "es", "tr", "vi"]) }}
+{{ translations("Greenhouses") }}

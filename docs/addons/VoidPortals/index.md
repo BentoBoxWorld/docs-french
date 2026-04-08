@@ -14,4 +14,4 @@ Créé et maintenu par [BONNe](https://github.com/BONNe).
 
 ## Traductions
 
-{{ translations(2975, ["cs", "fr", "ja", "lv", "de", "pl", "ru", "es"]) }}
+{{ translations("VoidPortals") }}

@@ -93,7 +93,7 @@ Les permissions complètes sont listées [ici](Permissions).
 
 ## Traductions
 
-{{ translations(2974, ["cs", "de", "hu", "ja", "lv", "pl", "tr", "zh-CN", "fr", "id", "ro", "es", "vi"]) }}
+{{ translations("Limits") }}
 
 ## Articles qui ne peuvent pas être limités
 Certains articles ne peuvent pas être limités (pour l'instant). Les raisons sont généralement parce qu'il y a trop de façons de supprimer l'article sans qu'il soit suivi. Si vous êtes un programmeur et pouvez trouver comment corriger ceux-ci, veuillez soumettre une PR!
