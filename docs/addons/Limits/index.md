@@ -91,6 +91,29 @@ Les permissions complètes sont listées [ici](Permissions).
 {{ placeholders_source(source="Limits") }}
 
 
+## Journal des modifications
+
+??? warning "Nouveautés dans v1.28.0 — Java 21 requis"
+    **Publié :** 1er avril 2026
+
+    - **Les fermes de duplication de Shulker sont maintenant correctement limitées sur Paper.** Utilise le `ShulkerDuplicateEvent` de Paper pour appliquer les limites avant la duplication, corrigeant un contournement où les Shulkers se téléportaient hors de l'île avant la vérification.
+    - **Les limites de coffres en cuivre ne peuvent plus être contournées.** Toutes les variantes de coffres en cuivre (oxydés, cirés, grattés, créés par golem) sont maintenant normalisées vers un seul matériau suivi. Les transitions d'état de bloc sont correctement comptées.
+    - **Les entrées de configuration invalides sont gérées proprement.** Les clés d'espace de noms malformées, les matériaux non-blocs et les matériaux incomptables (lave, eau, air) dans `blocklimits` produisent maintenant des messages d'avertissement clairs au lieu d'erreurs NPE.
+    - 🔺 **Java 21 est maintenant requis** (précédemment Java 17). Assurez-vous que votre serveur utilise Java 21 avant de mettre à jour.
+    - Cible Spigot mise à jour vers 1.21.11.
+
+    [Release v1.28.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.0)
+
+??? note "Nouveautés dans v1.28.1"
+    **Publié :** 7 avril 2026
+
+    Correctif pour deux régressions dans 1.28.0 :
+
+    - **Les bases de données existantes se chargent à nouveau.** Dans 1.28.0, les champs de map `IslandBlockCount` ont changé de `Map<Material, Integer>` vers `Map<NamespacedKey, Integer>`, cassant la lecture des fichiers JSON pré-1.28.0. Un `TypeAdapter` Gson rétrocompatible lit maintenant les noms d'enum legacy, les chaînes avec espace de noms et la forme tableau complexe. **Aucune migration manuelle requise** — les anciens fichiers se chargent tels quels.
+    - **Les noms de blocs dans l'interface des limites sont à nouveau lisibles.** Les items s'affichaient comme `Minecraft:hopper` à cause d'un formatage de clé incorrect.
+
+    [Release v1.28.1](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.1)
+
 ## Traductions
 
 {{ translations("Limits") }}

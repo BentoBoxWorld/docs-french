@@ -274,6 +274,23 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
         completed-times-reached: "&2&l Completed all &7 [max] &2 times"
     ```
 
+## Journal des modifications
+
+??? warning "Nouveautés dans v1.6.0 — régénération des locales requise"
+    **Publié :** 13 avril 2026
+
+    - 🔡 **Tous les fichiers de locale migrés vers MiniMessage.** Chaque fichier de locale a été converti des codes couleur `&` legacy vers les balises MiniMessage. Supprimez `BentoBox/locales/Challenges/` et redémarrez pour régénérer les fichiers mis à jour.
+    - Nouveaux paramètres pour le menu de défis (contribution de @stuffyerface).
+    - Interface Web Library améliorée : filtre de langue ajouté, descriptions avec retour à la ligne, indicateur de chargement affiché pendant le téléchargement du catalogue, entrées de catalogue malformées gérées proprement.
+    - Retour à la ligne appliqué au texte des récompenses dans le lore des défis et niveaux.
+    - **Nouvelles bibliothèques de défis téléchargeables** disponibles via la Web Library en jeu :
+        - **Skyblock** — Défis Skyblock modernes avec plusieurs chemins de progression (EN, ZH-CN, DE, ES, RU, FR)
+        - **AcidIsland** — Progression de défis nautiques de Naufragé à Amiral (EN, ZH-CN, DE, ES, RU, FR)
+        - **Poseidon** — Défis par défaut pour le mode de jeu Poseidon (EN, ZH-CN, DE, ES, RU, FR)
+    - Nécessite BentoBox API 3.12.0+.
+
+    [Release v1.6.0](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.6.0)
+
 ## Translations
 
 !!! info "Translations for challenges"

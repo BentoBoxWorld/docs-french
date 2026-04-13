@@ -34,6 +34,19 @@ Les commandes peuvent être trouvées [ici](Commands).
 
 Les placeholders peuvent être trouvés [ici](Placeholders).
 
+## Journal des modifications
+
+??? warning "Nouveautés dans v1.21.0 — BentoBox 3.14.0 requis, migration des locales"
+    **Publié :** 12 avril 2026
+
+    - **Île de départ Sanctuaire Grove de Cerisiers.** Un nouveau blueprint d'île de départ sur le thème du biome Grove de Cerisiers est inclus pour les serveurs Minecraft 1.21+. Pour l'activer, supprimez `BentoBox/addons/AcidIsland/blueprints/` pour que les blueprints se régénèrent au prochain démarrage.
+    - 🔺 **BentoBox API 3.14.0 est maintenant requis.** Mettez à jour BentoBox avant d'installer cette version.
+    - 🔡 **Les 24 fichiers de locale migrés des codes `&` vers MiniMessage.** Supprimez `BentoBox/locales/AcidIsland/` et redémarrez pour régénérer. Les codes `&` restants dans les fichiers personnalisés s'afficheront en texte brut.
+    - Correction : NullPointerException dans la vérification du mode dieu EssentialsX quand EssentialsX échoue à se charger au démarrage.
+    - Plusieurs bugs de locale pré-existants corrigés lors de la migration.
+
+    [Release v1.21.0](https://github.com/BentoBoxWorld/AcidIsland/releases/tag/1.21.0)
+
 ## Traductions
 
 {{ translations("AcidIsland") }}
