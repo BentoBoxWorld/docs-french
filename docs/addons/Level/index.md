@@ -311,6 +311,8 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - `/[player_command] top`: accédez au panel top. Nécessite la permission `[gamemode].island.top`.
     - `/[player_command] level`: déclenche le calcul du niveau pour le joueur. Nécessite la permission `[gamemode].island.level`.
     - `/[player_command] value [material]`: permet de vérifier la valeur du bloc. Nécessite la permission `[gamemode].island.value`.
+    - `/[player_command] donate`: ouvre une interface de style coffre pour donner des blocs directement au niveau de votre île. Les points donnés survivent aux futurs recalculs de niveau. Nécessite la permission `[gamemode].island.level.donate`.
+    - `/[player_command] donate hand [amount]`: donne l'objet actuellement tenu dans la main du joueur (ou le montant spécifié) directement au niveau de l'île sans ouvrir l'interface. Nécessite la permission `[gamemode].island.level.donate`.
 
 
 === "Commandes admin"
@@ -337,6 +339,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - `[gamemode].island.level.details.spawners` - (défaut : `false`) - Permet au joueur de voir une liste détaillée des spawners pour l'île.
     - `[gamemode].island.level.details.underwater` - (défaut : `false`) - Permet au joueur de voir une liste détaillée des blocs sous-marins pour l'île.
     - `[gamemode].island.level.details.above-sea-level` - (défaut : `false`) - Permet au joueur de voir une liste détaillée des blocs au-dessus du niveau de la mer pour l'île.
+    - `[gamemode].island.level.donate` - (défaut: `true`) - Permet au joueur d'utiliser la commande `/[player_command] donate`.
 
 === "Permissions admin"
     - `[gamemode].admin.level` - (défaut : `op`) - Permet au joueur d'utiliser la commande `/[admin_command] level <player>`.
@@ -392,6 +395,35 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     ![template](https://user-images.githubusercontent.com/4407265/212773929-b51ae6b3-5df3-43ae-b35f-bc6fcb42d78f.png){: loading=lazy }
 
 
+
+## Journal des modifications
+
+??? note "Nouveautés dans v2.23.0"
+    **Publié :** 21 février 2026
+
+    - **Support des meubles/blocs personnalisés Oraxen et Nexo.** Level peut maintenant compter les mécaniques de meubles Oraxen et les blocs/meubles personnalisés Nexo dans le niveau de l'île. Ces intégrations sont en bêta — activez-les si vous avez l'un de ces plugins installé.
+    - Nouveaux placeholders par bloc : `[gamemode]_island_count_<block>` (nombre d'un bloc spécifique sur l'île), `[gamemode]_island_value_<block>` (valeur d'un type de bloc), et `[gamemode]_island_limit_<block>` (limite de bloc configurée). Les clés de bloc utilisent des underscores, ex. `_island_count_minecraft_stone`.
+
+    [Release v2.23.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.23.0)
+
+??? warning "Nouveautés dans v2.24.0 — action requise"
+    **Publié :** 12 avril 2026
+
+    - **Système de don de blocs.** Les joueurs peuvent maintenant donner des blocs de façon permanente au niveau de leur île via `/[player_command] donate` (interface) ou `/[player_command] donate hand [amount]` (don rapide depuis la main). Les points donnés sont stockés par île et rajoutés après chaque recalcul de niveau.
+    - Nouveau flag de protection `ISLAND_BLOCK_DONATION` contrôlant qui peut donner. Par défaut propriétaire uniquement ; peut être étendu jusqu'au rang Membre.
+    - Nouvel onglet **DONATED** dans `detail_panel.yml` montrant l'historique des dons de l'île.
+    - Nouvelle variable `island_members` disponible dans la formule `level-cost` pour handicaper les équipes plus grandes.
+    - Le rapport de niveau admin inclut maintenant un résumé des blocs donnés.
+    - Tous les fichiers de locale migrés vers le formatage MiniMessage.
+    - 🆕 Locale russe (`ru.yml`) ajoutée.
+    - Correction du classement top dix sous les écritures concurrentes.
+    - Les icônes de blocs pour les panneaux suspendus, les vignes et les vignes de grotte s'affichent maintenant correctement.
+
+    🔺 **Supprimez `plugins/BentoBox/addons/Level/panels/detail_panel.yml`** avant de redémarrer pour que le nouveau template d'onglet DONATED soit généré. Le fichier n'est pas écrasé lors de la mise à jour.
+
+    🔡 **Régénérez les fichiers de locale** si vous avez des personnalisations — les anciens codes couleur `&` ne sont plus valides.
+
+    [Release v2.24.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.24.0)
 
 ## Translations
 

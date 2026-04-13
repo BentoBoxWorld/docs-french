@@ -115,6 +115,16 @@ permissions:
 ## Aimez cet addon?
 Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir plus d'addons comme celui-ci et l'améliorer!
 
+## Journal des modifications
+
+??? note "Nouveautés dans v1.9.1"
+    **Publié :** 28 mars 2026
+
+    - **Placeholders de nom d'île pour le classement.** `%Bank_[gamemode]_top_island_<number>%` expose maintenant le nom de l'île (pas seulement le nom du propriétaire) pour chaque position du classement. Les noms d'île sont mis en cache avec les noms de propriétaires et les soldes.
+    - ⚙️ Documentation de la composition des intérêts et commentaires de configuration corrigés — le calcul de `compound-periods-per-year` avait une erreur qui causait des intérêts composés légèrement incorrects.
+
+    [Release v1.9.1](https://github.com/BentoBoxWorld/Bank/releases/tag/1.9.1)
+
 ## Traductions
 
 {{ translations("Bank") }}

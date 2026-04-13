@@ -632,3 +632,19 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
             Block block = event.getBlock();
         }
         ```
+
+## Journal des modifications
+
+??? warning "Nouveautés dans v1.23.0 — mise à jour de locale et configuration requise"
+    **Publié :** 11 avril 2026
+
+    - **Support des blocs personnalisés Nexo.** AOneBlock supporte maintenant les blocs personnalisés [Nexo](https://github.com/Nexo-MC/Nexo) dans les définitions de phase (en plus du support existant pour ItemsAdder). Définissez-les avec `type: nexo` et un champ `id` dans votre configuration de phases.
+    - **Support des couleurs HEX / MiniMessage dans la barre d'action.** Le texte de `/ob actionbar` affiche maintenant correctement les couleurs HEX et le formatage MiniMessage complet.
+    - 🔡 Locale russe mise à jour au format MiniMessage avec corrections grammaticales.
+    - Plusieurs corrections de bugs de locale et traduction pour la barre d'action.
+
+    🔺 **Le support Nexo est une nouvelle option de configuration.** Si vous utilisez Nexo, ajoutez des entrées de type Nexo à vos fichiers de phase `.yml`.
+
+    🔡 **Régénérez les fichiers de locale** si vous avez des personnalisations.
+
+    [Release v1.23.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.23.0)

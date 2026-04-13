@@ -36,6 +36,12 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 **Permission**: `[gamemode].border.set-type`. Défaut: `true`.
 **Exemple**: `/[player command] border type barrier`
 
+### couleur {red|green|blue}
+**Commande**: `/[player command] color {red | green | blue}`  
+**Description**: Définit la couleur de la bordure monde vanilla pour le joueur. S'applique uniquement avec le type de bordure vanilla.  
+**Permission**: `[gamemode].color.red`, `[gamemode].color.green`, `[gamemode].color.blue` (ou `[gamemode].color.*` pour toutes). Défaut: `op`.  
+**Exemple**: `/[player command] color green`
+
 !!! tip
     `[gamemode]` est un préfixe qui diffère selon le mode de jeu que vous exécutez.
     Le préfixe est le nom du mode de jeu en minuscules, c'est-à-dire que si vous utilisez BSkyBlock, le préfixe est `bskyblock`.
@@ -120,6 +126,34 @@ Définissez sur `false` si vous ne voulez **aucune** particule de mur à affiche
 ```
 show-particles: true
 ```
+
+### Afficher les warps sur la carte
+Contrôle si la fonctionnalité de couleur de bordure monde vanilla est disponible. Les couleurs par joueur sont définies avec la commande `/[player_command] color`. Nécessite un plugin de carte web (Dynmap ou BlueMap) et le hook de carte BentoBox.
+
+```yml
+show-warps-on-map: true
+```
+
+## Placeholders
+
+| Placeholder | Description | Version |
+|---|---|---|
+| `%Border_color%` | La couleur de bordure actuelle du joueur (`red`, `green` ou `blue`) | 4.8.0 |
+
+## Journal des modifications
+
+??? note "Nouveautés dans v4.7.0 → v4.8.2"
+    **Publié :** 16 février 2026 au 4 avril 2026
+
+    - **Sélection de couleur de bordure monde vanilla.** Les joueurs utilisant le type de bordure vanilla peuvent maintenant choisir leur couleur de bordure — rouge, verte ou bleue — via `/[player_command] color {red|green|blue}`.
+    - Nouveau placeholder `%Border_color%` retournant la couleur de bordure actuelle du joueur.
+    - Nouvelles permissions `[gamemode].color.red`, `[gamemode].color.green`, `[gamemode].color.blue` (ou `[gamemode].color.*` pour toutes). Défaut : op.
+    - Correction : contournement de la téléportation de bordure quand un joueur est hors de tous les espaces d'île (4.7.0).
+    - Correction : la bordure monde vanilla ne se réinitialisait pas lors d'un téléport entre îles — causait un état restreint pour les joueurs Bedrock/Geyser (4.8.1).
+    - Correction : placeholder `%Border_color%` retournant une erreur null dans certaines configurations (4.8.1).
+    - Correction : la bordure s'activait incorrectement dans le nether et l'end vanilla (4.8.1).
+
+    [Release v4.7.0](https://github.com/BentoBoxWorld/Border/releases/tag/4.7.0) · [v4.8.0](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.0) · [v4.8.1](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.1) · [v4.8.2](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.2)
 
 ## Traductions
 
