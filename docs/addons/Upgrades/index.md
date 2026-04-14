@@ -22,6 +22,15 @@ Les améliorations, leurs niveaux, prix et récompenses sont stockés dans la ba
 
 Au premier démarrage, 8 exemples d'améliorations sont créés. Une fois qu'une amélioration exemple est supprimée, elle ne sera plus recréée au prochain redémarrage. Pour déclencher à nouveau la création, supprimez le fichier marqueur `.seeded-gamemodes` du dossier de données de l'addon.
 
+## Niveaux et paliers
+
+Chaque amélioration est composée d'un ou plusieurs **paliers**. Un palier couvre une plage de niveaux — par exemple, un palier peut couvrir les niveaux 0 à 4, ce qui signifie que tout joueur dont le niveau d'amélioration se situe dans cette plage bénéficie des récompenses de ce palier.
+
+- Chaque fois qu'un joueur achète une amélioration, son niveau augmente de 1.
+- Les récompenses appliquées sont toujours celles du palier dont la plage contient le niveau actuel du joueur. Entrer dans la plage d'un nouveau palier bascule immédiatement vers les récompenses de ce palier.
+- Un palier peut exiger **plusieurs prix** (tous doivent être payés) et accorder **plusieurs récompenses** (toutes sont appliquées).
+- Les formules de prix et de récompenses peuvent utiliser des variables (voir [Variables de formule](#variables-de-formule)) pour s'adapter automatiquement au niveau, au niveau d'île ou à la taille de l'équipe.
+
 ## Commandes
 
 !!! tip
@@ -48,23 +57,68 @@ Chaque niveau d'amélioration peut exiger n'importe quelle combinaison des prix 
 
 Chaque niveau d'amélioration peut accorder n'importe quelle combinaison des récompenses suivantes :
 
-| Type | Description |
+| Type | Description | Application |
+|---|---|---|
+| **Portée** | Augmente la portée de protection de l'île | À l'achat |
+| **Limites de blocs** | Augmente la limite d'un type de bloc par île (nécessite l'addon Limits) | À l'achat |
+| **Limites d'entités** | Augmente la limite d'un type d'entité (nécessite l'addon Limits) | À l'achat |
+| **Limites de groupes d'entités** | Augmente la limite d'un groupe d'entités (nécessite l'addon Limits) | À l'achat |
+| **Commandes** | Exécute des commandes console ou joueur lors de l'achat | À l'achat |
+| **Boost de spawner** | Ajoute des apparitions supplémentaires à chaque événement de spawner sur l'île | Passif — toujours actif |
+| **Boost de croissance de cultures** | Ajoute des ticks de croissance supplémentaires à chaque événement de croissance naturelle sur l'île | Passif — toujours actif |
+
+### Commandes
+
+La récompense Commandes exécute une ou plusieurs commandes lorsqu'un joueur achète une amélioration.
+
+- **Mode console** : les commandes s'exécutent en tant que console du serveur (à utiliser pour `/give`, les commandes de rang ou tout ce qui nécessite des permissions élevées).
+- **Mode joueur** : les commandes s'exécutent en tant que joueur achetant l'amélioration (limitées à ses permissions).
+
+Les espaces réservés suivants sont disponibles dans les chaînes de commandes :
+
+- `[player]` — le nom du joueur qui a acheté l'amélioration
+- `[owner]` — le nom du propriétaire de l'île
+
+### Boost de spawner
+
+Le Boost de spawner est un effet **passif, toujours actif**. Il ne fait rien au moment de l'achat ; il prend effet immédiatement et reste actif tant que l'île conserve ce niveau d'amélioration.
+
+Chaque fois qu'un spawner sur l'île se déclenche, l'addon additionne la valeur totale de Boost de spawner de l'île pour tous les paliers d'amélioration actifs et fait apparaître autant de créatures supplémentaires du même type au même endroit.
+
+La valeur de formule est un **multiplicateur de bonus** :
+
+| Valeur de formule | Effet par événement de spawner |
 |---|---|
-| **Portée** | Augmente la portée de protection de l'île |
-| **Limites de blocs** | Augmente la limite d'un type de bloc (nécessite l'addon Limits) |
-| **Limites d'entités** | Augmente la limite d'un type d'entité (nécessite l'addon Limits) |
-| **Limites de groupes d'entités** | Augmente la limite d'un groupe d'entités (nécessite l'addon Limits) |
-| **Commandes** | Exécute des commandes console ou joueur lors de l'achat |
-| **Boost de spawner** | Multiplie les taux d'apparition des spawners |
-| **Boost de croissance de cultures** | Multiplie la vitesse de croissance des cultures |
+| `0.5` | 50 % de chance d'une créature supplémentaire |
+| `1.0` | Toujours 1 créature supplémentaire |
+| `1.5` | Toujours 1 créature supplémentaire + 50 % de chance d'une deuxième |
+| `2.0` | Toujours 2 créatures supplémentaires |
 
-## Variables de formule de niveau
+Les bonus provenant de plusieurs améliorations incluant une récompense de Boost de spawner sont **additionnés**. Le boost fonctionne pour tous les types de spawners.
 
-Dans les formules de prix, les variables suivantes sont disponibles :
+### Boost de croissance de cultures
 
-- `[level]` — le niveau actuel de l'amélioration en cours d'achat
-- `[islandLevel]` — le niveau actuel de l'île (depuis l'addon Level ; peut être 0)
+Le Boost de croissance de cultures est également un effet **passif, toujours actif**. Lorsqu'une culture pousse naturellement, l'addon applique des ticks de croissance supplémentaires (comme de l'os moulu) égaux à la valeur du bonus — plus le niveau d'amélioration d'un joueur est élevé, plus ses cultures poussent vite.
+
+La valeur de formule fonctionne de la même manière que pour le Boost de spawner :
+
+| Valeur de formule | Effet par événement de croissance naturelle |
+|---|---|
+| `0.5` | 50 % de chance d'un tick de croissance supplémentaire |
+| `1.0` | Toujours 1 tick supplémentaire |
+| `2.0` | Toujours 2 ticks supplémentaires |
+
+Les bonus de plusieurs améliorations se cumulent. Cultures prises en charge : **Blé, Carottes, Pommes de terre, Betteraves, Verrue du Nether, Buisson de baies sucrées, Torchflower, Pitcher Plant**.
+
+## Variables de formule
+
+Les champs de formule dans les prix comme dans les récompenses prennent en charge les variables suivantes :
+
+- `[level]` — le niveau actuel de l'amélioration en cours d'achat (ou actif)
+- `[islandLevel]` — le niveau actuel de l'île (depuis l'addon Level ; peut être 0 si Level n'est pas installé)
 - `[numberPlayer]` — le nombre de joueurs dans l'équipe de l'île
+
+Ces variables permettent d'écrire des formules qui s'adaptent automatiquement, par exemple un coût en argent de `500 * [level]` ou un bonus de spawner de `0.1 * [level]`.
 
 ## Permissions
 
@@ -97,6 +151,13 @@ La classe `UpgradeAPI` est exposée pour que d'autres addons puissent interroger
     - **Correction du créateur d'exemples.** Les exemples d'améliorations ne se régénèrent plus à chaque redémarrage après avoir été supprimés. Le créateur suit maintenant quels modes de jeu ont été initialisés dans un fichier marqueur `.seeded-gamemodes` persistant.
 
     [Release v1.0.1](https://github.com/BentoBoxWorld/Upgrades/releases/tag/1.0.1)
+
+??? note "Nouveautés dans v1.0.2"
+    **Publié :** 13 avril 2026
+
+    - **Correction de la persistance.** Les définitions d'amélioration administrateur (nom, icône, prix, récompenses, paramètres de palier) et les niveaux d'achat des joueurs n'étaient stockés qu'en mémoire et perdus au redémarrage du serveur. Tous les gestionnaires de mutation sauvegardent maintenant immédiatement dans la base de données après chaque modification.
+
+    [Release v1.0.2](https://github.com/BentoBoxWorld/Upgrades/releases/tag/1.0.2)
 
 ## Traductions
 
