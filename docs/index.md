@@ -1,8 +1,8 @@
 # BentoBox
 
-BentoBox transforme votre serveur Paper en un terrain de jeu d'aventures insulaires. Plongez vos joueurs dans **SkyBlock**, **AcidIsland**, **OneBlock**, **CaveBlock**, **SkyGrid**, **Boxed**, **Poseidon**, **Stranger Realms** et bien d'autres — tous fonctionnant côte à côte sur le même serveur, chacun avec son propre monde, ses règles et sa progression. 
+BentoBox transforme votre serveur Paper en un terrain de jeu d'aventures insulaires. Plongez vos joueurs dans **SkyBlock**, **AcidIsland**, **OneBlock**, **CaveBlock**, **SkyGrid**, **Boxed**, **Poseidon**, **Stranger Realms** et bien d'autres — tous fonctionnant côte à côte sur le même serveur, chacun avec son propre monde, ses règles et sa progression.
 
-Les joueurs obtiennent des îles qui leur appartiennent, des coéquipiers avec qui construire, des défis à relever, des niveaux à grimper et des warps pour exposer leurs créations. Les administrateurs profitent d'une gestion simplifiée : un seul plugin à installer, des valeurs par défaut équilibrées et une immense bibliothèque d'addons (Bank, Biomes, Border, Challenges, Greenhouses, Level, Limits, Warps et des dizaines d'autres) à combiner pour obtenir exactement le serveur que vous voulez — sans aucune connaissance en code requise. 
+Les joueurs obtiennent des îles qui leur appartiennent, des coéquipiers avec qui construire, des défis à relever, des niveaux à grimper et des warps pour exposer leurs créations. Les administrateurs profitent d'une gestion simplifiée : un seul plugin à installer, des valeurs par défaut équilibrées et une immense bibliothèque d'addons (Bank, Biomes, Border, Challenges, Greenhouses, Level, Limits, Warps et des dizaines d'autres) à combiner pour obtenir exactement le serveur que vous voulez — sans aucune connaissance en code requise.
 
 Que vous souhaitiez un simple monde SkyBlock classique ou un hub regroupant tous les modes de jeu d'îles existants, BentoBox est la fondation flexible et éprouvée à laquelle des milliers de serveurs font déjà confiance.
 
