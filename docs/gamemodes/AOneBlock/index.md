@@ -67,6 +67,9 @@ Le premier nombre de tout fichier est le nombre de blocs qui doivent être miné
             50: SPONGE
         ```
 
+    !!! tip "Notation CHEST_WITH_X"
+        Les entrées de blocs fixes peuvent utiliser le raccourci `CHEST_WITH_X` pour placer un coffre pré-rempli avec un objet spécifique, par exemple `CHEST_WITH_WATER_BUCKET`. L'objet doit être un nom de matériau Bukkit valide.
+
 === "holograms"
     !!! summary "Description"
         AOneBlock utilise des hologrammes natifs pour afficher ces lignes. La première ligne affichée avant le début d'une phase se trouve dans le fichier de paramètres régionaux d'aoneblock.
@@ -220,6 +223,7 @@ Le premier nombre de tout fichier est le nombre de blocs qui doivent être miné
           - `mob`: utilise l'API Spawn Entity pour créer l'entité demandée. Nécessite le champ `mob` et éventuellement le champ `underlying-block` (par défaut : STONE)
           - `itemsadder`: utilise l'API [ItemsAdder](https://itemsadder.devs.beer/) pour créer un bloc. Nécessite le champ `id`. Le plugin ItemsAdder doit être installé.
           - `nexo`: utilise l'API [Nexo](https://polymart.org/resource/nexo.6901) pour créer un bloc. Nécessite le champ `id`. Le plugin Nexo doit être installé.
+          - `craftengine`: utilise l'API [CraftEngine](https://github.com/Xiao-MoMi/craft-core) pour créer un bloc. Nécessite le champ `id`. Le plugin CraftEngine doit être installé. Requiert BentoBox 3.15.0+.
 
     !!! example "Exemple"
         ```yaml
@@ -246,13 +250,16 @@ Le premier nombre de tout fichier est le nombre de blocs qui doivent être miné
               - type: nexo
                 id: mypack:custom_block
                 probability: 10
+              - type: craftengine
+                id: mypack:custom_block
+                probability: 10
               - DIRT: 10     # old syntax still works.
         ```
 
-    !!! tip "ItemsAdder et Nexo"
-        Pour utiliser des blocs personnalisés d'ItemsAdder ou Nexo, le plugin respectif doit être installé sur votre serveur.
+    !!! tip "ItemsAdder, Nexo et CraftEngine"
+        Pour utiliser des blocs personnalisés d'ItemsAdder, Nexo ou CraftEngine, le plugin respectif doit être installé sur votre serveur.
         AOneBlock détecte automatiquement ces plugins au démarrage et enregistre les gestionnaires de blocs appropriés.
-        Si vous configurez un bloc `itemsadder` ou `nexo` mais que le plugin n'est pas installé, le bloc reviendra à STONE.
+        Si vous configurez un bloc `itemsadder`, `nexo` ou `craftengine` mais que le plugin n'est pas installé, le bloc reviendra à STONE.
 
 
 Dans le fichier de coffres, il y a simplement le numéro de phase et une section coffres.
@@ -648,3 +655,20 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     🔡 **Régénérez les fichiers de locale** si vous avez des personnalisations.
 
     [Release v1.23.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.23.0)
+
+??? warning "Nouveautés dans v1.24.0 — requiert BentoBox 3.15.0"
+    **Publié le :** 2026-04-26
+
+    - **Support des blocs personnalisés CraftEngine.** Les phases peuvent désormais générer des blocs [CraftEngine](https://github.com/Xiao-MoMi/craft-core) en utilisant `type: craftengine` dans les définitions de phase. Requiert BentoBox 3.15.0+.
+    - **Particules de coffre configurables par rareté.** Le type et la couleur des particules affichées au-dessus des coffres UNCOMMON/RARE/EPIC sont désormais configurables dans `config.yml` sous `world.chest-particles`. Définissez une particule sur `NONE` pour la désactiver.
+    - **Notation `CHEST_WITH_X` pour les blocs fixes.** Les `fixedBlocks` de phase acceptent désormais les entrées `CHEST_WITH_<ITEM>` pour placer un coffre pré-rempli avec cet objet (ex. `CHEST_WITH_WATER_BUCKET`).
+    - **`OBSIDIAN_SCOOPING` désactivé par défaut.** Les nouvelles installations ont ce drapeau défini sur `false`. Les serveurs existants avec un paramètre explicite ne sont pas affectés.
+    - 🔡 Valeurs par défaut des placeholders pour les joueurs sans île : `%aoneblock_my_island_phase%`, `%aoneblock_my_island_count%` et `%aoneblock_my_island_percent_done%` retournent désormais `Unknown`, `0` et `0%` au lieu de chaînes vides.
+
+    🔺 **Requiert BentoBox 3.15.0 ou supérieur** — cette version ne se chargera pas avec des versions antérieures de BentoBox.
+
+    ⚙️ **Nouvelle section de config** `world.chest-particles` — copiez depuis le dernier `config.yml` si vous souhaitez des effets de particules configurables.
+
+    🔡 **Régénérez les fichiers de locale** pour récupérer les nouvelles clés.
+
+    [Release v1.24.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.24.0)

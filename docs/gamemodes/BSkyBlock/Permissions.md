@@ -98,10 +98,9 @@
 | bskyblock.admin.setspawnpoint | Autoriser l'utilisation de la commande '/bsbadmin setspawnpoint' — définir l'emplacement actuel comme point de spawn pour cette île | OP |
 | bskyblock.admin.resetflags | Autoriser l'utilisation de la commande '/bsbadmin resetflags' — réinitialiser tous les drapeaux de l'île aux paramètres par défaut | OP |
 | bskyblock.mod.switch | Autoriser l'utilisation de la commande '/bsbadmin switch' — basculer la protection bypass | OP |
-| bskyblock.admin.purge | Autoriser l'utilisation de la commande '/bsbadmin purge' — purger les îles abandonnées depuis plus de [days] | OP |
-| bskyblock.admin.purge.status | Autoriser l'utilisation de la commande '/bsbadmin purge status' — afficher l'état de la purge | OP |
-| bskyblock.admin.purge.stop | Autoriser l'utilisation de la commande '/bsbadmin purge stop' — arrêter une purge en cours | OP |
-| bskyblock.admin.purge.unowned | Autoriser l'utilisation de la commande '/bsbadmin purge unowned' — purger les îles non possédées | OP |
+| bskyblock.admin.purge | Autoriser l'utilisation de la commande '/bsbadmin purge &lt;days&gt;' — identifier et supprimer les fichiers de région des îles abandonnées depuis plus de [days] | OP |
+| bskyblock.admin.purge.deleted | Autoriser l'utilisation de la commande '/bsbadmin purge deleted' — récupérer les fichiers de région des îles déjà marquées comme supprimables | OP |
+| bskyblock.admin.purge.unowned | Autoriser l'utilisation de la commande '/bsbadmin purge unowned' — marquer les îles non possédées comme supprimables | OP |
 | bskyblock.admin.purge.protect | Autoriser l'utilisation de la commande '/bsbadmin purge protect' — basculer la protection de purge de l'île | OP |
 | bskyblock.admin.settings | Autoriser l'utilisation de la commande '/bsbadmin settings' — ouvrir l'interface utilisateur des paramètres ou définir les paramètres | OP |
 | bskyblock.admin.setprotectionlocation | Autoriser l'utilisation de la commande '/bsbadmin setprotectionlocation' — définir l'emplacement actuel ou [x y z] comme centre de la zone de protection | OP |

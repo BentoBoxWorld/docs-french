@@ -74,6 +74,15 @@ permissions:
 ## Aimez cet addon?
 Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir plus d'addons comme celui-ci et l'améliorer!
 
+## Changelog
+
+??? note "Nouveautés dans v1.4.1"
+    **Publié le :** 2026-04-26
+
+    - 🔡 **Correction de la locale tchèque** — Le fichier `cs.yml` contenait une entrée YAML malformée pour `island-chat-spy` provoquant une `ScannerException` au démarrage du serveur. Supprimez `plugins/BentoBox/addons/Chat/locales/cs.yml` avant de redémarrer pour qu'il soit régénéré depuis la version corrigée.
+
+    [Release v1.4.1](https://github.com/BentoBoxWorld/Chat/releases/tag/1.4.1)
+
 ## Traductions
 
 {{ translations("Chat") }}

@@ -122,6 +122,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 === "Permissions du joueur"
     - `aoneblock.island.topblock` - (défaut: `true`) - Permet au joueur d'utiliser la commande `/[player_command] top`.
+    - `aoneblock.intopten` - (défaut: `true`) - Contrôle si l'île du joueur apparaît dans le top dix. Retirez d'un admin ou testeur pour l'exclure du classement.
 
 ??? question "Quelque chose manque-t-il?"
     Vous pouvez trouver la liste complète des permissions dans le fichier [addon.yml](https://github.com/BentoBoxWorld/TopBlock/blob/develop/src/main/resources/addon.yml) de cet addon.
@@ -136,6 +137,22 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ??? question "Pouvez-vous ajouter une fonctionnalité X?"
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/TopBlock/issues).
+
+## Changelog
+
+??? warning "Nouveautés dans v2.0.0 — mise à jour de plateforme requise"
+    **Publié le :** 2026-04-26
+
+    - 🐛 **Panneau Top Dix corrigé.** Un bug persistant faisait que le panneau top dix n'affichait que des espaces verts vides. Le gestionnaire d'événements était `private`, ce qui amenait Bukkit à le ignorer silencieusement. Corrigé — le panneau affiche désormais correctement les têtes des joueurs et leurs statistiques.
+    - ✨ **Permission `aoneblock.intopten`.** Les admins et testeurs peuvent être exclus du top dix en leur retirant cette permission (accordée à tous les joueurs par défaut).
+    - 🔡 **22 nouvelles locales** — cs, de, es, fr, hr, hu, id, it, ja, ko, lv, nl, pl, pt, pt-BR, ro, ru, tr, uk, vi, zh-CN, zh-HK.
+    - 🔺 Requiert désormais **Paper 1.21.x**, **Java 21**, **BentoBox 3.14.0+** et **AOneBlock 1.18.0+**. Spigot n'est plus supporté.
+
+    🔺 **Supprimez `addons/TopBlock/panels/top_panel.yml`** avant de redémarrer pour que le nouveau modèle de panneau soit extrait. Réappliquez vos personnalisations de mise en page après.
+
+    🔡 Exécutez `/bentobox reload` après la mise à jour pour que BentoBox fusionne les nouvelles clés de locale dans vos fichiers existants.
+
+    [Release v2.0.0](https://github.com/BentoBoxWorld/TopBlock/releases/tag/2.0.0)
 
 ## Traductions
 
