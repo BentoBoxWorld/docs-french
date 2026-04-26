@@ -102,10 +102,9 @@
 | acidisland.admin.setspawnpoint | Autoriser l'utilisation de la commande '/acid setspawnpoint' — définir l'emplacement actuel comme point de spawn pour cette île | OP |
 | acidisland.admin.resetflags | Autoriser l'utilisation de la commande '/acid resetflags' — Réinitialiser tous les paramètres d'indicateurs de l'île aux paramètres par défaut du fichier config.yml | OP |
 | acidisland.mod.switch | Autoriser l'utilisation de la commande '/acid switch' — basculer la protection bypass | OP |
-| acidisland.admin.purge | Autoriser l'utilisation de la commande '/acid purge' — purger les îles abandonnées depuis plus de [days] | OP |
-| acidisland.admin.purge.status | Autoriser l'utilisation de la commande '/acid purge status' — afficher l'état de la purge | OP |
-| acidisland.admin.purge.stop | Autoriser l'utilisation de la commande '/acid purge stop' — arrêter une purge en cours | OP |
-| acidisland.admin.purge.unowned | Autoriser l'utilisation de la commande '/acid purge unowned' — purger les îles non possédées | OP |
+| acidisland.admin.purge | Autoriser l'utilisation de la commande '/acid purge &lt;days&gt;' — identifier et supprimer les fichiers de région des îles abandonnées depuis plus de [days] | OP |
+| acidisland.admin.purge.deleted | Autoriser l'utilisation de la commande '/acid purge deleted' — récupérer les fichiers de région des îles déjà marquées comme supprimables | OP |
+| acidisland.admin.purge.unowned | Autoriser l'utilisation de la commande '/acid purge unowned' — marquer les îles non possédées comme supprimables | OP |
 | acidisland.admin.purge.protect | Autoriser l'utilisation de la commande '/acid purge protect' — basculer la protection de purge de l'île | OP |
 | acidisland.admin.settings | Autoriser l'utilisation de la commande '/acid settings' — ouvrir l'interface utilisateur des paramètres ou définir les paramètres | OP |
 | acidisland.admin.setprotectionlocation | Autoriser l'utilisation de la commande '/acid setprotectionlocation' — définir l'emplacement actuel ou [x y z] comme centre de la zone de protection de l'île | OP |

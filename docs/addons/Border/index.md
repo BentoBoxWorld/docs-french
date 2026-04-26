@@ -155,6 +155,18 @@ show-warps-on-map: true
 
     [Release v4.7.0](https://github.com/BentoBoxWorld/Border/releases/tag/4.7.0) · [v4.8.0](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.0) · [v4.8.1](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.1) · [v4.8.2](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.2)
 
+??? note "Nouveautés dans v4.8.3"
+    **Publié le :** 2026-04-26
+
+    - 🔡 Tous les fichiers de locale convertis des codes couleur `&` hérités vers le format MiniMessage.
+    - 🔡 Clés `set-color` manquantes ajoutées à toutes les locales non-anglaises.
+    - 🔡 Corrections de bugs dans les fichiers de locale polonais, ukrainien et chinois.
+    - 🔺 API BentoBox minimale portée à **3.12.0**.
+
+    🔺 **Si vous maintenez des remplacements de locale personnalisés** sous `plugins/BentoBox/addons/Border/locales/`, migrez les codes couleur du style `&a` vers les balises MiniMessage (ex. `<green>`) avant de redémarrer.
+
+    [Release v4.8.3](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.3)
+
 ## Traductions
 
 {{ translations("Border") }}

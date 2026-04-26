@@ -181,6 +181,14 @@ Cette section définit les valeurs des blocs et les limites pour ceux-ci.
 
     Format : `MATERIAL: NUMBER`
 
+    Les blocs personnalisés CraftEngine sont également pris en charge (requiert BentoBox 3.15.0+). Utilisez leur ID namespacé comme clé :
+
+    ```yaml
+    blocks:
+      mynamespace:my_block: 50
+      mynamespace:custom_ore: 3
+    ```
+
 ??? note "worlds"
     Répertoriez les blocs qui ont une valeur différente dans un monde spécifique.
     Si un bloc n'est pas répertorié, la valeur par défaut sera utilisée à partir de la section des blocs.
@@ -424,6 +432,18 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     🔡 **Régénérez les fichiers de locale** si vous avez des personnalisations — les anciens codes couleur `&` ne sont plus valides.
 
     [Release v2.24.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.24.0)
+
+??? note "Nouveautés dans v2.25.0"
+    **Publié le :** 2026-04-26
+
+    - **Support des blocs personnalisés CraftEngine.** Les blocs CraftEngine sont désormais comptés dans le calcul du niveau d'île. Ajoutez-les dans `blockconfig.yml` avec leurs IDs namespacés (ex. `mynamespace:my_block: 50`). Requiert BentoBox 3.15.0+. CraftEngine peut être désactivé avec `disabled-plugin-hooks: [CraftEngine]` dans `config.yml`.
+    - **Mot-clé `hand` localisable.** L'argument `hand` dans `/island donate` et `/island value` est désormais traduisible via la nouvelle clé de locale `island.donate.hand.keyword`. L'anglais `hand` est toujours accepté comme solution de repli.
+    - 🔡 Les 16 fichiers de locale non-anglais mis à jour pour inclure les clés manquantes.
+    - 🔡 La locale ukrainienne est désormais entièrement traduite.
+
+    🔡 **Régénérez les fichiers de locale** pour récupérer la nouvelle clé `island.donate.hand.keyword`.
+
+    [Release v2.25.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.25.0)
 
 ## Translations
 

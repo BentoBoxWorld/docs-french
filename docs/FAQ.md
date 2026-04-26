@@ -275,10 +275,11 @@ Versions minimales requises :
 
 ### Le dossier de mon monde BentoBox est énorme — comment le réduire ?
 
-Les deux gros dévoreurs d'espace sont (1) les chunks générés par des joueurs qui ne sont jamais revenus, et (2) les anciennes régions d'île laissées après les réinitialisations lorsque `keep-previous-island-on-reset: true`. Pour récupérer de l'espace :
+Les deux gros dévoreurs d'espace sont (1) les chunks générés par des joueurs qui ne sont jamais revenus, et (2) les anciennes régions d'île laissées après les réinitialisations. Pour récupérer de l'espace :
 
-- Définissez `keep-previous-island-on-reset: false` dans la config BentoBox afin que les îles réinitialisées soient supprimées au lieu d'être abandonnées.
-- Utilisez `/[admin_command] purge` pour supprimer les îles des joueurs inactifs, puis exécutez `/[admin_command] purge regions` pour supprimer les fichiers de région du monde réels. **Sauvegardez toujours le dossier du monde au préalable.**
+- **BentoBox 3.15.0+:** Utilisez `/[admin_command] purge <days>` — cette commande identifie désormais les îles obsolètes *et* supprime leurs fichiers de région en une seule étape. Pour les îles en suppression douce (marquées après une réinitialisation ou `/admin delete`), exécutez `/[admin_command] purge deleted` pour récupérer leurs fichiers de région. Redémarrez le serveur après le purge pour vider le cache de chunks de Paper.
+- **BentoBox plus ancien :** Utilisez `/[admin_command] purge <days>` pour marquer les îles, puis `/[admin_command] purge regions` pour supprimer les fichiers de région.
+- **Sauvegardez toujours le dossier du monde au préalable.**
 - Pour les mondes vraiment anciens, un outil tiers comme Regionerator peut élaguer les chunks inutilisés.
 
 ### MariaDB vs MySQL — est-ce important ?
