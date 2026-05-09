@@ -94,6 +94,13 @@ L'inventaire, la santé, le niveau de nourriture, les avancées et l'expérience
 
     [Release v1.17.0](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.17.0)
 
+??? note "Nouveautés dans v1.17.1"
+    **Publié le :** 2026-05-09
+
+    - 🐛 **Correction de l'inventaire vidé lors d'un téléport d'un monde BentoBox vers un monde non-BentoBox.** Auparavant, quand un joueur quittait un monde de jeu BentoBox (par ex. BSkyBlock) pour un monde non-BentoBox (par ex. l'overworld par défaut ou un monde d'un plugin tiers), son inventaire « extérieur » pouvait être perdu parce que chaque monde non-BentoBox stockait ses données sous sa propre clé. Tous les mondes non-BentoBox partagent désormais une seule clé de stockage, donc l'inventaire du joueur est toujours restauré correctement. Inclut une migration automatique des données enregistrées sous les anciennes clés par monde.
+
+    [Release v1.17.1](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.17.1)
+
 ## Traductions
 
 {{ translations("InvSwitcher") }}

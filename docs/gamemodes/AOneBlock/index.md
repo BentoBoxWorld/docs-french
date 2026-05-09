@@ -672,3 +672,16 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     🔡 **Régénérez les fichiers de locale** pour récupérer les nouvelles clés.
 
     [Release v1.24.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.24.0)
+
+??? note "Nouveautés dans v1.25.0"
+    **Publié le :** 2026-05-03
+
+    - **Nid d'abeilles peuplé dans Plenty.** La phase Plenty fait désormais apparaître un `bee_nest` (3 abeilles à l'intérieur, `honey_level=0`) à la même densité que les autres objets de miel, comblant la lacune de longue date sur l'élevage du miel.
+    - **Resync client du bloc magique après tirage de mob.** Quand le bloc magique tirait un mob, l'événement de cassure annulé laissait le bloc transparent côté client jusqu'à la prochaine resync de chunk. L'état du bloc est maintenant renvoyé au joueur immédiatement.
+    - 🐛 **Correctif d'ordre de démarrage CraftEngine.** Le `onEnable` d'`AOneBlock` s'exécute avant que CraftEngine ne peuple son registre de blocs, ce qui provoquait auparavant une avalanche de fausses erreurs `Bad custom block`. Le parseur de blocs fait désormais confiance à une déclaration explicite `type: craftengine` au chargement de la config, et valide l'ID au moment du placement.
+    - 🐛 **Validation plus stricte de l'ID de bloc CraftEngine au chargement.** Les IDs vides et ceux qui n'ont pas la forme `namespace:key` sont désormais rejetés au chargement de la config au lieu d'être silencieusement acceptés et d'échouer plus tard.
+    - 🐛 **Les particules de coffre configurables ne plantent plus sur les types non `DUST`.** Les types de particules dont le type de données n'est pas `Void` (par ex. `ITEM`, `BLOCK`, `ENTITY_EFFECT`) lançaient une `IllegalArgumentException`. Elles sont maintenant détectées, journalisées en avertissement et ignorées. `DUST` et les particules à données void (par ex. `FLAME`) fonctionnent comme avant.
+
+    🔺 Si vous voulez le nouveau nid d'abeilles, copiez la nouvelle entrée dans votre `phases/8500_plenty.yml` (ou supprimez le dossier phases pour qu'il se régénère) — les fichiers de phase personnalisés ne sont pas écrasés à la mise à jour.
+
+    [Release v1.25.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.25.0)

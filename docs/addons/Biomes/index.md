@@ -255,6 +255,30 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 === "Permissions Admin"
     - `[gamemode].admin.biomes` (défaut: `op`): le joueur peut utiliser la commande admin biomes qui ouvre l'interface graphique.
 
+## Journal des modifications
+
+??? warning "Nouveautés dans v2.3.0 — requiert BentoBox 3.14.0+ et Paper"
+    **Publié le :** 2026-05-05
+
+    - ⚙️ **Préservation des biomes océan.** Nouvelle option `change-ocean-biomes` dans `config.yml` (défaut : `false`) qui empêche les changements de biome d'écraser les blocs océan (`OCEAN`, `WARM_OCEAN`, `DEEP_OCEAN`, etc.), gardant intacts les rivages et les zones sous-marines de l'île. Mettez à `true` pour rétablir l'ancien comportement.
+    - **Type d'action de panneau `COMMAND`.** Les boutons de panneau peuvent désormais exécuter des commandes au clic, à la fois comme type de bouton autonome et comme action sur les boutons biome existants aux côtés de `CHANGE`/`BUY`/`ADVANCED_PANEL`. Pratique pour des boutons « Retour au panneau d'île » ou toute intégration personnalisée.
+    - **`biomesTemplate.yml` retravaillé.** 44 biomes (contre ~29), coûts rééquilibrés, 9 nouveaux biomes dont Marais de mangrove, Jardin pâle (avec le mob The Creaking) et Jungle de bambou. 3 bundles de démarrage (Starter, Explorer, Nether & End) et démonstrations du mécanisme de coût `PER_USAGE`.
+    - **Notifications de déblocage adaptées au mode de jeu.** Les joueurs dans le bon monde de mode de jeu reçoivent l'invite cliquable « utiliser maintenant » habituelle ; les joueurs ailleurs reçoivent un message simple indiquant le mode de jeu où le biome a été débloqué, évitant la confusion d'une commande exécutée dans le mauvais monde.
+    - **Auto-import des biomes par défaut au premier démarrage.** Lorsqu'aucun biome n'est configuré pour un mode de jeu, l'addon importe désormais automatiquement `biomesTemplate.yml`. Plus besoin d'étape `import` manuelle sur les installations neuves.
+    - **Annulation de la file de biomes lors de la suppression/réinitialisation d'île.** Les tâches de mise à jour de biome en file d'attente et en cours sont annulées sur `IslandDeleteEvent` et `IslandResettedEvent`, les tâches en cours s'arrêtant à la prochaine limite de chunk grâce à un drapeau `AtomicBoolean`.
+    - 🐛 Correction de l'imprécision d'affichage en virgule flottante dans les infobulles GUI admin (par ex. `0.0299999999329447746` → `0.03`).
+    - 🐛 Le formateur décimal est désormais figé sur `Locale.ROOT`, ce qui fait que les locales utilisant la virgule décimale (par ex. l'allemand) affichent `0.5` comme `0.5` et non `0,5`.
+    - 🐛 Les objets du template de biomes au-dessus de la limite de pile de 99 sont maintenant fractionnés en piles valides au lieu d'échouer au chargement.
+    - 🔡 Les 23 fichiers de locale, YAMLs de panneau et chaînes Java codées en dur ont été migrés des codes couleur `&` vers MiniMessage. 14 nouvelles traductions ajoutées (cs, de, hr, hu, id, it, ko, pt, pt-BR, ro, ru, tr, vi, zh-HK).
+
+    🔺 **Rupture :** cette version requiert **BentoBox 3.14.0+**, **Paper** (Spigot n'est plus supporté) et **Java 21**. L'addon ne se chargera pas sur les anciennes versions.
+
+    🔡 **Note locale :** les fichiers de locale personnalisés doivent être mis à jour — convertissez `&c`/`&l`/etc. en balises MiniMessage (`<red>`, `<bold>`), ou supprimez vos personnalisations pour récupérer les valeurs par défaut.
+
+    ⚙️ **Note config :** vérifiez `config.yml` pour la nouvelle option `change-ocean-biomes` (défaut `false`).
+
+    [Release v2.3.0](https://github.com/BentoBoxWorld/Biomes/releases/tag/2.3.0)
+
 ## Traductions
 
 {{ translations("Biomes") }}

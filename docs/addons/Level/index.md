@@ -445,6 +445,18 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
     [Release v2.25.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.25.0)
 
+??? note "Nouveautés dans v2.26.0"
+    **Publié le :** 2026-05-04
+
+    - **Panneau de don configurable.** Le GUI de don est désormais entièrement piloté par un nouveau template `panels/donation_panel.yml`, à l'image des panneaux de valeur, de détail et du top-ten. Les administrateurs peuvent redimensionner le panneau de 1 à 6 lignes, repositionner les quatre boutons nommés (`INFO`, `CANCEL`, `PREVIEW`, `CONFIRM`), changer leurs icônes et ajouter des objets décoratifs. La grille de don remplit automatiquement toutes les cellules qui ne sont ni bordure ni bouton nommé.
+    - `force-shown: [1,2,3,4]` contrôle le nombre de lignes utilisées par le panneau (1 à 6 supportées). Les quatre boutons requis sont placés selon leur `data.type`. Si le template est manquant ou si l'un des boutons requis est absent, le panneau revient à l'ancienne disposition codée en dur sur 4 lignes.
+    - 🐛 Les objets décoratifs du template s'affichent maintenant réellement dans l'inventaire ; le `title:` personnalisé du panneau de don est désormais respecté ; `force-shown` est maintenant lu comme une liste (cohérent avec les autres YAMLs de panneau).
+    - Pas de rupture d'API, pas de changement de locale, pas de migration `config.yml`.
+
+    ⚙️ **Disposition du panneau de don.** Un nouveau `panels/donation_panel.yml` est livré au premier démarrage — laissez-le tel quel pour garder la disposition de 2.25.0, ou éditez-le pour la personnaliser.
+
+    [Release v2.26.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.26.0)
+
 ## Translations
 
 {{ translations("Level") }}
