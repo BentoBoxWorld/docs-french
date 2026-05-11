@@ -30,9 +30,11 @@ Les joueurs peuvent définir l'emplacement par défaut de leur île en exécutan
 
 ### Transfert d'Île
 
-La propriété de l'île peut être transférée à d'autres joueurs dans l'équipe en utilisant la commande `setowner`. La propriété ne peut pas être transférée si le propriétaire a déjà atteint le nombre maximum d'îles concurrentes autorisées.
+La propriété de l'île peut être transférée à d'autres joueurs dans l'équipe en utilisant la commande `setowner`. La propriété ne peut pas être transférée si le destinataire a déjà atteint son nombre maximum d'îles concurrentes.
 
-*NOUVEAU :* Quand un joueur transfère la propriété, maintenant quitter automatiquement l'équipe.
+Depuis BentoBox 3.16.0, ce plafond est appliqué à la fois sur `/island team setowner` et `/[admin] team setowner`. Les versions précédentes n'émettaient un avertissement qu'après un transfert admin (et la commande joueur n'avait aucun contrôle), ce qui permettait aux joueurs de dépasser leur limite `concurrent-islands`. Pour autoriser davantage d'îles au destinataire, augmentez d'abord sa permission `[gamemode].island.number.<n>`.
+
+*NOUVEAU :* Quand un joueur transfère la propriété, il quitte désormais automatiquement l'équipe.
 
 ### Équipes
 
