@@ -193,3 +193,52 @@ Les joueurs Coop conservent leur rang jusqu'à ce que le joueur qui les a invit�
 
 ### Suppression de Confiance ou Décoooping des Joueurs
 Les propriétaires d'îles, ou les joueurs avec un rang suffisamment élevé, peuvent émettre les commandes `team untrust` ou `team uncoop` pour supprimer les joueurs de l'île avec ces rangs. Le joueur supprimé revient au statut Visiteur.
+
+## Désactivation des Équipes par Monde
+
+Depuis BentoBox 3.16.0, un mode de jeu peut se retirer du sous-système d'équipes monde par monde via l'API `WorldSettings#isTeamsDisabled()` (par défaut `false`). Lorsque cela est activé, les commandes d'action qui ajoutent, suppriment ou réorganisent les membres de l'équipe refusent de s'exécuter en affichant le message de la locale `commands.island.team.errors.teams-disabled`.
+
+**Bloquées lorsque les équipes sont désactivées :**
+
+- `/island team invite` et `team invite accept` (uniquement les invitations d'ÉQUIPE — les invitations COOP et TRUST restent acceptées)
+- `/island team kick`, `team leave`, `team promote`, `team demote`, `team setowner`
+- `/[admin] team add`
+
+**Toujours disponibles :**
+
+- Commandes joueur en lecture seule : le panneau `/island team`, `team info`, `team invites`, `team invite reject`
+- Relations de confiance et coop : `trust`, `coop`, `untrust`, `uncoop` — ce sont les alternatives prises en charge quand les équipes sont désactivées
+- Commandes admin qui opèrent sur des équipes existantes : `kick`, `disband`, `disbandall`, `setowner`, `fix`, `maxsize`
+
+Après avoir activé `isTeamsDisabled` pour un monde qui contient déjà des équipes, exécutez `/[admin] team disbandall` une fois pour nettoyer les équipes préexistantes. Cette commande admin retire tous les membres et sous-propriétaires de chaque île du monde courant en une seule passe avec confirmation. Les joueurs trust et coop sont intentionnellement laissés intacts.
+
+??? note "Nouveautés de la v3.16.0"
+    **Publié :** 2026-05-10
+
+    Voir les notes complètes : [Release 3.16.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.16.0)
+
+    **Gestion des équipes**
+
+    - Nouvelle API `WorldSettings#isTeamsDisabled()` (par défaut `false`) permettant à un mode de jeu de se retirer du sous-système d'équipes monde par monde.
+    - Nouvelle commande admin `/[admin] team disbandall` qui retire tous les membres et sous-propriétaires de chaque île du monde courant en une seule passe avec confirmation.
+    - `/[admin] team kick` exige désormais des coordonnées `x,y,z` explicites quand la cible est sur plusieurs îles d'équipe, et refuse de kicker les propriétaires d'île (en redirigeant l'admin vers `setowner` ou `disband`).
+    - Le plafond de setowner est désormais appliqué sur `/island team setowner` ET `/[admin] team setowner` — les transferts sont refusés si le destinataire est à son plafond d'îles concurrentes.
+
+    **Corrections de bugs**
+
+    - `ISLAND_RESPAWN` ne dépose plus les joueurs au point d'apparition du monde (0,0) quand leur bloc de maison manque — il suit désormais une chaîne de repli se terminant par `SafeSpotTeleport`.
+    - `OFFLINE_GROWTH` bloque désormais toutes les plantes qui se propagent (lianes, lianes pleureuses/tordues, etc.) et les arbres/champignons poussant depuis des pousses — pas seulement le varech et le bambou.
+    - Les marqueurs de zone/polygone Dynmap utilisent désormais la hauteur min/max complète du monde au lieu de toujours afficher à y=64.
+
+    **Ajouts d'API**
+
+    - `CraftEngineHook.getItemStack(String id)` et `CraftEngineHook.getItemId(ItemStack item)` permettent aux addons d'afficher et de reconnaître les objets personnalisés CraftEngine sans dépendre directement de CraftEngine.
+
+    **Locale**
+
+    - Nouvelles clés : `commands.admin.team.disbandall.{description,confirmation,success}`, `commands.island.team.errors.teams-disabled`, `commands.admin.team.setowner.errors.at-max`.
+    - Mise à jour du message `commands.admin.team.kick.cannot-kick-owner` qui redirige les admins vers `setowner`/`disband`.
+    - Suppression de la clé morte `commands.admin.team.kick.success-all`.
+    - Les 22 traductions intégrées sont toutes synchronisées.
+
+    **Compatibilité :** Paper Minecraft 1.21.5 – 26.1.2, Java 21+.
