@@ -242,3 +242,14 @@ Après avoir activé `isTeamsDisabled` pour un monde qui contient déjà des éq
     - Les 22 traductions intégrées sont toutes synchronisées.
 
     **Compatibilité :** Paper Minecraft 1.21.5 – 26.1.2, Java 21+.
+
+??? note "Nouveautés de la v3.16.2"
+    **Publié :** 2026-05-19
+
+    Petit patch de suivi. Voir les notes complètes : [Release 3.16.2](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.16.2)
+
+    - 🐛 **L'acceptation d'équipe ne mange plus les inventaires sous InvSwitcher.** Les joueurs qui acceptaient une invitation d'équipe en étant dans un monde non-BentoBox (avec `island.reset.on-join.inventory: true` — Boxed et AOneBlock l'activent par défaut) pouvaient retourner dans ce monde et trouver leurs objets disparus. Les réinitialisations à l'arrivée inventaire/XP/vie/faim/argent s'exécutent maintenant *après* la téléportation dans le monde de l'île, de sorte qu'InvSwitcher (et plugins similaires) sauvegardent le véritable inventaire du joueur sous l'ancien monde avant le déclenchement de la réinitialisation. Corrige le cas signalé contre AOneBlock 1.25.0 / Boxed 3.3.0 / InvSwitcher 1.17.1.
+    - 🔺 **API : `Island.setRange` ne corrompt plus silencieusement les données d'île.** `setRange` refuse désormais toute valeur en désaccord avec la `distance-between-islands` configurée du mode de jeu et journalise le cadre de pile appelant. Les modes de jeu qui redimensionnent légitimement les revendications (par ex. StrangerRealms) continuent de fonctionner — ils surchargent déjà `GameModeAddon.isEnforceEqualRanges()` pour renvoyer `false`. Si vous maintenez un addon et voyez des avertissements `Refusing Island.setRange(...)`, le journal nomme l'appelant exact.
+    - 🐛 **Compatibilité CraftEngine 26.5+.** `CraftEngineHook.getItemStack(id)` utilise désormais `BukkitItemDefinition#buildBukkitItem()` et fonctionne avec l'API CraftEngine réécrite.
+
+    **Compatibilité :** Paper Minecraft 1.21.5 – 26.1.2, Java 21+.

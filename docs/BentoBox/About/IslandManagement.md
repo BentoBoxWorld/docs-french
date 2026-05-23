@@ -43,7 +43,9 @@ Les administrateurs peuvent supprimer l'île d'un joueur avec :
 /[admin_command] delete <player>
 ```
 
-Cela supprime l'île de la base de données et met la zone en attente de nettoyage. Le joueur pourra créer une nouvelle île après.
+Cela supprime l'île de la base de données et marque la zone pour le nettoyage. Le joueur peut créer une nouvelle île immédiatement après.
+
+Depuis BentoBox 3.16.1, les fichiers de région réels sont récupérés lors du prochain passage de maintenance (par défaut : 24 h) plutôt qu'à la demande. Si l'île partage un fichier de région avec d'autres îles actives, la zone supprimée reste en place jusqu'à ce que la région soit libre. Pour forcer un nettoyage immédiat, lancez `/bbox admin purge deleted` après la suppression — il ne retirera les blocs que si le fichier de région n'héberge plus aucune île active. Pour une suppression de blocs chirurgicale dans une région partagée, utilisez WorldEdit ou retirez les blocs manuellement.
 
 ## Nettoyage des Îles Inactives
 
@@ -117,3 +119,14 @@ Les joueurs peuvent vérifier les informations de leur propre île avec `/island
 /[admin_command] info <player>
 ```
 Cela affiche l'emplacement de l'île, le propriétaire, les membres de l'équipe et la plage de protection actuelle.
+
+??? note "Nouveautés de la v3.16.1"
+    **Publié :** 2026-05-17
+
+    Patch ciblé pour `/bbox admin delete`. Voir les notes complètes : [Release 3.16.1](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.16.1)
+
+    - 🔺 `/bbox admin delete` supprime maintenant réellement l'île. La récupération se produit lors du prochain passage de maintenance (par défaut : 24 h) plutôt qu'instantanément ; si le fichier de région héberge encore des îles actives, l'île supprimée reste à l'état supprimé jusqu'à ce que la région soit libre. Utilisez WorldEdit ou retirez les blocs manuellement si vous avez besoin d'un nettoyage immédiat d'une région partagée.
+    - 🔺 Les mondes graines (`<world>/bentobox`) ne sont plus créés. La plomberie des mondes graines (`createSeedWorlds`, `removeSeedWorlds`, les copies en mémoire, les dossiers sur disque) a disparu. Tous les dossiers `<world>/bentobox` obsolètes laissés par les versions antérieures peuvent être supprimés manuellement en toute sécurité.
+    - 🔺 API : `GameModeAddon#isUsesNewChunkGeneration()` est déprécié pour suppression. Les surcharges existantes continuent de fonctionner (la valeur est ignorée) mais émettent un avertissement de dépréciation — retirez la surcharge à votre convenance.
+
+    **Compatibilité :** Paper Minecraft 1.21.5 – 26.1.2, Java 21+.

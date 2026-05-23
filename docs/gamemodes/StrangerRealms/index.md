@@ -20,6 +20,31 @@ La commande joueur principale est `/strange` ou `/st` et la commande admin est `
 
 Les permissions peuvent être trouvées [ici](Permissions).
 
+??? note "Nouveautés de la v1.0.4"
+    **Publié :** 2026-05-16
+
+    Version de correction de bugs pour la bordure dynamique du monde. Voir les notes complètes : [Release 1.0.4](https://github.com/BentoBoxWorld/StrangerRealms/releases/tag/1.0.4)
+
+    - Correction d'une `NullPointerException` sporadique dans `getBorderSize()` lors du premier rétrécissement de la bordure dynamique (par ex. quand le nombre de joueurs baissait) qui spammait la console et bloquait la bordure jusqu'au prochain redémarrage. Le chemin d'annulation utilise désormais le helper `cancelBorderTask()` protégé contre les nulls.
+    - L'avertissement de démarrage indiquant de ne pas utiliser l'addon `Border` de BentoBox référençait par erreur "the Crowdbound world" ; il indique maintenant `StrangerRealms has its own Border, so do not use Border addon.`
+    - Construit et testé avec l'API Paper 1.21.11 pour suivre la branche de suivi de MockBukkit.
+
+    **Compatibilité :** BentoBox API 3.9.0+, Minecraft 1.21.10+, Java 21.
+
+!!! warning "Nouveautés de la v1.0.5 — Correctif urgent"
+    **Publié :** 2026-05-19
+
+    Correctif pour un bug pouvant corrompre les îles d'autres modes de jeu partageant le même serveur. Voir les notes complètes : [Release 1.0.5](https://github.com/BentoBoxWorld/StrangerRealms/releases/tag/1.0.5)
+
+    - 🔺 **Correction de `TeamListener` corrompant la plage des îles d'autres modes de jeu.** Quand un joueur quittait une équipe ou était expulsé, le code de réinitialisation de revendication affectait les îles appartenant à d'autres modes de jeu (par ex. AOneBlock) sur le même serveur. Mettez à niveau immédiatement si vous exécutez StrangerRealms aux côtés d'un autre mode de jeu.
+
+    **Récupération pour les serveurs affectés.** Si une version précédente de StrangerRealms a corrompu les îles d'autres modes de jeu, ces îles échoueront toujours à charger au démarrage avec une erreur `Island distance mismatch`. Pour récupérer, choisissez l'une des options suivantes :
+
+    - Éditez `plugins/BentoBox/database/Island/*.json` et restaurez `range` à la `distance-between-islands` configurée du mode de jeu affecté (par ex. `400` pour AOneBlock / BSkyBlock, `320` pour Boxed), **ou**
+    - Supprimez les fichiers JSON d'île concernés si vous acceptez de les perdre.
+
+    **Compatibilité :** BentoBox API 3.9.0+, Minecraft 1.21.10+, Java 21.
+
 ## Traductions
 
 {{ translations("StrangerRealms") }}
