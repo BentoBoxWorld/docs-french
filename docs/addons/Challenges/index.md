@@ -291,6 +291,15 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
     [Release v1.6.0](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.6.0)
 
+??? note "Nouveautés dans v1.6.1"
+    **Publié le :** 2026-05-26
+
+    - 🐛 **Les conversations de confirmation ne provoquent plus de NPE à l'abandon.** La bibliothèque web et les invites de suppression/effacement de l'interface admin pouvaient inonder la console d'une `NullPointerException` quand une conversation de confirmation était abandonnée au lieu d'être répondue (par exemple en cliquant plusieurs fois sur une entrée de bibliothèque avant de taper `confirm`, ou en laissant l'invite expirer). Les abandons sont désormais traités silencieusement comme des non-opérations.
+
+    Remplacement direct — aucune modification de config ou de locale n'est requise.
+
+    [Release v1.6.1](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.6.1)
+
 ## Translations
 
 !!! info "Translations for challenges"
