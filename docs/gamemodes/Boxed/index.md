@@ -132,6 +132,22 @@ Les commandes peuvent être trouvées [ici](Commands).
 
 Les placeholders peuvent être trouvés [ici](Placeholders).
 
+## Journal des modifications
+
+??? note "Nouveautés dans v3.4.0"
+    **Publié le :** 2026-05-30
+
+    - **Prise en charge des Chambres d'épreuves (Trial Chambers).** Boxed capture et restaure désormais l'état des Trial Spawners — y compris les configurations normale *et* sinistre (ominous) — quand des structures sont tirées du monde-graine dans la boîte d'un joueur, et reconnaît `trial_chambers` comme structure suivie pour la croissance de boîte liée aux avancées.
+    - 🐛 **Plus de perte de progression entre modes de jeu.** Boxed n'efface plus les avancées et statistiques d'un joueur lorsqu'une île est réinitialisée dans un *autre* mode de jeu non-Boxed.
+    - 🐛 Les collages de structure en attente sont désormais annulés lorsqu'une île est supprimée, évitant de placer des structures dans une boîte qui n'existe plus.
+    - 🐛 Les trial spawners sinistres restaurent maintenant la bonne configuration au lieu de toujours appliquer la normale.
+    - Modernisation de la chaîne de build et de test : Paper 1.21.11, API BentoBox 3.13.0, JUnit 5 + Mockito + MockBukkit.
+
+    !!! note
+        Les Chambres d'épreuves sont capturées depuis le monde-graine lors de la génération d'une boîte ; les boîtes créées *avant* la 3.4.0 ne les obtiendront donc pas rétroactivement. Les nouvelles boîtes (et les régions nouvellement étendues) les incluront.
+
+    [Release v3.4.0](https://github.com/BentoBoxWorld/Boxed/releases/tag/3.4.0)
+
 ## Traductions
 
 {{ translations("Boxed") }}

@@ -14,6 +14,7 @@ Ce qui suit est commuté par monde :
 * Expérience
 * Santé
 * Mode de jeu (créatif, survie, etc.)
+* Argent (économie par monde, ajouté dans 1.18.0)
 
 ## Comment l'utiliser
 
@@ -51,6 +52,7 @@ options:
   experience: true
   ender-chest: true
   statistics: true
+  money: true          # Argent par monde (ajouté dans 1.18.0). Nécessite Vault.
   # Commutation d'inventaire par île (ajoutée dans 1.17.0)
   # L'option au niveau du monde doit aussi être true pour que l'option île prenne effet.
   islands:
@@ -63,13 +65,53 @@ options:
     experience: false
     ender-chest: true
     statistics: false
+    money: false       # Portefeuilles par île (ajouté dans 1.18.0). False = argent par monde uniquement.
 ```
 
 Définissez `islands.active: true` pour permettre aux joueurs qui possèdent plus d'une île d'avoir des inventaires séparés (et autres aspects) par île, pas seulement par monde de mode de jeu.
 
+### Économie
+
+Ajouté dans 1.18.0. Quand `options.money` est activé, InvSwitcher s'enregistre comme fournisseur d'économie Vault et garde un **solde distinct pour chaque monde commuté**. Les transactions (ventes en boutique, `/pay`, jobs, etc.) sont dirigées vers le solde du monde auquel elles appartiennent — même quand le joueur ciblé est hors ligne ou dans un autre monde. Les mondes qu'InvSwitcher ne gère pas sont transmis à votre plugin d'économie existant (par ex. EssentialsX) ; si aucune autre économie n'est présente, InvSwitcher gère tous les mondes lui-même.
+
+!!! warning "Nécessite Vault"
+    L'argent par monde nécessite le plugin [Vault](https://www.spigotmc.org/resources/vault.34315/). Un plugin d'économie séparé est optionnel — InvSwitcher peut être la seule économie. Si vous utilisez l'addon **Bank**, les portefeuilles d'île deviennent eux aussi par monde.
+
+Le bloc `economy:` n'est utilisé que lorsque `options.money` vaut `true` :
+
+```yml
+economy:
+  starting-balance: 0.0              # Solde donné à la première entrée dans un monde géré (sauf si importé)
+  currency-name-singular: Dollar
+  currency-name-plural: Dollars
+  fractional-digits: 2               # Chiffres après la virgule
+  import-existing-balances: true     # Importer une fois le solde existant de chaque joueur, à la première entrée
+  delegate-unmanaged-worlds: true    # Transmettre les mondes non gérés au plugin d'économie précédent
+  debug: false                       # Journaliser chaque transaction dans la console (verbeux)
+```
+
 ## Commandes
 
-Il n'y a pas de commandes.
+Ajouté dans 1.18.0. Chaque mode de jeu géré obtient ses propres commandes d'économie, limitées au monde de ce mode de jeu, donc `/bsb balance` affiche votre solde BSkyBlock et `/ai balance` votre solde AcidIsland, où que vous vous trouviez.
+
+!!! tip
+    `[player_command]` et `[admin_command]` sont les commandes qui diffèrent selon le mode de jeu que vous utilisez.
+
+=== "Commandes joueur"
+
+    | Commande | Description |
+    |---|---|
+    | `/[player_command] balance` | Afficher votre solde d'argent pour ce monde |
+    | `/[player_command] pay <joueur> <montant>` | Payer un autre joueur |
+
+=== "Commandes admin"
+
+    | Commande | Description |
+    |---|---|
+    | `/[admin_command] eco give <joueur> <montant>` | Donner de l'argent à un joueur |
+    | `/[admin_command] eco take <joueur> <montant>` | Retirer de l'argent à un joueur |
+    | `/[admin_command] eco set <joueur> <montant>` | Définir le solde d'un joueur |
+    | `/[admin_command] eco balance <joueur>` | Afficher le solde d'un joueur |
 
 ## Ce qu'il fait
 Cet addon donnera aux joueurs un inventaire, une santé, un niveau de nourriture, des avancées et une expérience séparés pour chaque mode de jeu installé et leurs mondes correspondants. Il permet aux joueurs de jouer à chaque mode de jeu indépendamment l'un de l'autre.
@@ -100,6 +142,25 @@ L'inventaire, la santé, le niveau de nourriture, les avancées et l'expérience
     - 🐛 **Correction de l'inventaire vidé lors d'un téléport d'un monde BentoBox vers un monde non-BentoBox.** Auparavant, quand un joueur quittait un monde de jeu BentoBox (par ex. BSkyBlock) pour un monde non-BentoBox (par ex. l'overworld par défaut ou un monde d'un plugin tiers), son inventaire « extérieur » pouvait être perdu parce que chaque monde non-BentoBox stockait ses données sous sa propre clé. Tous les mondes non-BentoBox partagent désormais une seule clé de stockage, donc l'inventaire du joueur est toujours restauré correctement. Inclut une migration automatique des données enregistrées sous les anciennes clés par monde.
 
     [Release v1.17.1](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.17.1)
+
+??? warning "Nouveautés dans v1.18.0 — nécessite BentoBox 3.17.0"
+    **Publié le :** 2026-05-31
+
+    - 🔺⚙️🔡 **Argent par monde.** InvSwitcher peut désormais donner à chaque monde de jeu sa propre économie séparée, en plus des inventaires, de la santé, de l'XP et des statistiques qu'il commute déjà. Avec `options.money` activé, il s'enregistre comme fournisseur d'économie Vault et dirige chaque transaction vers le solde du bon monde — même quand le joueur est hors ligne ou dans un autre monde.
+    - ⚙️ **Nouvelle config :** `options.money`, `options.islands.money`, et un bloc `economy:` (solde de départ, noms de devise, chiffres décimaux, bascule d'import, bascule de délégation, débogage). Les configs existantes continuent de fonctionner ; les nouvelles clés sont ajoutées avec des valeurs par défaut sûres.
+    - 🔡 **Nouvelles commandes et placeholders :** `balance` et `pay` par mode de jeu pour les joueurs, `eco give/take/set/balance` pour les admins, ainsi que les placeholders `<gamemode>_invswitcher_balance` et `<gamemode>_invswitcher_balance_formatted`, traduits dans toutes les langues fournies par BentoBox.
+    - 🐛 Les avancées ne gonflent plus l'expérience lors d'un changement de monde.
+    - 🐛 Les réinitialisations d'île de BentoBox ne vident plus l'inventaire du mauvais monde — InvSwitcher efface désormais les données *stockées* du bon monde à la place.
+
+    🔺 **Nécessite BentoBox 3.17.0 :** InvSwitcher écoute désormais les événements de réinitialisation de joueur de BentoBox (dont le nouvel événement de réinitialisation d'argent), introduits dans la 3.17.0. Il ne se chargera pas sur les versions antérieures de BentoBox.
+
+    🔺 **Changement de comportement de l'économie :** quand `options.money` est activé, InvSwitcher devient le fournisseur d'économie Vault du serveur. Les mondes qu'il ne gère pas sont transmis à votre économie existante (par ex. EssentialsX) ; les mondes gérés obtiennent leur propre solde par monde. Nécessite le plugin Vault.
+
+    [Release v1.18.0](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.18.0)
+
+## Placeholders
+
+{{ placeholders_source("InvSwitcher") }}
 
 ## Traductions
 
