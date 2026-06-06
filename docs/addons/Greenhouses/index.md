@@ -124,3 +124,12 @@ La permission peut être n'importe quoi que vous aimez, par exemple, une permiss
 ## Traductions
 
 {{ translations("Greenhouses") }}
+
+??? note "Nouveautés de la v1.9.5"
+    **Publié le :** 2026-06-03
+
+    Une version de correction de bugs axée sur la croissance des plantes et l'interface de recettes. Voir les notes complètes de la [Release v1.9.5](https://github.com/BentoBoxWorld/Greenhouses/releases/tag/1.9.5).
+
+    - 🔡 Correction d'une fuite de couleur dans l'interface : le code couleur rouge de l'entrée de recette du Nether n'était jamais réinitialisé, ce qui rendait rouge le reste du texte du panneau de recettes. Les plantes hautes/doubles (tournesols, lilas, rosiers, etc.) placent désormais correctement leur moitié supérieure.
+    - Le lichen lumineux pousse désormais sur les blocs terrestres (par exemple `GLOW_LICHEN: 10:STONE`) au lieu d'être traité comme uniquement sous-marin.
+    - La limite `maxmobs` est désormais appliquée à chaque génération, de sorte que les serres ne peuvent plus dépasser le maximum de mobs configuré.
