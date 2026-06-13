@@ -24,20 +24,37 @@ Il existe une commande d'utilisateur et une commande admin appelées « limits �
 Le config.yml a les sections suivantes :
 
 * blocklimits
+* blocklimits-nether
+* blocklimits-end
 * worlds
 * entitylimits
+* entitylimits-nether
+* entitylimits-end
+
+!!! info "Limites par dimension (1.28.2+)"
+    Depuis la version **1.28.2**, les comptages de blocs, les comptages d'entités, les limites et les offsets sont suivis **indépendamment pour l'Overworld, le Nether et l'End**. Une limite unique définie dans `blocklimits` ou `entitylimits` s'applique séparément à chaque dimension — par exemple `HOPPER: 10` autorise 10 entonnoirs dans l'Overworld, 10 dans le Nether et 10 dans l'End (30 au total sur l'île). Utilisez les sections optionnelles `-nether` / `-end` pour remplacer une seule dimension.
+
+    Au premier chargement après la mise à jour, vos données existantes à dimension unique sont automatiquement migrées vers l'emplacement **Overworld**. Le format sur disque change, alors faites une sauvegarde avant la mise à jour ; notez que le retour à une version antérieure n'est pas pris en charge.
 
 ### blocklimits
 
-Cette section répertorie le nombre maximum de blocs autorisés pour chaque matériau de bloc. N'utilisez pas de matériaux non-blocs car ils ne fonctionneront pas. Les limites s'appliquent à tous les mondes du jeu.
+Cette section répertorie le nombre maximum de blocs autorisés pour chaque matériau de bloc. N'utilisez pas de matériaux non-blocs car ils ne fonctionneront pas. Les limites s'appliquent indépendamment dans chaque dimension (Overworld, Nether, End).
+
+### blocklimits-nether / blocklimits-end
+
+Sections optionnelles qui remplacent les valeurs par défaut de `blocklimits` respectivement pour le Nether ou l'End. Elles sont commentées dans la configuration par défaut ; décommentez-les et ajoutez des entrées pour définir des limites de blocs spécifiques à une dimension.
 
 ### worlds
 
-Cette section répertorie les limites de blocs pour des mondes spécifiques. Vous devez nommer le monde spécifiquement, par exemple AcidIsland_world et ensuite répertorier les matériaux et la limite.
+Cette section répertorie les limites de blocs pour des mondes spécifiques. Vous devez nommer le monde spécifiquement, par exemple AcidIsland_world et ensuite répertorier les matériaux et la limite. Les limites nommées par monde remplacent la limite par défaut de la dimension ci-dessus pour ce monde spécifique.
 
 ### entitylimits
 
-Cette section répertorie les limites d'entité par défaut dans l'espace d'île d'un joueur (zone protégée et limite de l'île). Une limite de 5 permettra jusqu'à 5 entités dans le monde surground. Affecte tous les types de génération de créatures. Inclut également les entités comme MINECARTS. Notez que les limites d'entité ne sont plus supportées dans le Nether et l'End car les limites nécessitent le chargement des chunks pour compter les entités et cela cause trop de lag.
+Cette section répertorie les limites d'entité par défaut dans l'espace d'île d'un joueur (zone protégée et limite de l'île). Une limite de 5 permettra jusqu'à 5 entités. Affecte tous les types de génération de créatures. Inclut également les entités comme MINECARTS. Depuis la version **1.28.2**, les limites d'entité s'appliquent indépendamment par dimension, de sorte que le Nether et l'End sont désormais comptés et limités correctement (cela corrige le bug de longue date où les comptages du Nether/End étaient remis à zéro au déchargement des chunks).
+
+### entitylimits-nether / entitylimits-end
+
+Sections optionnelles qui remplacent les valeurs par défaut de `entitylimits` respectivement pour le Nether ou l'End. Elles sont commentées dans la configuration par défaut ; décommentez-les et ajoutez des entrées pour définir des limites d'entité spécifiques à une dimension.
 
 Remarque : Seuls les 49 premiers blocs et entités limités sont affichés dans l'interface graphique de limites.
 
@@ -62,11 +79,15 @@ entitygrouplimits:
 
 ## Permissions
 
-Les propriétaires d'îles peuvent avoir des permissions exclusives qui remplacent les paramètres par défaut ou spécifiques au monde. Le format est :
+Les propriétaires d'îles peuvent avoir des permissions exclusives qui remplacent les paramètres par défaut ou spécifiques au monde. Deux formats sont pris en charge :
 
-Format est `GAME-MODE-NAME.island.limit.MATERIAL.LIMIT`
+1. `GAME-MODE-NAME.island.limit.MATERIAL.LIMIT` — appliqué à toutes les dimensions.
 
-exemple : `bskyblock.island.limit.hopper.10`
+    exemple : `bskyblock.island.limit.hopper.10`
+
+2. `GAME-MODE-NAME.island.limit.ENV.MATERIAL.LIMIT` — appliqué à une seule dimension, où `ENV` est l'un de `overworld`, `nether` ou `end` (1.28.2+).
+
+    exemple : `bskyblock.island.limit.nether.hopper.5`
 
 Les permissions s'activent quand le joueur se connecte.
 
@@ -113,6 +134,20 @@ Les permissions complètes sont listées [ici](Permissions).
     - **Les noms de blocs dans l'interface des limites sont à nouveau lisibles.** Les items s'affichaient comme `Minecraft:hopper` à cause d'un formatage de clé incorrect.
 
     [Release v1.28.1](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.1)
+
+??? warning "Nouveautés dans v1.28.2 — Limites par dimension (migration de données)"
+    **Publié :** 13 juin 2026
+
+    - 🔺⚙️ **Limites par dimension.** Les comptages de blocs et d'entités, les limites et les offsets sont désormais suivis indépendamment pour l'Overworld, le Nether et l'End, corrigeant le bug de longue date où les comptages du Nether/End étaient remis à zéro au déchargement des chunks ([#43](https://github.com/BentoBoxWorld/Limits/issues/43)). Une valeur unique de `blocklimits`/`entitylimits` s'applique désormais séparément à chaque dimension, avec les nouvelles sections optionnelles de remplacement `blocklimits-nether`, `blocklimits-end`, `entitylimits-nether` et `entitylimits-end`.
+    - 🔺 **Migration de données.** Les données existantes à dimension unique sont migrées vers l'emplacement **Overworld** au premier chargement. Le format sur disque change, alors faites une sauvegarde avant la mise à jour ; le retour à une version antérieure n'est pas pris en charge.
+    - 🔺 **Permissions par dimension.** Un nouveau format à 6 segments, `<gamemode>.island.limit.<overworld|nether|end>.<KEY>.<NUMBER>`, limite une limite à une seule dimension. Le format à 5 segments existant s'applique toujours à toutes les dimensions.
+    - 🐛 Corrections de précision du comptage : lits/portes comptés en double ([#86](https://github.com/BentoBoxWorld/Limits/issues/86)), retrait de blocs des golems/bonshommes de neige ancré sur la citrouille plutôt que sur le bloc de génération ([#127](https://github.com/BentoBoxWorld/Limits/issues/127)), trois bugs de comptage d'entités, œufs d'apparition qui ne sont plus consommés à la limite ([#134](https://github.com/BentoBoxWorld/Limits/issues/134)), et fuites de comptage lors du recomptage.
+    - 🩹 Résout un crash `NoSuchFieldError` sur Minecraft 1.21.8 et antérieur causé par la référence à des blocs de cuivre de 1.21.9 ; ceux-ci sont maintenant résolus par nom.
+    - 🔡 Tous les fichiers de localisation fournis ont été convertis des anciens codes couleur `&` vers MiniMessage, et les clés manquantes ont été synchronisées dans les 21 langues. Vérifiez vos chaînes de localisation personnalisées par rapport aux nouveaux fichiers.
+
+    Compatibilité : BentoBox API 2.7.1 · Minecraft 1.21.5 – 26.1.2 · Java 21.
+
+    [Release v1.28.2](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.2)
 
 ## Traductions
 
