@@ -14,7 +14,7 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 1. Placez le jar de l'addon Upgrades dans le dossier addons du plugin BentoBox.
 2. Redémarrez le serveur.
 3. Au premier démarrage, 8 exemples d'améliorations sont créés automatiquement pour vous aider à démarrer.
-4. Utilisez `/[admin_command] upgrades` pour personnaliser ou créer des améliorations en jeu.
+4. Utilisez `/[admin_command] upgrade` pour personnaliser ou créer des améliorations en jeu.
 
 ## Fonctionnement
 
@@ -40,7 +40,7 @@ Chaque amélioration est composée d'un ou plusieurs **paliers**. Un palier couv
     - `/[player_command] upgrade`: ouvre le panneau d'achat des améliorations.
 
 === "Commandes admin"
-    - `/[admin_command] upgrades`: ouvre l'interface admin pour créer, modifier et supprimer des améliorations et leurs niveaux.
+    - `/[admin_command] upgrade`: ouvre l'interface admin pour créer, modifier et supprimer des améliorations et leurs niveaux.
 
 ## Types de prix
 
@@ -66,6 +66,32 @@ Chaque niveau d'amélioration peut accorder n'importe quelle combinaison des ré
 | **Commandes** | Exécute des commandes console ou joueur lors de l'achat | À l'achat |
 | **Boost de spawner** | Ajoute des apparitions supplémentaires à chaque événement de spawner sur l'île | Passif — toujours actif |
 | **Boost de croissance de cultures** | Ajoute des ticks de croissance supplémentaires à chaque événement de croissance naturelle sur l'île | Passif — toujours actif |
+
+### Limites de blocs, d'entités et de groupes d'entités
+
+Les trois récompenses Limites utilisent toutes le **même éditeur de récompense** et vous permettent d'augmenter une limite par île lorsqu'une amélioration est achetée. Elles nécessitent l'addon [Limits](../Limits/index.md) — sans lui, la récompense ne fait rien.
+
+!!! info "Upgrades *ajoute à* la limite de base — il ne la définit pas"
+    La **limite de base (de départ)** pour un bloc, une entité ou un groupe est configurée dans l'**addon Limits**, pas ici. Une récompense Limites ne fait qu'ajouter un **décalage** par-dessus cette base. Chaque niveau acheté ajoute à nouveau le montant de la récompense, de sorte que la limite effective du joueur est `base de l'addon Limits + (somme des décalages d'amélioration)`.
+
+    Exemple : si l'addon Limits plafonne les entonnoirs à `8` et qu'un joueur achète 3 niveaux d'une amélioration qui ajoute `1` entonnoir par niveau, son île peut placer `8 + 3 = 11` entonnoirs.
+
+#### Configurer une récompense de limite
+
+1. Exécutez `/[admin_command] upgrade` pour ouvrir l'interface admin et créer ou sélectionner une amélioration.
+2. Ouvrez l'amélioration, ajoutez un **palier** (une amélioration nécessite au moins un palier), puis ouvrez ce palier et cliquez sur **Récompenses**.
+3. Créez une nouvelle récompense **Limits** (l'icône de barrière). L'éditeur de récompense comporte trois paramètres :
+
+| Paramètre | Description |
+|---|---|
+| **Type** | Cliquez pour faire défiler entre `BLOCK`, `ENTITY` et `ENTITY_GROUP`. Choisissez `BLOCK` pour limiter un bloc tel qu'un entonnoir. |
+| **Cible** | L'élément limité. Tapez-le dans le chat. Pour `BLOCK`, utilisez un nom de [Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) Bukkit (par ex. `HOPPER`, `CHEST`) ; pour `ENTITY`, un nom d'[EntityType](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html) (par ex. `CHICKEN`) ; pour `ENTITY_GROUP`, un nom de groupe qui **correspond à un groupe défini dans l'addon Limits**. |
+| **Montant** | De combien la limite est augmentée **par niveau**. Accepte un nombre simple ou une formule utilisant les [Variables de formule](#variables-de-formule) (par ex. `1`, ou `[level] * 2`). |
+
+Un panneau vert dans l'éditeur de récompense signifie que la configuration est valide ; un panneau rouge signifie qu'un champ requis (généralement la Cible) est toujours manquant.
+
+!!! tip "Différents blocs nécessitent différentes améliorations ou paliers"
+    Chaque récompense Limites cible un seul bloc/entité/groupe. Pour augmenter la limite de plusieurs types de blocs, ajoutez une récompense Limites distincte pour chacun — soit en tant que récompenses multiples sur le même palier, soit en tant qu'améliorations distinctes — et donnez à chacune sa propre Cible.
 
 ### Commandes
 
