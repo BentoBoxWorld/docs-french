@@ -35,43 +35,43 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 [Téléchargez le DataPack officiel Boxed](https://github.com/BentoBoxWorld/BoxedDataPack) pour les avancements personnalisés.
 Ou vous pouvez le faire vous-même. Consultez la [vidéo de tutoriel pour plus d'informations](https://youtu.be/zNzQvIbweQs)
 
-## Utilisation de Regionerator
+## Réduire la taille du monde
 
-*Remarque : Ce plugin est conçu pour supprimer les régions inutilisées de votre monde ! Assurez-vous de faire des sauvegardes si vous l'utilisez ! À utiliser à vos risques et périls !*
+!!! warning "Regionerator n'est plus nécessaire"
+    Les anciennes versions de ce guide recommandaient le plugin tiers [Regionerator](https://github.com/Jikoo/Regionerator) pour élaguer les chunks inutilisés. **Depuis BentoBox 3.15.0, cette fonctionnalité est intégrée** — BentoBox supprime désormais directement les fichiers de région (`.mca`), donc Regionerator n'est plus requis et n'est plus recommandé pour Boxed. Si vous l'utilisez encore, vous pouvez le retirer : il est redondant et, à moins que ses exemptions de mondes de graines ne soient correctement configurées, il peut supprimer les mondes de graines de Boxed et rendre le démarrage du serveur très lent.
 
-[Regionerator](https://github.com/Jikoo/Regionerator) est un plugin qui supprime progressivement les chunks inutilisés pour maintenir les tailles de mondes réduites. Il n'a pas été écrit par l'équipe BentoBox, mais il soutient BentoBox et respecte les limites de boîte. Il peut être utilisé pour supprimer les chunks de boîte afin qu'ils puissent être régénérés. Puisque Boxed utilise des mondes de graines pour copier à partir de, ceux-ci peuvent sembler inutilisés par Regionerator et supprimés, ce qui rend le démarrage très lent. Pour éviter cela, définissez les mondes de graines comme exempts de ses suppressions en les ayant dans la section monde du fichier de configuration de Regionerator :
+Les mondes Boxed grandissent à mesure que les joueurs agrandissent et réinitialisent leurs boîtes, et cet espace disque est maintenant récupéré par BentoBox lui-même de deux façons.
 
+**Entretien automatique (activé par défaut).** Lorsqu'une boîte est réinitialisée, elle est *supprimée en douceur* (marquée pour suppression plutôt qu'effacée bloc par bloc), et un balayage planifié récupère ses fichiers de région en arrière-plan. Le balayage « deleted » s'exécute toutes les 24 heures par défaut. La section concernée du `config.yml` de BentoBox est :
+
+```yaml
+island:
+  deletion:
+    housekeeping:
+      # Récupère les fichiers de région des boîtes déjà marquées pour suppression (ex. après une réinitialisation).
+      # Activé par défaut.
+      deleted-sweep:
+        enabled: true
+        interval-hours: 24
+      # Récupère les fichiers de région qui n'ont tout simplement pas été touchés depuis longtemps,
+      # que la boîte ait été réinitialisée ou non. Désactivé par défaut — activez ceci
+      # pour le contrôle de taille le plus agressif.
+      age-sweep:
+        enabled: false
+        interval-days: 30
+        min-age-days: 60
 ```
-# Mondes dans lesquels le plugin peut supprimer des régions
-worlds:
-  # "default" s'applique à tous les mondes non spécifiés.
-  boxed_world/seed_base:
-    days-till-flag-expires: -1
-  boxed_world/seed:
-    days-till-flag-expires: -1
-  default:
-    # Les drapeaux plus anciens que x jours peuvent être ignorés et la région supprimée.
-    # Définissez à -1 pour désactiver Regionerator dans un monde.
-    # Pour désactiver le signalisation, définissez à 0.
-    # days-till-flag-expires doit être supérieur à 0 pour être utilisé avec delete-new-unvisited-chunks
-    days-till-flag-expires: 0
-```
 
-Pour tirer le meilleur parti de Regionerator, changez le fichier config.yml de BentoBox pour *ne pas* supprimer les chunks lorsqu'une île est supprimée. Cela laissera la suppression à sa charge et elle devrait nettoyer les chunks si la zone inutilisée est assez grande. La configuration consiste à définir `keep-previous-island-on-reset: true` :
+**Purge manuelle.** Vous pouvez aussi récupérer de l'espace à la demande depuis la console du serveur ou en jeu (voir [Commandes](Commands)) :
 
-```
-deletion:
-    # Bascule si les îles, lorsque les joueurs les réinitialisent, doivent être conservées dans le monde ou supprimées.
-    # * S'il est défini à 'true', chaque fois qu'un joueur réinitialise son île, son île précédente deviendra non possédée et ne sera pas supprimée du monde.
-    #   Cependant, vous pouvez toujours supprimer ces îles non possédées en purgeant.
-    #   Sur les serveurs plus grands, cela peut entraîner une taille de monde croissante.
-    #   Pourtant, cela permet aux administrateurs de récupérer l'ancienne île d'un joueur en cas d'utilisation incorrecte de la commande de réinitialisation.
-    #   Les administrateurs peuvent en effet rajouter le joueur à son ancienne île en l'enregistrant.
-    # * S'il est défini à 'false', chaque fois qu'un joueur réinitialise son île, son île précédente sera supprimée du monde.
-    #   C'est le comportement par défaut.
-    # Ajouté depuis 1.13.0.
-    keep-previous-island-on-reset: true
-```
+* `/boxadmin purge deleted` — récupère immédiatement les fichiers de région de chaque boîte déjà marquée pour suppression.
+* `/boxadmin purge <days>` — récupère les fichiers de région des boîtes dont les propriétaires ne se sont pas connectés depuis `<days>` jours et dont les fichiers de région sont au moins aussi anciens.
+* `/boxadmin purge unowned` — marque chaque boîte sans propriétaire comme supprimable afin que le prochain balayage la retire.
+
+!!! note "Redémarrez après une grosse purge"
+    Les fichiers de région sont supprimés du disque immédiatement, mais Paper conserve les chunks récemment chargés dans un cache en mémoire. **Redémarrez le serveur après une grosse purge** afin que ce cache soit vidé et que l'espace libéré soit pleinement restitué. Les boîtes protégées de la purge, les îles de spawn et (si l'addon Level est installé) les boîtes au-dessus du niveau de purge configuré sont toujours ignorées. Comme toujours, **sauvegardez votre dossier de monde avant de purger.**
+
+L'ancien paramètre `keep-previous-island-on-reset` n'existe plus — les boîtes sont toujours supprimées en douceur lors d'une réinitialisation puis nettoyées par l'entretien automatique, il n'y a donc rien à configurer pour que Regionerator « prenne le relais ».
 
 
 ## Configuration avancée

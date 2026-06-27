@@ -273,14 +273,38 @@ Versions minimales requises :
 * **SQLite** 3.28 ou ultérieur
 * **PostgreSQL** la dernière est toujours recommandée
 
-### Le dossier de mon monde BentoBox est énorme — comment le réduire ?
+### Que puis-je faire quand mon monde devient trop grand ?
 
-Les deux gros dévoreurs d'espace sont (1) les chunks générés par des joueurs qui ne sont jamais revenus, et (2) les anciennes régions d'île laissées après les réinitialisations. Pour récupérer de l'espace :
+Si le dossier de votre monde BentoBox est devenu énorme et que vous voulez le réduire, lancez une **purge**. Depuis BentoBox 3.15.0, c'est intégré — BentoBox supprime directement les fichiers de région (`.mca`) sous-jacents, vous n'avez donc plus besoin d'un outil tiers comme Regionerator.
 
-- **BentoBox 3.15.0+:** Utilisez `/[admin_command] purge <days>` — cette commande identifie désormais les îles obsolètes *et* supprime leurs fichiers de région en une seule étape. Pour les îles en suppression douce (marquées après une réinitialisation ou `/admin delete`), exécutez `/[admin_command] purge deleted` pour récupérer leurs fichiers de région. Redémarrez le serveur après le purge pour vider le cache de chunks de Paper.
-- **BentoBox plus ancien :** Utilisez `/[admin_command] purge <days>` pour marquer les îles, puis `/[admin_command] purge regions` pour supprimer les fichiers de région.
+Les deux gros dévoreurs d'espace sont (1) les anciennes régions d'île laissées après les réinitialisations, et (2) les chunks générés par des joueurs qui ne sont jamais revenus. Il y a deux façons de récupérer cet espace :
+
+**Entretien automatique (activé par défaut).** Lorsqu'une île est réinitialisée, elle est *supprimée en douceur* et un balayage planifié récupère ses fichiers de région en arrière-plan. Cela se contrôle dans le `config.yml` de BentoBox sous `island.deletion.housekeeping` :
+
+```yaml
+island:
+  deletion:
+    housekeeping:
+      deleted-sweep:        # récupère les régions des îles déjà marquées pour suppression (ex. réinitialisations)
+        enabled: true       # activé par défaut
+        interval-hours: 24
+      age-sweep:            # récupère les régions non touchées depuis longtemps, réinitialisées ou non
+        enabled: false      # désactivé par défaut — activez-le pour le contrôle de taille le plus agressif
+        interval-days: 30
+        min-age-days: 60
+```
+
+**Purge manuelle** — à lancer à la demande depuis la console ou en jeu :
+
+- `/[admin_command] purge deleted` — récupère immédiatement les fichiers de région de chaque île déjà marquée pour suppression (réinitialisations, `/[admin_command] delete`).
+- `/[admin_command] purge <days>` — récupère les régions des îles dont les propriétaires ne se sont pas connectés depuis `<days>` jours et dont les fichiers de région sont au moins aussi anciens.
+- `/[admin_command] purge unowned` — marque chaque île sans propriétaire comme supprimable afin que le prochain balayage la retire.
+
+Remarques :
+
+- **Redémarrez le serveur après une grosse purge.** Les fichiers sont retirés du disque immédiatement, mais Paper met en cache en mémoire les chunks récemment chargés ; un redémarrage vide ce cache et libère pleinement l'espace.
+- Les îles protégées de la purge, les îles de spawn et (avec l'addon Level) les îles au-dessus du niveau de purge configuré sont toujours ignorées.
 - **Sauvegardez toujours le dossier du monde au préalable.**
-- Pour les mondes vraiment anciens, un outil tiers comme Regionerator peut élaguer les chunks inutilisés.
 
 ### MariaDB vs MySQL — est-ce important ?
 
