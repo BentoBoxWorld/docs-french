@@ -57,6 +57,8 @@ nav:
         - "Comment installer": BentoBox/Install-Bentobox.md
         - "Définir un monde BentoBox comme monde par défaut": BentoBox/Set-a-BentoBox-world-as-the-server-default-world.md
         - "Transition de base de données": BentoBox/Database-transition.md
+        - "Interfaces graphiques personnalisées": Tutorials/generic/Customizable-GUI.md
+        - "Agrandir le menu de création d'île": Tutorials/generic/Bigger-Create-Island-Menu.md
     - "Tutoriels – API":
         - "Créer une Extension": Tutorials/api/Create-an-addon.md
         - "API de configuration": BentoBox/Config-API.md
