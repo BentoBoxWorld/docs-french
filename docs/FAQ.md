@@ -322,6 +322,10 @@ Vous parlez de notre **format de schematic interne** que nous appelons **_Bluepr
 La [page Blueprints](BentoBox/Blueprints.md) fournit toutes les informations pertinentes pour vous lancer avec les Blueprints, ainsi que quelques astuces et conseils que vous pouvez utiliser pour les personnaliser davantage.
 Vous pouvez également jeter un œil à [cette vidéo](https://youtu.be/4gvaG89uxAs) qui, bien que dépassée, peut vous aider à créer votre premier Blueprint en quelques minutes.
 
+### Puis-je agrandir le menu de création d'île (5 ou 6 lignes) ?
+
+Oui. Le menu de création d'île (et le menu identique affiché quand un joueur réinitialise son île) est une [interface utilisateur personnalisable](Tutorials/generic/Bigger-Create-Island-Menu.md) pilotée par le modèle `island_creation_panel.yml`. Si vous voulez juste que le menu paraisse plus grand, ajoutez `force-shown: 6` pour un panneau complet de 6 lignes (54 emplacements). Si vous voulez *plus de lots d'îles visibles à la fois*, vous devez également ajouter des entrées `blueprint_bundle_button` supplémentaires sur les nouvelles lignes — `force-shown` seul ouvre uniquement des lignes vides. Six lignes (54 emplacements) est le maximum absolu pour une interface utilisateur de coffre Minecraft. Voir [Agrandir le menu de création d'île](Tutorials/generic/Bigger-Create-Island-Menu.md) pour un exemple complet de 6 lignes et où placer le fichier.
+
 ### Comment changer une chaîne de langue / un message ?
 
 Les fichiers de locale se trouvent sous `plugins/BentoBox/locales/` (cœur BentoBox) et `plugins/BentoBox/addons/<AddonName>/locales/` (chaque complément). Modifiez le fichier `<lang>.yml` concerné. Si vous ne voulez qu'une seule langue, définissez `default-language` dans le `config.yml` de BentoBox et retirez aux joueurs la permission de changer.
