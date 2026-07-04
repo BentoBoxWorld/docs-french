@@ -98,6 +98,21 @@ Les fichiers modèles sont principalement pour les utilisateurs qui n'aiment pas
       # bundle_id
       bundle_unique_id:
         # Nom d'affichage pour les utilisateurs
+        name: "Something fancy"
+        # Description en message de lore. Supporte les codes de couleur.
+        # Peut être défini vide en remplaçant tout par [].
+        # Valeur par défaut: []
+        description: -|
+          First Line Of lore Message
+          &2Second Line Of lore Message
+        # Icône utilisée dans les interfaces graphiques. Le nombre à la fin permet de spécifier la taille de la pile pour l'article.
+        # Valeur par défaut: Paper.
+        icon: "PAPER:1"
+        # Liste des générateurs auxquels le bundle aura accès.
+        generators:
+          - generator_id_1
+          - generator_id_2
+    ```
 
 ### Épuisement du générateur (limitation du débit)
 
