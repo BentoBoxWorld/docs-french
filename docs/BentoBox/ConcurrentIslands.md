@@ -36,6 +36,21 @@ Depuis BentoBox 3.16.0, ce plafond est appliqué à la fois sur `/island team se
 
 *NOUVEAU :* Quand un joueur transfère la propriété, il quitte désormais automatiquement l'équipe.
 
+#### Transfert depuis la console (admin)
+
+Exécutée en jeu, `/[gamemode] admin team setowner <player>` transfère l'île sur laquelle l'admin se **tient** et demande une confirmation.
+
+Depuis BentoBox 3.18.0, vous pouvez aussi nommer le propriétaire actuel de l'île :
+
+`/[gamemode] admin team setowner <newOwner> <islandOwner>`
+
+Nommer l'île de cette manière signifie que l'admin n'a plus besoin de se tenir dessus, de sorte que la commande fonctionne depuis la **console du serveur** — et donc depuis une automatisation telle que Skript. Lorsqu'elle est exécutée depuis la console, l'invite de confirmation est ignorée, car la console ne peut pas y répondre.
+
+- `<newOwner>` — le joueur qui devient le propriétaire. Il n'a **pas** besoin d'être en ligne ni de se tenir où que ce soit ; n'importe quel joueur que BentoBox connaît déjà (ou un UUID brut) fonctionne.
+- `<islandOwner>` — le propriétaire actuel, utilisé uniquement pour identifier **quelle** île transférer. La commande transfère l'île que ce joueur possède réellement ; si son île active est une île d'équipe appartenant à quelqu'un d'autre, le transfert est refusé. S'il possède plus d'une île, son île **principale/active** est utilisée.
+
+Le plafond d'îles concurrentes s'applique toujours : si `<newOwner>` a déjà atteint son nombre maximum d'îles, le transfert est refusé, et vous devez d'abord augmenter sa permission `[gamemode].island.number.<n>` (ou le paramètre `concurrent-islands` du monde). Comme pour la forme en jeu, le propriétaire précédent est rétrogradé au rang de Membre de l'île plutôt que retiré.
+
 ### Équipes
 
 - Les équipes sont basées sur l'île et les équipes ne s'étendent pas sur les îles.
