@@ -93,6 +93,60 @@ Les administrateurs peuvent plus tard afficher le Drapeau en réitérant la mêm
 
 ## Contourner la Protection
 
+Les drapeaux de protection ne s'appliquent que dans les mondes de jeu BentoBox, et uniquement contre les joueurs qui n'ont aucun moyen légitime de les contourner. Il existe plusieurs façons de contourner la protection — certaines sont intentionnelles (rangs de l'île), certaines sont pour le personnel (statut d'opérateur et permissions de modérateur), et certaines sont structurelles (le monde ou le type de drapeau).
+
+!!! tip
+    `[gamemode]` dans les permissions ci-dessous est le nom du mode de jeu en minuscules. Pour BSkyBlock, les nœuds commencent par `bskyblock.mod…`, pour AcidIsland `acidisland.mod…`, et ainsi de suite.
+
+### Rangs de l'île — la méthode intentionnelle
+
+La façon normale et conçue de « contourner » un drapeau de protection est d'avoir un rang suffisamment élevé sur l'île. Chaque drapeau de protection a un rang requis, et tout membre dont le rang est supérieur ou égal à celui-ci est autorisé à effectuer l'action. C'est pourquoi un propriétaire peut construire alors qu'un visiteur ne le peut pas — ce n'est pas vraiment un contournement, juste le drapeau fonctionnant comme configuré. Voir la liste des [Rangs](#rangs) ci-dessus.
+
+### Opérateurs
+
+Un opérateur serveur (`/op`) est le contournement le plus large. Les ops passent **chaque drapeau de protection** dans chaque monde BentoBox, peuvent accéder aux îles verrouillées et bannies, et sont immunisés contre l'interdiction ou l'expulsion.
+
+Deux avertissements importants :
+
+- **Les ops ne contournent pas les drapeaux de paramètres d'île.** Les drapeaux de type `SETTING` (bascules d'île telles que *Autoriser PVP*, *Spawn de créatures*, …) sont évalués avant la vérification de l'opérateur, donc un op est soumis à ceux-ci exactement comme n'importe quel autre joueur. Le statut d'opérateur remplace uniquement les drapeaux de *protection*.
+- **Le commutateur administrateur ne peut pas entièrement « désopérer » un joueur sur sa propre île.** Même si le commutateur est activé (voir ci-dessous), un op est toujours autorisé sur une île car la vérification de rang traite le statut d'opérateur comme toujours autorisé. Pour tester la protection en tant que véritable non-op, supprimez le statut d'opérateur.
+
+### Permissions de contournement du modérateur
+
+Pour le personnel qui ne devrait *pas* être des opérateurs complets, la protection peut être contournée avec des permissions à la place. Celles-ci sont contrôlées par le commutateur administrateur (voir ci-dessous), donc un modérateur peut désactiver son propre contournement pour expérimenter le monde comme le ferait un joueur normal.
+
+- `[gamemode].mod.bypassprotect` — contourner **tous** les drapeaux de protection, partout dans le monde.
+- `[gamemode].mod.bypass.<FLAG_ID>.everywhere` — contourner **un** drapeau nommé (par exemple `BREAK_BLOCKS`) partout dans le monde.
+- `[gamemode].mod.bypass.<FLAG_ID>.island` — contourner **un** drapeau nommé, mais uniquement où le joueur serait autrement bloqué sur une île.
+
+### Le « commutateur » administrateur — tester en tant que joueur normal
+
+La commande `/[admin_command] switch` (permission `[gamemode].mod.switch`) bascule les permissions de contournement d'un modérateur on et off. Par défaut, les permissions de contournement sont **actives** (le modérateur contourne la protection) ; exécuter la commande une fois bascule le contournement **off** afin qu'il soit soumis à la protection comme un joueur ordinaire, et l'exécuter à nouveau le réactive. Cela affecte les permissions `mod.bypassprotect` et `mod.bypass.*` ci-dessus — cela ne désactive **pas** le statut d'opérateur brut.
+
+### Verrous, interdictions et expulsions
+
+Les verrous d'île, les interdictions et les expulsions ont leurs propres permissions de contournement, séparées du système de drapeaux :
+
+- `[gamemode].mod.bypasslock` — accéder à une île verrouillée.
+- `[gamemode].mod.bypassban` — accéder à une île dont vous êtes interdit.
+- `[gamemode].mod.bypassexpel` et `[gamemode].admin.noexpel` — ne peuvent pas être expulsés.
+- `[gamemode].admin.noban` — ne peuvent pas être bannis.
+
+Toute entité portant les métadonnées Bukkit `NPC` (par exemple Citizens NPCs) est également autorisée à passer par le verrouillage, l'interdiction, les vérifications PVP et visiteur invincible, donc les PNJ de plugin ne sont pas piégés ou endommagés par la protection d'île.
+
+### Refroidissements et délais
+
+Les refroidissements de commande et les délais de préchauffage de téléportation peuvent être ignorés avec :
+
+- `[gamemode].mod.bypasscooldowns` — ignorer les refroidissements de commande.
+- `[gamemode].mod.bypassdelays` — ignorer le délai de préchauffage du mouvement sur les commandes de téléportation retardée.
+
+### Ce qui n'est jamais protégé
+
+- **Les mondes non-BentoBox.** La protection n'existe que dans les mondes de mode de jeu (et leurs Nether/End standard liés). Les mondes par défaut du serveur et les mondes des autres plugins ne sont jamais vérifiés.
+- **Le « terrain sauvage ».** Lorsqu'un joueur se trouve dans un monde de mode de jeu mais ne se tient sur aucune île, les paramètres de drapeau par défaut du monde s'appliquent plutôt que ceux d'une île — ceux-ci sont configurés dans le **Panneau des Paramètres d'Administration** ci-dessous (ou le `config.yml` du mode de jeu).
+- **Les îles supprimées sont l'exception :** sur une île en attente de suppression, rien n'est autorisé par défaut — à part les opérateurs et les détenteurs d'une permission `mod.bypassprotect` / `mod.bypass.<FLAG_ID>.everywhere`, dont le contournement est vérifié en premier.
+
 ## Panneau des Paramètres d'Administration
 
 Le **Panneau des Paramètres d'Administration** est accessible via `/[admin_command] settings` (sans argument). Il contient trois onglets :
