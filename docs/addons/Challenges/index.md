@@ -41,6 +41,14 @@ Le fichier template d'exemple : [template.yml](https://github.com/BentoBoxWorld/
     - Other Challenge (`OTHER_TYPE`) - défi qui nécessite l'XP du joueur, l'argent ou le niveau de l'île pour être complété.
     - Statistic Challenge (`STATISTIC_TYPE`) - défi qui nécessite une certaine valeur de la statistique du joueur pour être complété.
 
+??? question "Que sont les défis d'équipe ?"
+    Depuis la version **1.7.0**, n'importe quel défi peut en plus être marqué comme étant un **défi d'équipe** — un défi qui n'est disponible que pour les îles ayant une équipe. Les défis d'équipe peuvent exiger un pourcentage configurable de l'équipe en ligne avant de pouvoir être complétés, et supportent deux modes collaboratifs :
+
+    - **Agrégation (« Pooled Tribute »)** — les éléments ou statistiques requis sont additionnés entre les membres en ligne. Quand des éléments sont consommés, le coût est divisé équitablement entre les contributeurs : tout le monde paie équitablement, et quiconque est à court donne ce qu'il a tandis que le reste couvre la différence.
+    - **Par membre (« Roll Call Feast »)** — chaque membre présent doit contribuer sa propre part, donc personne ne peut se faire écraser ; le montant configuré est le total d'équipe, divisé entre les membres en ligne.
+
+    Les récompenses vont à chaque membre en ligne, la complétion et le cooldown sont partagés par toute l'équipe, et les défis de statistique d'équipe ne comptent que la progression gagnée *en étant dans l'équipe*. Les défis d'équipe peuvent être affichés grisés aux joueurs solitaires comme incitation au recrutement ou cachés entièrement. Cinq défis de référence — **All Hands on Deck**, **Pooled Tribute**, **Synchronized Build**, **Combined Effort** et **Roll Call Feast** — sont livrés dans le `default.json` fourni, et l'éditeur de défis d'admin expose les bascules pour toutes les nouvelles options.
+
 ??? question "Puis-je spécifier un enchantement sur les éléments requis/récompensés ?"
     Malheureusement, Spigot n'a pas de mécanique d'analyse d'éléments générale. Les auteurs de plugins doivent créer la leur. Le module challenges utilise le [Item Parser](/en/latest/BentoBox/ItemParser/) de BentoBox. Si la fonction n'est pas supportée par celui-ci, alors vous ne pouvez pas. Cependant, vous pouvez toujours utiliser l'interface graphique admin en jeu pour définir les éléments que vous voulez. Il n'y a pas de limitation.
 
@@ -275,6 +283,17 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     ```
 
 ## Journal des modifications
+
+??? note "Nouveautés dans v1.7.0"
+    **Publié :** 1er juillet 2026
+
+    - 🔡 **Défis d'équipe** — une toute nouvelle classe de défi construite pour les équipes d'îles. Les défis d'équipe n'apparaissent que pour les joueurs ayant une équipe, peuvent exiger qu'une part de l'équipe soit en ligne, et peuvent soit mettre en commun les ressources, soit demander à chaque membre de participer. Cinq exemples prêts à l'emploi sont fournis dans le bundle de défis. Voir la FAQ *« Que sont les défis d'équipe ? »* ci-dessus pour plus de détails.
+    - **Messages d'erreur d'importation plus clairs.** Les échecs lors de l'importation de défis sont maintenant signalés à l'administrateur exécutant l'importation, avec des détails, au lieu d'être silencieusement écrits dans le journal de console.
+    - 🔡 **Toutes les traductions actualisées** — chaque fichier de locale a été synchronisé avec la source anglaise, y compris les nouvelles chaînes de défi d'équipe. Si vous maintenez des traductions personnalisées, vérifiez-les à nouveau contre `en-US.yml`, car plusieurs nouvelles clés ont été ajoutées (boutons, erreurs et lore de défi d'équipe).
+
+    Les défis existants ne sont pas affectés — tout le comportement d'équipe est opt-in et désactivé par défaut. Nécessite BentoBox 3.14.0+.
+
+    [Release v1.7.0](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.7.0)
 
 ??? warning "Nouveautés dans v1.6.0 — régénération des locales requise"
     **Publié :** 13 avril 2026

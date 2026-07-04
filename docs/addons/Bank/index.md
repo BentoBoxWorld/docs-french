@@ -117,6 +117,15 @@ Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir p
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.10.1"
+    **Publié :** 21 juin 2026
+
+    Version de correction de bugs — remplaçable sans modification de configuration ou de locale.
+
+    - 🐛 **Bank ne se désactive plus quand l'économie est fournie par un addon.** BentoBox accroche Vault pendant sa phase d'accrochage précoce, avant l'activation des addons. Si aucun plugin d'économie n'avait enregistré de fournisseur à ce moment, cet accrochage précoce était abandonné — donc quand l'économie venait d'un addon (ex. [InvSwitcher](../InvSwitcher/index.md), qui enregistre une économie Vault par monde dans son propre `onEnable()`), Bank ne trouvait pas de fournisseur Vault et se désactivait avec *"Vault est nécessaire"*. Bank réessaye maintenant l'accrochage Vault avant d'abandonner, et déclare `InvSwitcher` comme une `softdepend` pour qu'il s'active en premier quand présent, rendant l'ordre de chargement déterministe.
+
+    [Release v1.10.1](https://github.com/BentoBoxWorld/Bank/releases/tag/1.10.1)
+
 ??? note "Nouveautés dans v1.9.1"
     **Publié :** 28 mars 2026
 

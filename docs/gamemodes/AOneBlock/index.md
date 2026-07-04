@@ -685,3 +685,13 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     🔺 Si vous voulez le nouveau nid d'abeilles, copiez la nouvelle entrée dans votre `phases/8500_plenty.yml` (ou supprimez le dossier phases pour qu'il se régénère) — les fichiers de phase personnalisés ne sont pas écrasés à la mise à jour.
 
     [Release v1.25.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.25.0)
+
+??? note "Nouveautés dans v1.25.1"
+    **Publié :** 3 juillet 2026
+
+    Version de correction de bugs — remplaçable direct, pas de modification de configuration ou de locale.
+
+    - 🐛 **Les minions mineur peuvent à nouveau casser le bloc magique.** Casser le bloc magique avec un Miner minion de JetsMinions levait une `NullPointerException` et laissait le bloc manquant jusqu'à sa restauration manuelle avec `/ob respawnblock`. Le chemin de cassure du minion ne passe plus la vérification de protection du bloc magique réservée au joueur qui causait le crash, donc le bloc se recycle et réapparaît comme prévu. Cette régression était présente depuis 1.22.0.
+    - 🐛 **Les placeholders `my_island_*` corrigés pour les membres d'équipe en visite.** Quand un joueur appartenant à une équipe visitait une autre île, les placeholders `my_island_*` se résolvaient aux données d'équipe de l'île visitée au lieu de sa propre île. Ils se résolvent maintenant toujours à l'île propre du joueur.
+
+    [Release v1.25.1](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.25.1)

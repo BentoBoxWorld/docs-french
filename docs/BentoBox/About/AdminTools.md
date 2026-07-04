@@ -34,6 +34,8 @@ Chaque mode de jeu a sa propre commande d'administration. Pour BSkyBlock c'est `
 | `/[admin] info <player>` | Affiche les détails complets de l'île d'un joueur |
 | `/[admin] delete <player>` | Supprime l'île d'un joueur |
 | `/[admin] setrange <player> <range>` | Change la plage de protection de l'île d'un joueur |
+| `/[admin] range removebonus <player> [id]` | Supprime tous les bonus de plages de protection d'une seule île, ou seulement ceux d'un id donné |
+| `/[admin] range purgebonus <id>` | Supprime un id de plage de bonus de **toutes** les îles du monde — idéal après désinstallation d'un addon qui accordait des bonus de plages. L'analyse s'exécute de façon asynchrone pour ne pas geler les gros serveurs |
 | `/[admin] settings` | Ouvre le panneau des paramètres mondiaux pour les administrateurs |
 | `/[admin] settings <player>` | Ouvre le panneau des paramètres de l'île pour un joueur spécifique |
 | `/[admin] why <player>` | Commence à suivre pourquoi un joueur peut ou ne peut pas faire quelque chose (voir ci-dessous) |
@@ -97,3 +99,25 @@ Après avoir modifié un fichier de configuration, vous pouvez l'appliquer sans 
 /bentobox reload
 ```
 Cela recharge BentoBox et tous les compléments, y compris les locales. Notez que certains changements (comme les paramètres de génération de monde) nécessitent toujours un redémarrage complet pour prendre effet.
+
+## Journal des modifications
+
+!!! warning "Nouveautés dans v3.18.0 — Support Minecraft 26.2 nécessite Java 25 (serveur)"
+    **Publié :** 27 juin 2026
+
+    - 🔺 **Support Minecraft 26.2 + Java 25.** BentoBox fonctionne désormais sur la ligne Minecraft 26.x (26.2 supporté à l'exécution) et la compilation a migré vers la chaîne d'outils Java 25. **Votre serveur doit fonctionner sur une build Paper capable de Java 25 pour la ligne 26.x.** Les jars d'addon déjà compilés continuent à fonctionner sans modification — seuls les *développeurs* d'addon recompilant contre cette version doivent passer leur propre compilation à Java 25. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
+    - ⚙️ **Bascules de marqueur/zone Dynmap pour île.** Une nouvelle section `dynmap` dans `config.yml` ajoute les interrupteurs `island-markers` (l'icône maison au centre de chaque île) et `island-areas` (la boîte de bordure de zone protégée). Les deux sont par défaut `true`, préservant le comportement existant ; réglez l'un d'eux à `false` et exécutez `/bbox reload` pour masquer ces superpositions sur les serveurs où les îles denses inondent la carte.
+    - **Gestion des bonus de plage d'administration.** Nouvelles commandes `/[admin] range removebonus` et `/[admin] range purgebonus` qui effacent les bonus de plages de protection d'une île ou de toutes les îles — idéal après désinstallation d'un addon qui les accordait (voir le tableau des Commandes d'Administration par Mode de Jeu ci-dessus).
+    - 🐛 `/is team setowner` n'est plus bloqué par la limite d'île lors du transfert à un membre d'équipe existant.
+    - 🐛 Le crochet Vault réessaye maintenant après l'activation des addons, corrigeant l'intégration d'économie qui dépendait de l'ordre de chargement.
+
+    [Release v3.18.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.18.0)
+
+??? note "Nouveautés dans v3.18.1"
+    **Publié :** 1er juillet 2026
+
+    Maintenance release.
+
+    - 🐛 **Les titres et noms multilignes conservent leur couleur.** Le texte après la première ligne d'une infobulle GUI ne retombe plus sur le violet par défaut — le sérialiseur réémet désormais la couleur active (et les décorations) après chaque nouvelle ligne, corrigeant les infobulles sur tous les addons.
+
+    [Release v3.18.1](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.18.1)
