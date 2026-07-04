@@ -114,6 +114,16 @@ Les permissions complètes sont listées [ici](Permissions).
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.28.3"
+    **Publié :** 29 juin 2026
+
+    Version de correction de bugs — pas de changement de données, de configuration ou de locale ; un remplaçable direct qui rend les comptages d'entités par île fiables après les redémarrages du serveur.
+
+    - 🐛 **Les comptages d'entités ne dérivent plus après un redémarrage.** La carte reliant chaque entité à son île était conservée uniquement en mémoire et perdue à chaque redémarrage. Les entités rechargeées depuis les chunks ne réentraient jamais dedans, donc quand elles mouraient ou disparaissaient plus tard **hors de l'île**, leur comptage n'était jamais décrémenté et augmentait lentement. Les entités sont maintenant réenregistrées au chargement de leurs chunks, donc les suppressions hors île décrémentent correctement à nouveau.
+    - 🩹 **Pas plus de croissance de map au déchargement des chunks.** La correspondance en mémoire est maintenant libérée quand un chunk se décharge (et reconstruite au rechargement), empêchant la croissance illimitée sur les serveurs de longue durée.
+
+    [Release v1.28.3](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.3)
+
 ??? warning "Nouveautés dans v1.28.0 — Java 21 requis"
     **Publié :** 1er avril 2026
 

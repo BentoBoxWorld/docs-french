@@ -127,6 +127,25 @@ L'inventaire, la santé, le niveau de nourriture, les avancées et l'expérience
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.19.1"
+    **Publié :** 2 juillet 2026
+
+    Version de correction de bugs — remplaçable sans modification de configuration ou de locale.
+
+    - 🐛 **Boucle infinie de mort/résurrection avec santé par île corrigée.** Avec la santé par île activée, un joueur propriétaire de plus d'une île pouvait rester bloqué dans une boucle de respawn/écran de mort sans fin après la mort. Quand son état était capturé en pleine mort, il enregistrait une santé de `0` ; recharger cette valeur sur l'île de mort appliquait `setHealth(0)`, le tuant à nouveau dès le chargement du monde. InvSwitcher n'applique maintenant jamais une santé stockée fatale à un joueur vivant — une valeur stockée de `0` (seulement jamais produite en pleine mort) restaure la santé complète à la place, correspondant au comportement de respawn vanilla.
+
+    [Release v1.19.1](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.19.1)
+
+??? note "Nouveautés dans v1.19.0"
+    **Publié :** 21 juin 2026
+
+    Suite à la version 1.18.0 d'économie par monde. Remplaçable sans modification de configuration ou de locale.
+
+    - 🐛 **L'économie autonome fonctionne maintenant toute seule.** InvSwitcher enregistre sa propre économie Vault par monde, mais BentoBox accroche Vault avant l'activation des addons, donc quand InvSwitcher était la seule économie du serveur, cet accrochage précoce ne trouvait rien et était abandonné — et les addons dépendant de l'économie comme **Bank** se désactivaient avec *"Vault est nécessaire"*. InvSwitcher enregistre maintenant un accrochage Vault frais avec BentoBox une fois que son fournisseur est en direct, donc il fonctionne comme l'économie unique du serveur (aucun plugin d'économie séparé comme EssentialsX n'est nécessaire).
+    - 🐛 **Solde correct rapporté pour les transactions d'économie hors ligne.** L'admin `eco give/set/take` sur un joueur hors ligne rapportait un solde obsolète (par ex. « Nouveau solde : 0.00 » juste après avoir donné 2 000). L'argent était toujours stocké correctement ; le message de confirmation relisait le solde avant que la sauvegarde asynchrone n'ait vidé. Les commandes rapportent désormais le solde autoritaire retourné par la transaction elle-même, et le chemin de lecture après écriture hors ligne a été renforcé pour que deux transactions séquentielles rapides ne puissent plus perdre une mise à jour.
+
+    [Release v1.19.0](https://github.com/BentoBoxWorld/InvSwitcher/releases/tag/1.19.0)
+
 ??? note "Nouveautés dans v1.17.0"
     **Publié :** 31 mars 2026
 

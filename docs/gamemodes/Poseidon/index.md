@@ -31,6 +31,17 @@ Les commandes peuvent être trouvées [ici](Commands).
 
 Les placeholders peuvent être trouvés [ici](Placeholders).
 
+## Journal des modifications
+
+??? note "Nouveautés dans v1.1.1"
+    **Publié :** 28 juin 2026
+
+    Version de correction de bugs — remplaçable direct, pas de modification de configuration ou de locale.
+
+    - 🔺 🐛 **Plantage du serveur corrigé pendant la création du monde sur difficulté Paisible (Paper 26.2).** Le générateur Nether essayait de faire apparaître des monstres (Noyé / Gardien / Gardien Aîné), ce qui n'est pas autorisé sur Paisible et causait un plantage du système de chunk. Les apparitions de monstres sont maintenant ignorées sur Paisible et gardées de façon défensive pour que la génération du monde ne puisse jamais planter.
+
+    [Release v1.1.1](https://github.com/BentoBoxWorld/poseidon/releases/tag/1.1.1)
+
 ## Traductions
 
 {{ translations("Poseidon") }}
