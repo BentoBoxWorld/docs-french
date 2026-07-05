@@ -6,7 +6,7 @@ Ceux-ci incluent certains Gamemodes populaires :
 * [**AcidIsland**](https://github.com/BentoBoxWorld/AcidIsland) : vous êtes échoué dans une mer d'acide !
 * [**Boxed**](https://github.com/BentoBoxWorld/Boxed) : vous commencez dans une petite boîte 4x4 et ne pouvez l'agrandir qu'en complétant les Avancées !
 * [**CaveBlock**](https://github.com/BentoBoxWorld/CaveBlock) : essayez de vivre sous terre !
-* [**SkyGrid**](https://github.com/BentoBoxWorld/SkyGrid) : survivre dans un monde composé de blocs éparpillés - quel une aventure !
+* [**SkyGrid**](https://github.com/BentoBoxWorld/SkyGrid) : survivre dans un monde composé de blocs éparpillés - quelle aventure !
 
 Et ceux-ci incluent certains Compléments officiels qui apportent des fonctionnalités incroyables, telles que :
 * [**Level**](https://github.com/BentoBoxWorld/Level) : calculez votre niveau d'île et montrez un top dix.

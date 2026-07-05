@@ -1,6 +1,8 @@
 # Boxed
 
-Les joueurs survivent dans une boîte qui ne peut être agrandie qu'en accomplissant des avancements !
+Vous commencez à l'intérieur d'une boîte. Une petite boîte. Tout ce qui se trouve en dehors — les mobs, les blocs, les ressources — est interdit. Pour obtenir plus d'espace, vous devez le gagner : accomplissez des avancements et votre boîte grandit. Chaque avancement compte. Chaque nouveau bloc de territoire est une récompense pour laquelle vous avez travaillé.
+
+**Boxed** est un mode de jeu d'îles avec une particularité : votre monde ne s'étend pas en minant ou en construisant, il s'étend en *faisant des choses*. Créez quelque chose de nouveau. Explorez une structure. Tuez un mob. Cultivez une récolte. Tout l'arbre d'avancement vanilla alimente votre progression, et le datapack personnalisé optionnel ajoute encore plus à chercher.
 
 Créé et maintenu par [tastybento](https://github.com/tastybento).
 
@@ -32,8 +34,11 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 
 ## Avancements personnalisés
 
-[Téléchargez le DataPack officiel Boxed](https://github.com/BentoBoxWorld/BoxedDataPack) pour les avancements personnalisés.
-Ou vous pouvez le faire vous-même. Consultez la [vidéo de tutoriel pour plus d'informations](https://youtu.be/zNzQvIbweQs)
+Le **BoxedDataPack** officiel ajoute un ensemble d'avancements personnalisés spécialement conçus pour Boxed, donnant aux joueurs plus à faire et à votre serveur une expérience plus complète hors de la boîte.
+
+[Téléchargez la dernière version de BoxedDataPack](https://github.com/BentoBoxWorld/BoxedDataPack/releases) et déposez le `.zip` dans le dossier `world/datapacks/` de votre serveur (ou le monde dans lequel Boxed s'exécute), puis exécutez `/reload` ou redémarrez.
+
+Préférez construire le vôtre ? Consultez la [vidéo de tutoriel](https://youtu.be/zNzQvIbweQs) pour savoir comment créer des avancements personnalisés qui s'intègrent au système d'expansion de Boxed.
 
 ## Réduire la taille du monde
 

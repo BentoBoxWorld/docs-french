@@ -22,7 +22,7 @@ Une fois que les joueurs ont plus d'une île, ils peuvent se téléporter entre 
 
 `/island go`
 
-Cette commande affichera tous les foyers nommés qu'il a le joueur selon avec les noms de toutes les îles qu'il possède. Si le joueur a nommé son île en utilisant la commande `setname`, elle sera dans la liste, mais s'il ne l'a pas fait, l'île sera listée par le nom d'île par défaut suivi d'un nombre, par exemple « l'île de tastybento 2 ». Le nombre de l'île peut changer quand le serveur est redémarré, donc les joueurs devraient être encouragés à nommer leurs îles.
+Cette commande affichera tous les foyers nommés que le joueur a définis ainsi que les noms de toutes les îles qu'il possède. Si le joueur a nommé son île en utilisant la commande `setname`, elle sera dans la liste, mais s'il ne l'a pas fait, l'île sera listée par le nom d'île par défaut suivi d'un nombre, par exemple « l'île de tastybento 2 ». Le nombre de l'île peut changer quand le serveur est redémarré, donc les joueurs devraient être encouragés à nommer leurs îles.
 
 ### Définition des Foyers
 

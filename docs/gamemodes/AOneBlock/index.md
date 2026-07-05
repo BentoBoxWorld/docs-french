@@ -1,13 +1,14 @@
 # AOneBlock
 
-**AOneBlock** est notre interprétation de la célèbre carte de survie OneBlock d'**IJAminecraft**.
-Les joueurs doivent survivre sur un seul bloc, qui semble être magique...
+Un bloc. C'est tout. C'est par là que vous commencez.
+
+Cassez-le et il réapparaît en tant que quelque chose d'autre — un bloc d'herbe, un arbre, un coffre, un mob. Cassez-le à nouveau. Continuez. Lentement, péniblement, vous construisez une île à partir de rien, en débloquant de nouvelles phases à mesure que vous progressez : Plaines, Souterrain, Océan, Jungle, Nether, et au-delà. Chaque phase apporte de nouveaux blocs, de nouveaux mobs et de nouvelles surprises. Certaines très hostiles.
+
+**AOneBlock** est l'interprétation de BentoBox de la célèbre carte OneBlock d'**IJAminecraft** — reconstruite comme une expérience serveur multijoueur complète avec 11 phases thématiques, 11 000+ blocs de contenu, des coffres de butin de rareté variable, et suffisamment de profondeur pour que les joueurs reviennent pendant des semaines.
 
 Créé et maintenu par [tastybento](https://github.com/tastybento).
 
 {{ addon_description("AOneBlock") }}
-
-OneBlock vous met sur un bloc dans l'espace. Il n'y a qu'un seul bloc. Que fais-tu ensuite ?
 
 ## Installation
 

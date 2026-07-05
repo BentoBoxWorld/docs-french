@@ -6,8 +6,8 @@
 
 Décidez d'abord lequel de ces cas vous concerne vraiment, car ils nécessitent des modifications différentes :
 
-- **Vous voulez juste que le menu *paraisse* plus grand** (plus de lignes d'espace, par exemple pour un look encadré/spacieux) → utilisez le raccourci d'une seule ligne [`force-shown`](#you-want-just-a-taller-menu-force-shown) ci-dessous. Les rangées supplémentaires seront remplies de fond vide.
-- **Vous voulez plus d'îles visibles à la fois / moins de pages** → vous devez [ajouter plus de boutons de lot](#example-a-6-row-menu). `force-shown` seul ne fera pas cela.
+- **Vous voulez juste que le menu *paraisse* plus grand** (plus de lignes d'espace, par exemple pour un look encadré/spacieux) → utilisez le raccourci d'une seule ligne [`force-shown`](#vous-voulez-juste-un-menu-plus-grand-force-shown) ci-dessous. Les rangées supplémentaires seront remplies de fond vide.
+- **Vous voulez plus d'îles visibles à la fois / moins de pages** → vous devez [ajouter plus de boutons de lot](#exemple-un-menu-6-lignes). `force-shown` seul ne fera pas cela.
 
 ## Vous voulez juste un menu plus grand ? (`force-shown`)
 
@@ -19,7 +19,7 @@ force-shown: 6
 
 `force-shown: 6` force les lignes 1 à 6 à toujours s'afficher, ce qui vous donne un panneau complet de **6 lignes (54 emplacements)**. Utilisez `5` pour 5 lignes, et ainsi de suite.
 
-**Important :** `force-shown` contrôle uniquement la **hauteur du panneau**. Les rangées supplémentaires qu'il ouvre sont remplies de votre élément `background`/`border` — elles ne **contiennent pas plus de lots d'îles**. Les lots n'apparaissent que là où les entrées `blueprint_bundle_button` existent dans la section `content`. Donc si votre objectif est de montrer *plus d'îles à la fois* (pas juste agrandir la boîte), passez à [l'exemple 6-lignes](#example-a-6-row-menu), qui ajoute également les boutons de lot supplémentaires.
+**Important :** `force-shown` contrôle uniquement la **hauteur du panneau**. Les rangées supplémentaires qu'il ouvre sont remplies de votre élément `background`/`border` — elles ne **contiennent pas plus de lots d'îles**. Les lots n'apparaissent que là où les entrées `blueprint_bundle_button` existent dans la section `content`. Donc si votre objectif est de montrer *plus d'îles à la fois* (pas juste agrandir la boîte), passez à [l'exemple 6-lignes](#exemple-un-menu-6-lignes), qui ajoute également les boutons de lot supplémentaires.
 
 ## Contexte : comment le menu est construit
 

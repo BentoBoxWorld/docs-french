@@ -1,6 +1,8 @@
 # BSkyBlock
 
-Les joueurs doivent survivre sur une île perdue dans les cieux.
+Le classique. Une minuscule île, un arbre, un coffre, et le vide s'étendant dans toutes les directions. C'est tout ce que reçoivent vos joueurs — et d'une manière ou d'une autre, c'est jamais assez. Ils passeront des heures à agrandir cette île, à chasser les ressources, à relever les défis, et à grimper dans les classements de niveau. Puis ils reviendront demain et recommenceront.
+
+**BSkyBlock** est le mode de jeu SkyBlock pour BentoBox, et le successeur du légendaire **ASkyBlock** qui a popularisé le genre. Si vous voulez exécuter SkyBlock, c'est par où commencer.
 
 Créé et maintenu par [tastybento](https://github.com/tastybento).
 

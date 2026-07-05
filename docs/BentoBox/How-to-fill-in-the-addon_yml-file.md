@@ -70,7 +70,7 @@ authors: ["Poslovitch", "Tastybento", "vous, peut-être ? :P"]
 
 ### description
 
-**Description :** Description amicale-poules de la fonctionnalité que votre complément fournit.
+**Description :** Description conviviale de la fonctionnalité que votre complément fournit.
 
 **Code :**
 ```yaml
