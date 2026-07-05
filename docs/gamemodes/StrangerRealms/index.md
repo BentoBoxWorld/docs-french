@@ -1,20 +1,65 @@
+
+<img width="600" height="300" alt="Stranger Realms" src="https://github.com/user-attachments/assets/4893497a-7c92-4947-b1af-23c1daf05261" />
+
 # Stranger Realms : Un mode de jeu BentoBox
 
 Une expérience de survie frissonnante où le monde familier est ombragé par une dimension terrifiante et inversée. *Stranger Realms* est un mode de jeu BentoBox personnalisé qui remplace le Nether par une copie noire et déformée du monde principal — le **À l'envers**.
 
-## Concept du jeu : Bienvenue au pays À l'envers
+## 🌌 Concept du jeu : Bienvenue au pays À l'envers
 
 Plongez dans un monde où la réalité est tordue. Inspirée par la dimension frissonnante d'une émission télévisée populaire, la dimension À l'envers est un monde de pénombre constante et de danger.
 
-* **L'inversion :** Le À l'envers est une copie sombre et déformée du monde principal, bloc par bloc. Elle est générée dynamiquement quand un joueur entre pour la première fois dans un endroit de la dimension.
-* **Mobs corrompus :** La faune du monde principal a été corrompue. La plupart des mobs du monde principal sont transformés en leurs équivalents du Nether, créant des rencontres uniques et dangereuses.
-* **Le scintillement (Lien dimensionnel) :** Attention à ce avec quoi vous interagissez ! Activer un levier ou appuyer sur un bouton au pays À l'envers peut déclencher la même action dans le bloc correspondant du monde principal.
+  * **L'inversion :** Le À l'envers est une copie sombre et déformée du monde principal, bloc par bloc. Elle est générée dynamiquement quand un joueur entre pour la première fois dans un endroit de la dimension.
+  * **Mobs corrompus :** La faune du monde principal a été corrompue. La plupart des mobs du monde principal sont transformés en leurs équivalents du Nether, créant des rencontres uniques et dangereuses.
+  * **Le scintillement (Lien dimensionnel) :** Attention à ce avec quoi vous interagissez\! Activer un levier ou appuyer sur un bouton au pays À l'envers peut déclencher la même action dans le bloc correspondant du monde principal. Cette connexion dangereuse peut être utilisée pour une automatisation cachée ou peut exposer votre position aux maux qui rodent de l'autre côté.
 
-## Commandes
+## ✨ Fonctionnalités clés
+
+### Revendications protégées (cœur de BentoBox)
+
+En tant que mode de jeu BentoBox, la survie dépend de la revendication d'une partie du monde.
+
+  * **Sécurité :** Les revendications sont des zones carrées protégées, avec une taille par défaut de 64 blocs de chaque côté.
+  * **Personnalisation :** Utilisez l'interface graphique puissante de BentoBox pour affiner les permissions de votre revendication — autorisez les visiteurs à casser des blocs, utiliser les conteneurs, ou restreindre complètement l'accès.
+  * **Portée dimensionnelle :** Vos revendications sont protégées **à la fois** dans le monde principal et à l'envers, et The End\!
+  * **Croissance coopérative :** Les revendications peuvent grandir\! Ajoutez d'autres joueurs comme membres à votre revendication pour augmenter sa taille. Le montant spécifique de croissance de revendication par membre est configurable.
+
+### La boussole déformée
+
+  * **Régénération de chunks :** Découvrez la recette personnalisée de la **Boussole déformée**. Quand un joueur tient cet objet puissant en traversant un portail du Nether, cela force la régénération des chunks dans toutes les directions, garantissant que vous disposez toujours d'un nouveau territoire à explorer basé sur le monde principal.
+
+### Bordure du monde dynamique (Fonctionnalité Admin)
+
+Encouragez les joueurs à rejoindre et à développer votre serveur avec l'option Bordure du monde dynamique.
+
+  * **Taille adaptative :** Les administrateurs peuvent définir une bordure du monde qui grandit ou rétrécit automatiquement en fonction du nombre actuel de joueurs en ligne. Envahissez le serveur et élargissez votre zone de jeu\!
+  * **Rétention de revendication :** Si la bordure du monde se rétrécit, les joueurs conservent leurs revendications même si elles sortent des limites de la nouvelle bordure. Cependant, une fois sortie de la bordure, ils ne peuvent opérer que dans les limites protégées de leurs frontières de revendication préexistantes, encourageant la possession stratégique de terres.
+
+## 🔨 Commandes
 
 *Stranger Realms* utilise la structure de commande robuste de BentoBox. Les commandes peuvent être trouvées [ici](Commands).
 
 La commande joueur principale est `/strange` ou `/st` et la commande admin est `/stranger`.
+
+| Commande       | Description                                                                                                                |
+|:---------------|:---------------------------------------------------------------------------------------------------------------------------|
+| `/st claim`    | Crée une revendication à votre emplacement actuel (si vous avez de la place).                                              |
+| `/st info`     | Affiche les informations sur la revendication dans laquelle vous vous trouvez actuellement.                                |
+| `/st settings` | Ouvre l'interface graphique pour gérer les permissions de revendication (par exemple, casse de blocs visiteurs, accès aux coffres). |
+| `/st team`     | Va à l'interface graphique d'équipe où vous pouvez inviter des joueurs à devenir membre de votre revendication, ce qui augmente également la taille de la revendication. |
+
+## Utiliser avec d'autres addons
+
+Comme tous les modes de jeu BentoBox, vous pouvez charger d'autres addons. Ceux-ci sont recommandés :
+
+* Warps - permet aux joueurs de placer un panneau de warp dans une revendication afin que d'autres puissent se téléporter là
+* InvSwitcher - garde les inventaires et autres aspects des joueurs séparés entre les modes de jeu
+
+*Ne pas* utiliser l'addon Border avec Stranger Realms car cela créerait un conflit. Stranger Realms gère ses propres bordures.
+
+## ⚙️ Paramètres de configuration
+
+Les mécaniques de jeu de base et les fonctionnalités de revendication sont hautement configurables via les fichiers de configuration BentoBox ou les interfaces graphiques. Le fichier de configuration principal pour ce mode de jeu est `config.yml`.
 
 ## Permissions
 
