@@ -12,6 +12,7 @@
 | acidisland.mod.lock | Permet de verrouiller ou déverrouiller une île | op |
 | acidisland.mod.bypasslock | Ignore un verrouillage d'île | op |
 | acidisland.mod.bypassban | Ignore le bannissement de l'île | op |
+| acidisland.mod.noburn | Donner une protection acide au modérateur | op |
 | acidisland.admin.noban | Le joueur ne peut pas être banni d'une île | op |
 | acidisland.admin.noexpel | Le joueur ne peut pas être expulsé d'une île | op |
 | acidisland.island | Autoriser l'utilisation de la commande '/ai' — la commande d'île principale | TRUE |

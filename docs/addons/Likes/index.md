@@ -98,3 +98,272 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     Si quelque chose manque vraiment de la liste ci-dessous, veuillez nous le faire savoir!
 
 ## Placeholders
+
+{{ placeholders_source(source="Likes") }}
+
+## FAQ
+
+??? question "Pouvez-vous ajouter la fonctionnalité X ?"
+    Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/Likes/issues).
+
+??? question "Puis-je désactiver les dislikes ?"
+    Oui, l'addon Likes supporte 3 modes de fonctionnement :
+
+    - Likes : permet d'ajouter uniquement des j'aime à l'île
+    - LikesDislikes : permet d'ajouter des j'aime et des dislikes
+    - Stars : permet d'évaluer les îles des joueurs de 1 à 5 étoiles
+       
+??? question "Puis-je voir les j'aime d'autres joueurs ?"
+    Oui, mais vous avez besoin de la permission : `[gamemode].likes.view.others`. 
+    
+    Avec cette permission, les joueurs peuvent utiliser `/[playercmd] likes view <player>` pour voir les j'aime d'autres joueurs. 
+    
+??? question "Puis-je changer l'icône affichée juste pour certaines îles ?"
+    Oui, c'est possible. 
+    
+    Il y a 2 façons :
+    
+    1. En utilisant l'interface graphique Admin, vous pouvez choisir l'île et le bloc qui sera affiché pour elle.
+    2. En ajoutant une permission au propriétaire de l'île : `[gamemode].likes.icon.[MATERIAL]`
+        
+    Sachez que PLAYER_HEAD sera converti à la tête du propriétaire de l'île.
+
+## Traductions
+
+{{ translations("Likes") }}
+
+## API
+
+Depuis Likes 2.2.0 et BentoBox 1.17, les autres plugins peuvent accéder directement aux données de l'addon Likes.
+
+### Dépendance Maven
+
+Likes fournit une API pour les autres plugins. Cela couvre la version 2.2.0 et ultérieures.
+
+!!! note
+    Ajoutez la dépendance Likes à votre fichier Maven POM.xml :
+
+    ```xml
+        <repositories>
+            <repository>
+                <id>codemc-repo</id>
+                <url>https://repo.codemc.io/repository/bentoboxworld/</url>
+            </repository>
+        </repositories>
+        
+        <dependencies>
+            <dependency>
+                <groupId>world.bentobox</groupId>
+                <artifactId>likes</artifactId>
+                <version>2.2.0</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    ```
+
+Utilisez la dernière version de Likes.
+
+Les JavaDocs pour Likes peuvent être trouvés [ici](https://ci.codemc.io/job/BentoBoxWorld/job/Likes/ws/target/apidocs/index.html).
+
+### Évènements
+
+=== "LikeAddEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur ajoute un nouveau j'aime à l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [LikeAddEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/LikeAddEvent.java)
+
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a ajouté le j'aime.
+        - `String islandId` - l'identifiant de l'île qui reçoit le j'aime.
+        
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onLike(LikeAddEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+        }
+        ```  
+
+=== "LikeRemoveEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur retire son j'aime de l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [LikeRemoveEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/LikeRemoveEvent.java)
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a retiré le j'aime.
+        - `String islandId` - l'identifiant de l'île qui perd le j'aime.
+        
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onLikeRemove(LikeRemoveEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+        }
+        ```  
+   
+=== "DislikeAddEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur ajoute un nouveau dislike à l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [DislikeAddEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/DislikeAddEvent.java)
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a ajouté le dislike.
+        - `String islandId` - l'identifiant de l'île qui reçoit le dislike.
+
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onDislike(DislikeAddEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+        }
+        ```  
+
+=== "DislikeRemoveEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur retire son dislike de l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [DislikeRemoveEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/DislikeRemoveEvent.java)
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a retiré le dislike.
+        - `String islandId` - l'identifiant de l'île qui perd le dislike.
+
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onDislikeRemove(DislikeRemoveEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+        }
+        ```  
+
+=== "StarsAddEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur ajoute de nouvelles étoiles à l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [StarsAddEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/StarsAddEvent.java)
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a ajouté les étoiles.
+        - `String islandId` - l'identifiant de l'île qui reçoit les étoiles.
+        - `int value` - la valeur des étoiles ajoutées (de 1 à 5)
+
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onStarsAdd(StarsAddEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+            int value = event.getValue();
+        }
+        ```  
+
+=== "StarsRemoveEvent"
+    !!! summary "Description"
+        Évènement qui est déclenché quand un joueur retire ses étoiles de l'île.
+
+        Cet évènement est uniquement informatif. Ne peut pas être annulé.
+
+        Lien vers la classe : [StarsRemoveEvent](https://github.com/BentoBoxWorld/Likes/blob/develop/src/main/java/world/bentobox/likes/events/StarsRemoveEvent.java)
+
+    !!! question "Variables"
+        - `UUID user` - l'identifiant du joueur qui a ajouté les étoiles.
+        - `String islandId` - l'identifiant de l'île qui perd les étoiles.
+
+    !!! example "Exemple"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onStarsRemove(StarsRemoveEvent event) {
+            UUID user = event.getUser();
+            String islandId = event.getIslandId();
+        }
+        ```  
+
+### Gestionnaires de Demandes d'Addon
+
+Jusqu'à BentoBox 1.17, nous avions un problème pour accéder aux données en dehors de l'environnement BentoBox en raison du chargeur de classe que nous utilisions pour charger les addons.
+Cela signifiait que les données n'étaient accessibles que depuis d'autres addons. Mais BentoBox a implémenté la fonctionnalité PlAddon, ce qui signifie que les gestionnaires de demandes ne sont plus nécessaires.
+
+Plus d'informations sur les gestionnaires de demandes d'addon peuvent être trouvées [ici](/en/latest/BentoBox/Request-Handler-API---How-plugins-can-get-data-from-addons/)
+
+=== "island-likes"
+    !!! summary "Description"
+        Retourne les données de j'aime de l'île qui sont stockées pour l'île dans le monde donné.
+
+    !!! question "Entrée"
+        - `world-name`: String - le nom du monde.
+        - `island`: String - l'UUID de l'île.
+
+    !!! success "Sortie"
+        La sortie est une `Map<String, Object>` avec les clés suivantes :
+
+        - `likes`: long - le nombre de j'aime définis pour l'île donnée.
+        - `dislikes`: long - le nombre de dislikes définis pour l'île donnée.
+        - `rank`: long - le nombre de classement pour l'île donnée.
+        - `stars`: double - la valeur moyenne des étoiles pour l'île donnée.
+        - `placeByLikes`: integer - la place dans le classement par j'aime définis pour l'île donnée.
+        - `placeByDislikes`: integer - la place dans le classement par dislikes définis pour l'île donnée.
+        - `placeByRank`: integer - la place dans le classement par classement défini pour l'île donnée.
+        - `placeByStars`: integer - la place dans le classement par étoiles définis pour l'île donnée.
+        - `likedBy`: List&lt;UUID&gt; - la liste des UUID des joueurs qui ont aimé l'île donnée.
+        - `dislikedBy`: List&lt;UUID&gt; - la liste des UUID des joueurs qui ont désaimé l'île donnée.
+        - `staredBy`: Map&lt;UUID, Integer&gt; - la carte des UUID des joueurs qui ont évalué l'île donnée avec un nombre d'étoiles qu'ils ont ajoutées.
+
+
+    !!! failure
+        Ce gestionnaire retournera une carte vide si le `world-name` n'a pas été fourni ou si le `world-name` n'existe pas ou n'est pas un monde de mode de jeu ou si l'île n'est pas fournie ou si les données pour l'île sont vides.
+
+    !!! example "Exemple de code"
+        ```java
+        public Map<String, Object> getLikesData(String worldName, String islandUUID) {
+            return (Map<String, Object>) new AddonRequestBuilder()
+                .addon("Likes")
+                .label("island-likes")
+                .addMetaData("world-name", worldName)
+                .addMetaData("island", islandUUID)
+                .request();
+        }
+        ```
+
+=== "top-ten-likes"
+    !!! summary "Description"
+        Retourne une `Map<String, Number>` contenant les 10 meilleures UUID d'îles et leurs valeurs dans le classement donné.
+
+    !!! question "Entrée"
+        - `world-name`: String - le nom du monde.
+        - `type`: String - le type du Classement. Supporte : STARS, LIKES, DISLIKES, RANK.
+
+    !!! success "Sortie"
+        Une Map contenant les UUID des îles qui sont dans le Top 10, mappées à la valeur de classement supérieur de leur île.
+
+    !!! failure
+        Ce gestionnaire retournera une carte vide si le `world-name` n'a pas été fourni ou si le `world-name` n'existe pas ou n'est pas un monde de mode de jeu ou si le type de classement fourni n'a pas de données.
+
+    !!! example "Exemple de code"
+        ```java
+        public Map<String, Number> getTopTenLikes(String worldName, String type) {
+            return (Map<String, Number>) new AddonRequestBuilder()
+                .addon("Likes")
+                .label("top-ten-likes")
+                .addMetaData("world-name", worldName)
+                .addMetaData("type", type)
+                .request();
+        }
+        ```

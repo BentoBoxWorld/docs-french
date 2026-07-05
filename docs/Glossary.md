@@ -5,7 +5,7 @@ Nouveau sur BentoBox ? Cette page explique les termes clés utilisés dans la do
 ---
 
 ## Addon
-Un fichier (`.jar`) qui étend BentoBox avec de nouvelles fonctionnalités. Les addons vont dans `plugins/BentoBox/addons/` — **pas** dans le dossier `plugins/` de votre serveur. Il y a deux types : [addons de mode de jeu](#game-mode) et [addons de fonctionnalité](#feature-addon). Voir [Addons](BentoBox/About/Addons.md).
+Un fichier (`.jar`) qui étend BentoBox avec de nouvelles fonctionnalités. Les addons vont dans `plugins/BentoBox/addons/` — **pas** dans le dossier `plugins/` de votre serveur. Il y a deux types : [addons de mode de jeu](#mode-de-jeu) et [addons de fonctionnalité](#addon-de-fonctionnalite). Voir [Addons](BentoBox/About/Addons.md).
 
 ## Commande d'administration
 Chaque mode de jeu a une commande réservée aux administrateurs pour gérer les îles, les paramètres et les joueurs. Pour BSkyBlock c'est `/bsb`, pour AcidIsland c'est `/acid admin`, etc. La commande exacte est listée dans la documentation de chaque mode de jeu.
@@ -47,7 +47,7 @@ Un code court comme `%bskyblock_island_name%` que d'autres plugins peuvent utili
 La commande principale que les joueurs utilisent pour interagir avec un mode de jeu. Pour BSkyBlock c'est `/island` (ou `/is`), pour AOneBlock c'est `/oneblock` (ou `/ob`), etc. La commande exacte est listée dans la documentation de chaque mode de jeu.
 
 ## Plage de protection
-Le rayon de la zone autour du centre d'une île qui est protégée. Aucun autre joueur ne peut construire, casser ou interagir dans cette zone sans permission. Toujours plus petit ou égal à la moitié de la [distance entre îles](#island-distance). Peut être étendu par commande d'administration ou permission du joueur.
+Le rayon de la zone autour du centre d'une île qui est protégée. Aucun autre joueur ne peut construire, casser ou interagir dans cette zone sans permission. Toujours plus petit ou égal à la moitié de la [distance entre îles](#distance-entre-iles). Peut être étendu par commande d'administration ou permission du joueur.
 
 ## Rang
 Un niveau de confiance assigné aux joueurs par rapport à une île spécifique. Du plus bas au plus haut : **Banni**, **Visiteur**, **Coop**, **Réputé**, **Membre**, **Propriétaire secondaire**, **Propriétaire**. Les rangs contrôlent quelles actions un joueur peut effectuer sur une île. Voir [Équipes](BentoBox/About/Teams.md).

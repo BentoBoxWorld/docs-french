@@ -19,6 +19,7 @@ Lorsqu'il est activé, les chats n'iront qu'aux membres de l'équipe. Les joueur
 
 * `chat` - bascule le chat de l'île activé et désactivé
 * `teamchat` - bascule si le chat du joueur va au canal d'équipe ou non
+* `muteteamchat` (alias `mtc`) - silencieuse les messages de team chat entrants sans désactiver le team chat. Nécessite la permission `[gamemode].chat.team-chat.mute`. L'état de mute est automatiquement effacé quand le joueur quitte ou est expulsé de son équipe.
 
 ### Commandes Admin
 
@@ -65,6 +66,9 @@ permissions:
   '[gamemode].chat.island-chat':
     description: Le joueur peut utiliser le chat d'île
     default: true
+  '[gamemode].chat.team-chat.mute':
+    description: Le joueur peut silencieuser le team chat entrant avec /is muteteamchat
+    default: true
   '[gamemode].chat.spy':
     description: Le joueur peut utiliser l'espionnage du chat d'équipe ou d'île
     default: op
@@ -75,6 +79,16 @@ permissions:
 Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir plus d'addons comme celui-ci et l'améliorer!
 
 ## Changelog
+
+??? note "Nouveautés dans v1.4.0"
+    **Publié le :** 13 avril 2026
+
+    - **Team chat dans des mondes supplémentaires** — Le team chat fonctionne maintenant en dehors des mondes de mode de jeu. Utilisez `team-chat.extra-chat-worlds` dans `config.yml` pour lister les mondes supplémentaires (spawn, hub, etc.) par mode de jeu où le team chat doit être capturé.
+    - **Mute team chat** — Les joueurs peuvent silencier les messages de team chat entrants avec `/is muteteamchat` sans quitter leur équipe. Le mute est automatiquement effacé à la sortie/expulsion de l'équipe.
+    - **Migration MiniMessage** — Tous les 23 fichiers de locale convertis des anciens codes couleur `&` vers MiniMessage. Si vous avez des fichiers de locale personnalisés, mettez à jour `&a` → `<green>` etc., ou supprimez-les pour les régénérer.
+    - Correction de bug : null pointer exception lorsqu'un joueur utilisait `/is teamchat` sans île.
+
+    [Release v1.4.0](https://github.com/BentoBoxWorld/Chat/releases/tag/1.4.0)
 
 ??? note "Nouveautés dans v1.4.1"
     **Publié le :** 2026-04-26

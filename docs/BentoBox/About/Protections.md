@@ -50,7 +50,7 @@ Si la commande `why` dit qu'un joueur *peut* faire quelque chose mais en jeu, il
 ### Qu'est-ce qui est Protégé
 
 - Casser et placer des blocs
-- Interaction de bloc : conteneurs, fours, tables de travail, tables d'enchantement, enclumes, supports de brassage, chaudrons, barils, ruches, composteurs, jukeboxs, blocs de note, leviers, boutons, portes, trappes, lits, balises, œufs de dragon, cadres d'objets, portails, gâteaux, buissons de baies
+- Interaction de bloc : conteneurs, fours, tables de travail, tables d'enchantement, enclumes, supports de brassage, chaudrons, barils, ruches, composteurs, jukeboxs, blocs de note, leviers, boutons, portes, trappes, lits, balises, œufs de dragon, cadres d'objets, barrières, gâteau, buissons de baies
 - Blocs liés à la redstone
 - Élevage d'animaux
 - Utilisation de seau

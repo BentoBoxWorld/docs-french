@@ -183,6 +183,20 @@ BentoBox n'a pas de boutique intégrée. Les messages épinglés dans `#support-
 
 La bordure visuelle se trouve à la portée de protection. Si un joueur s'est vu accorder une permission de portée plus élevée mais ne s'est pas reconnecté, la bordure affiche toujours l'ancien rayon. Faites-le reconnecter (ou utilisez la commande admin range qui s'applique instantanément).
 
+### J'ai supprimé une île mais les blocs sont toujours là — « This island is marked for deletion and is awaiting region cleanup »
+
+C'est le comportement attendu, pas un bug. À partir de **BentoBox 3.16.1**, `/[admin_command] delete <player>` (et `/island reset`) supprime l'île de la base de données immédiatement — le joueur peut créer une nouvelle île tout de suite — mais les **blocs sont récupérés lors du prochain balayage d'entretien** (par défaut : toutes les 24 h) plutôt qu'instantanément. Jusqu'à là, la zone est marquée comme « supprimée » et vous verrez le message *awaiting region cleanup*.
+
+La récupération est retardée parce que BentoBox supprime les fichiers de région sous-jacents, et un fichier de région peut contenir **plusieurs îles** empaquetées ensemble. BentoBox ne supprimera un fichier de région que lorsqu'**aucune île active** n'est plus présente, donc une île supprimée dont la région accueille toujours des voisins actifs reste sur la carte jusqu'à ce que ces voisins soient également supprimés.
+
+Pour agir plus rapidement :
+
+- **Forcer un balayage maintenant :** exécutez `/bbox admin purge deleted`. Cela récupère chaque île supprimée en douceur dont le fichier de région est maintenant vide — les îles partageant une région avec une île active sont ignorées.
+- **Région partagée, besoin qu'elle disparaisse immédiatement :** retirez les blocs à la main avec **WorldEdit** (`//pos1`/`//pos2`/`//set air`) ou en régénérant les chunks. L'île est déjà supprimée de la base de données ; c'est un simple retrait cosmétique de blocs.
+- **Redémarrez après la purge** afin que le cache des chunks de Paper soit vidé et la zone vide cesse de s'afficher.
+
+Voir [Suppression d'île (Admin)](BentoBox/About/IslandManagement.md#island-deletion-admin) pour le cycle de vie complet.
+
 ## Équipes, coop et visiteurs
 
 ### Quelle est la différence entre équipe, coop, trust et visite ?

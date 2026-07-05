@@ -20,6 +20,8 @@ Ces placeholders sont disponibles dans tous les modes de jeu actuellement dispon
 | `%Bank_[gamemode]_visited_island_balance_formatted%` | Solde formaté de l'île sur laquelle se tient le joueur. ex: 1.2k | 1.1.0 |
 | `%Bank_[gamemode]_top_value_#RANK#%` | Solde de l'île du `#RANK#`-ème île du classement | 1.1.0 |
 | `%Bank_[gamemode]_top_name_#RANK#%` | Nom du propriétaire de l'île du `#RANK#`-ème île du classement | 1.1.0 |
+| `%Bank_[gamemode]_top_island_#RANK#%` | Nom de l'île du `#RANK#`-ème île du classement | 1.10.0 |
+| `%Bank_[gamemode]_latest_transaction%` | La transaction bancaire d'île la plus récente du joueur, rendue sous la forme `[Username] [TxType] $[Amount]` (par ex. `tastybento Deposited $500.0`) | 1.10.0 |
 
 *Remarque*: `#RANK#` est un nombre entre 1 et le paramètre `number-of-ranks` du config.yml de Bank.
 

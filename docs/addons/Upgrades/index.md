@@ -156,6 +156,13 @@ La classe `UpgradeAPI` est exposée pour que d'autres addons puissent interroger
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.0.3"
+    **Publié le :** 16 juin 2026
+
+    - 🐛 **Crash au démarrage corrigé.** Résout une `ConcurrentModificationException` qui pouvait crasher l'addon au démarrage lorsqu'un tier d'amélioration référençait une entrée de données d'amélioration manquante (par ex. après un seeding partiel ou des édits manuels de données). Les tiers orphelins sont maintenant ignorés en toute sécurité avec un avertissement au lieu d'avorter le chargement de tout l'addon.
+
+    [Release v1.0.3](https://github.com/BentoBoxWorld/Upgrades/releases/tag/1.0.3)
+
 ??? warning "Nouveautés dans v1.0.0 — réécriture complète, action requise"
     **Publié :** 12 avril 2026
 

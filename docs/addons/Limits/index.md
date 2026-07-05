@@ -165,3 +165,26 @@ Les permissions complètes sont listées [ici](Permissions).
 
 ## Articles qui ne peuvent pas être limités
 Certains articles ne peuvent pas être limités (pour l'instant). Les raisons sont généralement parce qu'il y a trop de façons de supprimer l'article sans qu'il soit suivi. Si vous êtes un programmeur et pouvez trouver comment corriger ceux-ci, veuillez soumettre une PR!
+
+* Primed TNT
+* Evoker Fangs
+* Llama Spit
+* Dragon Fireball
+* Area Effect Cloud
+* Ender signal
+* Small fireball
+* Fireball
+* Thrown Exp Bottle
+* Shulker Bullet
+* Wither Skull
+* Tridents
+* Arrows
+* Spectral Arrows
+* Snowballs
+* Eggs
+* Leashes
+* Ender crystals
+* Ender pearls
+* Ender dragon
+* Item frames
+* Paintings

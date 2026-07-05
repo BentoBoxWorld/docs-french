@@ -1,8 +1,10 @@
 # SkyGrid
 
-**SkyGrid** est une carte remplie de blocs flottants placés sur une grille de quatre blocs. Donc chaque quatrième bloc dans chaque direction est un vrai bloc, et tout le reste est de l'air. Le créateur du SkyBlock original, SethBling, a sorti SkyGrid en 2012 et c'est devenu l'une des cartes Minecraft les plus populaires à jouer.
+Chaque quatrième bloc dans chaque direction est un vrai bloc. Tout le reste est de l'air.
 
-Il y a des objectifs et des techniques pour jouer (et survivre) dans SkyGrid et il n'y a pas de pénurie d'aide en ligne, de conseils et de façons de rendre ce jeu très amusant !
+Cela signifie du gravier flottant au-dessus du vide. Des flaques de lave suspendues dans le néant. Un creeper sur un bloc de sable à douze mètres au-dessus de vous. Aller n'importe où nécessite de la planification, de la précision et un respect sain de ce qui se passe si vous manquez un saut.
+
+**SkyGrid** a été créé par SethBling en 2012 et est devenu l'une des meilleures cartes de défi Minecraft jamais faites. Ceci est la version BentoBox — même grille chaotique, s'exécutant désormais en tant qu'expérience d'île multijoueur complète avec toute la progression, les défis et les tableaux de classement que les joueurs attendent.
 
 Créé et maintenu par [tastybento](https://github.com/tastybento).
 

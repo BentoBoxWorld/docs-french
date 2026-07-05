@@ -126,6 +126,21 @@ Vous pouvez [sponsoriser](https://github.com/sponsors/tastybento) pour obtenir p
 
     [Release v1.10.1](https://github.com/BentoBoxWorld/Bank/releases/tag/1.10.1)
 
+??? warning "Nouveautés dans v1.10.0 — Changements majeurs (Java 21, BentoBox 3.14.0, MiniMessage)"
+    **Publié :** 16 juin 2026
+
+    Une version de modernisation. Bank cible maintenant **Java 21, Paper 1.21.11 et BentoBox 3.14.0**, et tout son ensemble de locales a été migré vers le format couleur **MiniMessage** de BentoBox.
+
+    - 🔡 **Nouveau placeholder `%Bank_[gamemode]_latest_transaction%`** — affiche la transaction bancaire d'île la plus récente d'un utilisateur, rendue sous la forme `[Username] [TxType] $[Amount]` (par ex. `tastybento Deposited $500.0`). Entièrement localisé.
+    - 🔡 **Couverture de langue complète** — Bank correspond désormais à l'ensemble complet des locales BentoBox (23 langues).
+    - 🔡 🔺 **Format de locale MiniMessage.** Tous les fichiers de locale ont été convertis des anciens codes couleur `&`/`§` vers MiniMessage. Tous les fichiers de langue Bank personnalisés doivent être réexprimés dans la syntaxe MiniMessage — sauvegardez-les, supprimez les anciens fichiers pour les régénérer, puis refaites vos modifications.
+    - 🔺 **Modernisation de la plateforme.** Construction mise à niveau vers Java 21 / Paper 1.21.11 / BentoBox 3.14.0 ; `api-version` du plugin.yml augmenté à 1.21 ; suite de tests migrée vers JUnit 5 + MockBukkit.
+    - 🐛 Analyse renforcée de l'historique des transactions bancaires contre les entrées malformées et texte de secours du placeholder de transaction la plus récente localisé.
+
+    🔺 **Mise à jour :** Mettez à jour BentoBox vers 3.14.0 et assurez-vous que le serveur exécute Java 21 **avant** d'installer cette version. Sauvegardez d'abord tous les fichiers de locale personnalisés.
+
+    [Release v1.10.0](https://github.com/BentoBoxWorld/Bank/releases/tag/1.10.0)
+
 ??? note "Nouveautés dans v1.9.1"
     **Publié :** 28 mars 2026
 

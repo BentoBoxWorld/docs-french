@@ -101,3 +101,10 @@ Les Blueprints peuvent avoir deux panneaux spéciaux pour vous aider à placer o
 Placez un panneau avec la première ligne comme [spawn_here] (en anglais) où vous voulez que le joueur apparaisse. Il apparaîtra à cette position et le panneau ne sera pas collé. Cela s'applique à toutes les îles mondes, pour que vous puissiez spécifier où les joueurs apparaîtront dans le Nether quand ils passent par un portail, par exemple.
 
 ### Panneau de Bienvenue
+Le panneau de bienvenue offre un moyen convivial de donner aux joueurs un conseil sur le jeu et ce qu'ils peuvent faire, ou ne pas faire ! Placez un panneau avec [start] (en anglais) sur la première ligne. Le texte du panneau sera remplacé par le texte du panneau dans le fichier de localisation du GameModeAddon.
+
+## Conseils et Recommandations
+* Nous recommandons de garder les îles de démarrage petites pour rendre le jeu un défi. Mettez juste assez d'objets et de blocs sur une île pour que les joueurs puissent développer leur île.
+* Essayez de faire des îles divisées (pensez haut et bas, côté à côté) pour donner aux joueurs une cible à construire quand ils ont les ressources.
+* Si vous copiez avec l'air, essayez de faire votre boîte de délimitation aussi petite que possible pour garder la taille du fichier petite.
+* Après avoir copié un blueprint, essayez de le coller pour vérifier qu'il a été copié correctement. Puis enregistrez-le.

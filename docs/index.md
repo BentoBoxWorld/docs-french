@@ -15,6 +15,7 @@ hide:
 
   <div class="bb-cta-row">
     <a href="BentoBox/First-Steps" class="bb-btn bb-btn-primary">Premiers 30 minutes &rarr;</a>
+    <a href="FAQ" class="bb-btn bb-btn-ghost">FAQ &amp; dépannage</a>
     <a href="gamemodes/Comparison" class="bb-btn bb-btn-ghost">Choisir un mode de jeu</a>
     <a href="https://download.bentobox.world" class="bb-btn bb-btn-ghost">Télécharger</a>
   </div>

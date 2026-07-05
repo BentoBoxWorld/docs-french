@@ -88,6 +88,6 @@ Bien que les clés puissent être nommées n'importe quoi, vous devriez éviter 
 * etc.
 
 ## Métadonnées d'Objet Île et Joueur
-Les objets Île et Joueur ont la même API pour les métadonnées que la classe Utilisateur. Bien qu'il soit possible de manitfuler les métadonnées d'objet Joueur, c'est mieux fait via l'API de classe Utilisateur.
+Les objets Île et Joueur ont la même API pour les métadonnées que la classe Utilisateur. Bien qu'il soit possible de manipuler les métadonnées d'objet Joueur, c'est mieux fait via l'API de classe Utilisateur.
 
 Les métadonnées d'Île sont enregistrées quand le serveur s'arrête ou quand la base de données est enregistrée périodiquement.
