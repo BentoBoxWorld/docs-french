@@ -321,6 +321,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - `/[player_command] value [material]`: permet de vérifier la valeur du bloc. Nécessite la permission `[gamemode].island.value`.
     - `/[player_command] donate`: ouvre une interface de style coffre pour donner des blocs directement au niveau de votre île. Les points donnés survivent aux futurs recalculs de niveau. Nécessite la permission `[gamemode].island.level.donate`.
     - `/[player_command] donate hand [amount]`: donne l'objet actuellement tenu dans la main du joueur (ou le montant spécifié) directement au niveau de l'île sans ouvrir l'interface. Nécessite la permission `[gamemode].island.level.donate`.
+    - `/[player_command] donate inv`: répertorie chaque bloc donnable dans l'inventaire du joueur avec les valeurs par matériau et un total, puis sur confirmation donne tout et exécute un recalcul de niveau. Les objets sans valeur configurée et non-blocs restent dans l'inventaire. Nécessite la permission `[gamemode].island.level.donate`.
 
 
 === "Commandes admin"
@@ -456,6 +457,21 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     ⚙️ **Disposition du panneau de don.** Un nouveau `panels/donation_panel.yml` est livré au premier démarrage — laissez-le tel quel pour garder la disposition de 2.25.0, ou éditez-le pour la personnaliser.
 
     [Release v2.26.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.26.0)
+
+??? warning "Nouveautés dans v2.27.0 — action requise"
+    **Publié le :** 13 mai 2026
+
+    🔺 **Requiert BentoBox 3.16.0 ou ultérieur.** Cette version relève le `api-version` dans `addon.yml` à `3.16.0` et dépend des nouveaux helpers `CraftEngineHook.getItemId` / `getItemStack`. Les versions plus anciennes de BentoBox refuseront de charger l'addon.
+
+    - ⚙️ **Mode donations uniquement.** Nouvelle option `donations-only` dans `config.yml` (défaut `false`). Quand `true`, l'analyse de chunk par recalcul est entièrement ignorée et le niveau d'île est calculé à partir des points donnés seuls en utilisant la formule `level-calc` configurée. `/island detail` n'est pas enregistré dans ce mode et le bouton de spectateur top-ten cesse d'ouvrir le panneau de détail. Le `initialCount` stocké est ignoré au moment de `/island level`, donc basculer le mode pour un serveur avec des îles existantes ne pousse pas les joueurs à des niveaux sauvagement négatifs.
+    - 💎 **`/island donate inv` — donner tout de l'inventaire.** Nouvelle sous-commande confirmable `inv` : répertorie chaque bloc donnable dans l'inventaire du joueur avec les valeurs par matériau et un total, puis sur confirmation donne tout et exécute un recalcul de niveau. Les objets sans valeur configurée et non-blocs restent dans l'inventaire. La complète onglet suggère maintenant `hand` / `inv` pour le premier arg, et le nombre d'objets tenus après `hand`.
+    - 🧱 **Support des blocs personnalisés dans les menus de valeur, détail et don.** Les blocs personnalisés Oraxen, Nexo, ItemsAdder et CraftEngine ne sont plus filtrés de `/level value` ou rendus comme des icônes PAPER anonymes dans `/level detail`. La valeur et les panneaux de détail recherchent l'`ItemStack` de bloc personnalisé réel à partir du registre de chaque plugin, donc la texture/données du modèle configurées et le nom d'affichage sont préservés. `/island value hand` sur un objet personnalisé tenu signale maintenant la valeur configurée et le nom d'affichage. Les chemins de don (`/island donate hand`, `/island donate inv`, le panneau de don) acceptent les objets de bloc personnalisé et enregistrent les dons sous l'ID personnalisé.
+    - 🐛 **Correction de la progression négative.** Les formules non-linéaires de `level-calc` (par ex. `3 * sqrt(blocks / level_cost)`) ne descendent plus en dessous de zéro entre les niveaux. Merci @msmith-codes!
+    - ⚡ **Performance.** `tidyUp()` ne marche plus jusqu'à 10M de points linéairement sur le thread principal lors du calcul des limites de points — les analyses avant et arrière utilisent maintenant la recherche binaire (~23 itérations au lieu de millions).
+
+    🔡 **Locales mises à jour.** Les 18 locales expédiées ont gagné de nouvelles clés `island.donate.inv.*` (`keyword`, `confirm-header`, `confirm-line`, `confirm-total`). Si vous avez des fichiers de locale personnalisés dans `plugins/BentoBox/addons/Level/locales/`, copiez le nouveau bloc `donate.inv` dedans ou le nouveau flux `/island donate inv` montrera des clés brutes.
+
+    [Release v2.27.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.27.0)
 
 ## Translations
 

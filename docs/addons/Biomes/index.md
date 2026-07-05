@@ -257,6 +257,27 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v2.3.2"
+    **Publié le :** 15 juin 2026
+
+    Une petite continuation de 2.3.1 qui complète le correctif des biomes océan et répare la manière dont l'addon écrit sa configuration.
+
+    - ⚙️ **`change-ocean-biomes` est maintenant dans `config.yml`.** L'option (ajoutée en 2.3.0) n'a jamais été écrite au template de configuration fourni, donc elle n'apparaissait pas sur le disque et ne pouvait pas être configurée.
+    - 🔧 **`config.yml` se répare maintenant automatiquement au chargement.** Les paramètres sont réécrits après le chargement, donc les options ajoutées dans les nouvelles versions sont ajoutées aux configurations existantes automatiquement avec leurs défauts — c'était la cause première du fait que l'option était invisible.
+
+    🔺 **Mise à niveau depuis 2.3.0 / 2.3.1 — aucune modification de configuration nécessaire.** Au premier chargement, le fichier se répare : `change-ocean-biomes` est écrit sous la forme `true` automatiquement et les changements de biome fonctionnent directement. (Si vous aviez défini `false` précédemment pour préserver les océans, cette valeur est conservée.)
+
+    [Release v2.3.2](https://github.com/BentoBoxWorld/Biomes/releases/tag/2.3.2)
+
+??? warning "Nouveautés dans v2.3.1 — îles océan fixes"
+    **Publié le :** 14 juin 2026
+
+    - ⚙️🔺 **Les changements de biome s'appliquent à nouveau aux îles océan.** L'option `change-ocean-biomes` (ajoutée en 2.3.0) était définie sur `false`, ce qui a fait que Biomes ignore chaque bloc déjà dans un biome océan — donc une île entièrement océan (mondes vides SkyBlock/AcidIsland, qui sont entièrement `warm_ocean`) était complètement ignorée tout en signalant le succès. **La valeur par défaut est maintenant `true`.** Corrige [#171](https://github.com/BentoBoxWorld/Biomes/issues/171).
+
+    🔺 **Note :** Sur un serveur mettant à niveau depuis 2.3.0, la ligne `change-ocean-biomes` n'est pas écrite automatiquement à votre `config.yml` existant dans cette version, mais la nouvelle défaut (`true`) prend effet en mémoire, donc les changements de biome fonctionnent à nouveau. Cet écart de visibilité de configuration est entièrement corrigé en 2.3.2.
+
+    [Release v2.3.1](https://github.com/BentoBoxWorld/Biomes/releases/tag/2.3.1)
+
 ??? warning "Nouveautés dans v2.3.0 — requiert BentoBox 3.14.0+ et Paper"
     **Publié le :** 2026-05-05
 

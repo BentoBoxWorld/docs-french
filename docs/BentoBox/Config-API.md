@@ -98,3 +98,45 @@ public class Settings implements ConfigObject {
 
     @ConfigEntry(path = "world.size")
     @ConfigComment("Taille - minimum 10, max 100")
+    private int worldSize = 100;
+
+    public String getWorldName() {
+        return worldName;
+    }
+    public void setWorldName(String worldName) {
+        this.worldName = worldName;
+    }
+    public int getWorldSize() {
+        return worldSize;
+    }
+    public void setWorldSize(int worldSize) {
+        this.worldSize = worldSize;
+    }
+}
+```
+
+### Chargement et Sauvegarde
+
+Pour charger une configuration avec la classe Addon, faites ceci :
+
+```java
+Settings settings = new Config<>(this, Settings.class).loadConfigObject();
+```
+
+Pour enregistrer une configuration dans la classe Addon, faites ceci :
+
+```java
+Settings settings = new Settings();
+new Config<>(this, Settings.class).saveConfigObject(settings);
+```
+
+C'est une bonne pratique pour un complément de charger les paramètres, puis de les enregistrer immédiatement. Cela permettra de garder le fichier de configuration à jour avec les dernières options et commentaires. Pour créer la configuration initiale, utilisez la méthode `saveDefaultConfig()` du complément pour enregistrer le config.yml par défaut stocké dans le pot du complément. Si vous utilisez un fichier différent de config.yml, vous pouvez utiliser la méthode `saveResource(resourcePath, replace)`.
+
+### Fichier de configuration par défaut
+Configurez un fichier config.yml par défaut dans le pot de votre complément. Puis enregistrez-le sur le système de fichiers dans votre complément en utilisant la méthode standard `saveDefaultConfig()`. Donc l'approche globale est comme suit :
+
+1. saveDefaultConfig() - cela enregistrera le config.yml par défaut du pot s'il n'existe pas.
+2. Charger la configuration en utilisant Config API pour obtenir les paramètres des administrateurs
+3. Enregistrer la configuration en utilisant Config API pour mettre à jour config.yml avec les dernières options de paramètre et commentaires
+
+C'est tout ! Veuillez lire les JavaDocs pour plus d'informations sur cette API.

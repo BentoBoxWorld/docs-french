@@ -98,3 +98,50 @@ Après avoir enregistré le monde, les paramètres du mode de jeu associé et le
 public class IslandCommand extends CompositeCommand {
 
     public IslandCommand(BSkyBlock addon) {
+        super(addon, "island", "is");
+    }
+
+    @Override
+    public void setup() {
+        setOnlyPlayer(true);
+        // Permission
+        setPermissionPrefix("bskyblock");
+        setPermission("island");
+        setWorld(((BSkyBlock)getAddon()).getIslandWorld());
+        // Set up subcommands
+        new IslandAboutCommand(this);
+        new IslandCreateCommand(this);
+        new IslandGoCommand(this);
+        new IslandResetCommand(this);
+        new IslandSetnameCommand(this);
+        new IslandResetnameCommand(this);
+        new IslandSethomeCommand(this);
+        new IslandSettingsCommand(this);
+        new IslandLanguageCommand(this);
+        new IslandBanCommand(this);
+        new IslandUnbanCommand(this);
+        new IslandBanlistCommand(this);
+        // Team commands
+        new IslandTeamCommand(this);
+    }
+----
+
+La ligne clé pour enregistrer la commande est :
+
+```
+super(addon, "island", "is");
+```
+
+Cela indique à BentoBox que "/island" est une commande de haut niveau pour le complément BSkyBlock et elle a un alias de "/is". Puis dans la méthode setup(), il y a un certain nombre de déclarations très importantes (obligatoire pour les commandes de haut niveau) :
+
+```
+setWorld(((BSkyBlock)getAddon()).getIslandWorld());
+```
+
+C'est extrêmement important. Elle définit le monde sur lequel cette commande opérera. Toutes les sous-commandes s'y référeront en utilisant la méthode getWorld().
+
+Après cela, la commande instancie un certain nombre de sous-commandes, en passant elle-même comme paramètre. Ces classes utiliseront ce paramètre comme parent dans leurs appels super() respectifs.
+
+= Conclusion
+
+Ce qui précède décrit ce qui devrait être fait si vous créez un nouveau type de complément de mode de jeu. Nous continuons à travailler sur l'API, donc certaines choses peuvent devenir plus simples à l'avenir.

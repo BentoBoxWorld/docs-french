@@ -1,15 +1,14 @@
 # AcidIsland
 
-**AcidIsland** est un mode de survie dans lequel les joueurs doivent survivre sur une île entourée d'une mer d'acide.
+C'est SkyBlock — mais l'océan essaie de vous tuer.
+
+**AcidIsland** place les joueurs sur une petite île entourée d'une mer d'acide. Tomber dedans, c'est prendre des dégâts. Cela change tout : agrandir son île devient une opération délicate et très risquée. Construire par-dessus le bord, c'est un pari. Pourtant, les joueurs peuvent toujours naviguer en bateau pour se visiter les uns les autres — s'ils sont assez courageux.
+
+C'est une prémisse familière avec un détail qui garde les joueurs alertes du début à la fin.
 
 Créé et maintenu par [tastybento](https://github.com/tastybento).
 
 {{ addon_description("AcidIsland") }}
-
-## L'histoire
-Vous êtes sur une île, dans une mer d'acide ! Si vous aimez Skyblock, essayez AcidIsland pour un nouveau défi !
-
-C'est une variation de SkyBlock. Au lieu de tomber, vous devez faire face à l'eau acide lorsque vous agrandissez votre île et les joueurs peuvent naviguer en bateau vers les îles les uns des autres.
 
 ## Installation
 

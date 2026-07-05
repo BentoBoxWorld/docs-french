@@ -98,3 +98,45 @@ Pour voir la liste complète des permissions, exécutez :
 Un mode de jeu BentoBox nu fonctionne, mais les joueurs s'attendront à quelques extras. Envisagez d'ajouter ceux-ci avant d'ouvrir :
 
 - **Warps** — Les joueurs peuvent créer des panneaux warp sur leur île pour que d'autres puissent facilement les visiter
+- **Level** — Calcule un score d'île et affiche un classement ; donne aux joueurs quelque chose vers lequel travailler
+- **Challenges** — Donne aux joueurs des tâches et des récompenses ; améliore considérablement la rétention
+- **InvSwitcher** — Essentiel si vous gérez plus d'un mode de jeu ou avez d'autres mondes ; garde les inventaires séparés
+
+Téléchargez les compléments à partir de [BentoBoxWorld](https://download.bentobox.world), mettez le `.jar` dans `plugins/BentoBox/addons/`, et redémarrez le serveur.
+
+---
+
+## Étape 7 — Personnalisez Votre Île de Démarrage (Optionnel)
+
+L'île de démarrage par défaut est fonctionnelle mais générique. Pour donner à votre serveur une atmosphère unique, construisez une île de démarrage personnalisée et enregistrez-la en tant que Blueprint.
+
+Résumé rapide :
+1. Construisez l'île que vous voulez quelque part dans le monde
+2. Utilisez `/[admin_command] blueprint pos1` et `pos2` pour la sélectionner
+3. Utilisez `/[admin_command] blueprint copy` puis `save myisland`
+4. Ouvrez `/[admin_command] blueprint` pour gérer les bundles
+
+Voir [Blueprints](About/BlueprintsSummary.md) pour la procédure complète.
+
+---
+
+## Étape 8 — Ouvrez aux Joueurs
+
+Vous êtes prêt. Quelques dernières choses à vérifier avant d'annoncer :
+
+- [ ] Testez que les nouveaux joueurs peuvent créer une île sans erreurs - surtout si vous utilisez d'autres plugins
+- [ ] Confirmez que la protection fonctionne (les visiteurs ne peuvent pas griffer)
+- [ ] Confirmez que le mode de jeu apparaît dans `/bentobox version`
+- [ ] Lisez la [FAQ](../FAQ.md) pour les pièges courants
+
+---
+
+## Obtenir de l'Aide
+
+Si quelque chose ne fonctionne pas :
+
+1. Exécutez `/bentobox version` et copiez la sortie
+2. Vérifiez la console pour les messages d'erreur
+3. Cherchez dans la [FAQ](../FAQ.md)
+4. Demandez sur le [Discord BentoBox](https://discord.bentobox.world) — incluez votre sortie `/bentobox version` et les erreurs de console
+5. Signalez les bogues à [github.com/BentoBoxWorld/BentoBox/issues](https://github.com/BentoBoxWorld/BentoBox/issues)

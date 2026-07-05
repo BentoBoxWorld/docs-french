@@ -97,3 +97,58 @@ Vous pouvez enregistrer plusieurs objets dans la base de données en répétant 
 Il y a deux façons de charger les données - charger des enregistrements spécifiques (objets) par uniqueId, ou charger tous les objets de ce type d'un seul coup.
 
 ## Chargement d'un seul objet
+
+Pour cela, vous devez connaître l'uniqueId de l'enregistrement que vous voulez. Puis utilisez la méthode loadObject avec l'uniqueId comme argument. Par exemple :
+
+`Names loadedName = names.loadObject("tastybento");`
+
+Si vous savez quelles données vous voulez à partir de l'objet chargé et que vous êtes sûr qu'il existe, vous pouvez l'obtenir directement :
+
+`UUID uuid = names.loadObject(string).getUuid();`
+
+## Chargement de tous les objets
+
+Parfois, vous avez besoin de charger toute la base de données dans la mémoire pour pouvoir y accéder tout le temps. Essayez de ne pas le faire à moins que vous n'en ayez besoin. Pour charger tous les objets, utilisez la méthode loadObjects(). Cela les chargera tous comme une Liste. Par exemple :
+
+`List<UUID> uuids = names.loadObjects();`
+
+Remarquez que charger à partir d'une base de données peut prendre longtemps et donc ne devrait pas être fait sur le thread principal pendant le jeu. Vous devriez être capable de charger les objets dans un thread async.
+
+# Vérification de l'existence d'un objet dans la base de données
+
+Pour vérifier si un objet existe, vous devez avoir son uniqueId. Vérifiez-le comme cet exemple :
+
+`return names.objectExists("tastybento") ? "il existe dans la db" : "qui?";'
+
+Vérifier l'existence d'un objet peut aussi prendre longtemps, donc ne le faites pas sur le thread principal si vous pouvez l'éviter.
+
+# Suppression d'un objet dans la base de données
+
+La suppression d'un objet nécessite que vous connaissiez l'uniqueId. Supprimez les objets comme ceci :
+
+`names.deleteObject("tastybento");`
+
+La méthode enregistrera une erreur dans la console si elle ne peut pas supprimer l'objet, mais sinon elle sera silencieuse.
+
+Actuellement, il n'y a aucun moyen de supprimer tous les objets dans la base de données.
+
+# Fermeture de la base de données
+
+Les connexions à la base de données sont définies pour se fermer automatiquement quand le plugin est désactivé, mais si vous souhaitez fermer explicitement la connexion pour économiser les ressources, utilisez cette méthode :
+
+`names.close()`
+
+Cela libérera l'objet de connexion de la base de données et toutes les ressources JDBC immédiatement au lieu d'attendre qu'elles soient automatiquement libérées.
+
+# Support du type d'objet
+
+*La base de données YAML n'est plus supportée !*
+La base de données utilise GSON pour sérialiser l'objet. Cela gère la plupart des types d'objets génériques et toutes les classes Bukkit qui implémentent l'interface [ConfigurationSerializable](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/configuration/serialization/ConfigurationSerializable.html), par exemple :
+
+* World
+* Location
+* Vector (Vector de Bukkit)
+* PotionEffectType
+* etc.
+
+Si vous implémentez un objet qui doit être sérialisé et enregistré dans la base de données, il devrait implémenter l'interface [ConfigurationSerializable](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/configuration/serialization/ConfigurationSerializable.html) de Bukkit.
