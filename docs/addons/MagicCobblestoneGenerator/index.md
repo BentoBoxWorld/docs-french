@@ -149,6 +149,25 @@ Depuis **2.8.0** les générateurs peuvent être plafonnés pour ne produire qu'
 
 Également depuis **2.8.0**, les générateurs — et les blocs individuels au sein d'un générateur — peuvent être limités à un niveau Y minimum et maximum, de sorte que différents matériaux sont produits à différentes hauteurs. De nouveaux boutons de l'interface graphique permettent aux admins de définir et d'effacer la plage, et la lore du générateur montre aux joueurs où chaque générateur opère. Les modèles hérités sans plage de hauteur restent pleinement compatibles.
 
+### Progression du déverrouillage et exigences
+
+Depuis **2.9.0**, les générateurs peuvent être verrouillés derrière des exigences plus riches pour que vous puissiez concevoir des arborescences de déverrouillage appropriées au lieu d'une liste plate de niveaux. Tous ces éléments sont configurés à partir du panneau d'édition des générateurs dans l'interface graphique Admin :
+
+- **Générateurs préalables** — exiger que un ou plusieurs autres générateurs soient d'abord déverrouillés, en construisant des progressions multi-étapes.
+- **Exigence de phase AOneBlock** — sur les modes de jeu AOneBlock, verrou un générateur derrière une phase d'île spécifique, de sorte que les niveaux se déverrouillent au fur et à mesure que l'île avance.
+- **Exigence de compte de blocs OneBlock** — verrou un générateur derrière le nombre de blocs cassés sur une île OneBlock.
+- **Activer au déverrouillage** — une option par générateur qui active automatiquement un générateur au moment où il est déverrouillé, économisant aux joueurs un voyage à l'interface graphique.
+- **Confirmation d'achat** — exiger éventuellement une confirmation explicite avant que de l'argent ne soit pris lors de l'achat d'un générateur, en évitant les achats accidentels.
+
+=== "lose-tiers-on-level-loss"
+    !!! summary "Description"
+        *Ajouté dans 2.9.0.* Restaure le comportement antérieur à 2.0.0 où un générateur déverrouillé par niveau d'île est re-verrouillé si le niveau d'île chute ultérieurement en dessous de son exigence. Les niveaux achetés sont toujours conservés — seuls les niveaux gratuits, déverrouillés par niveau, sont re-verrouillés. Écrit automatiquement dans `config.yml` à la première charge après la mise à niveau.
+
+        Défaut : `false`
+
+!!! warning "Les générateurs verrouillés par permission sont maintenant révoqués"
+    Depuis **2.9.0**, un générateur déverrouillé via permission est re-vérifié et **révoqué** des listes déverrouillées et actives de l'île lorsque le propriétaire actuel (en ligne) n'a plus la permission requise — par exemple après un transfert de propriété. Les niveaux achetés sont conservés, donc l'accès revient si la permission est retrouvée ; les propriétaires hors ligne sont laissés intacts. Auparavant, une telle concession était permanente.
+
 ## Commandes
 
 !!! tip
@@ -169,6 +188,7 @@ Depuis **2.8.0** les générateurs peuvent être plafonnés pour ne produire qu'
     - `/[admin_command] generator database import <file>`: Permet d'importer la base de données exportée <file>.
     - `/[admin_command] generator database export <file>`: Permet d'exporter la base de données dans <file> sauvegardé dans le dossier `/plugins/BentoBox/addons/MagicCobblestoneGenerator/`.
     - `/[admin_command] generator why <player>`: Une commande de débogage qui permet de trouver les problèmes avec les générateurs pour chaque joueur.
+    - `/[admin_command] generator reset <player>`: Réinitialise les données du générateur de l'île d'un joueur — générateurs déverrouillés, achetés et actifs — après une invite de confirmation. *(Ajouté dans 2.9.0.)*
 
 ## Permissions
 
@@ -299,7 +319,24 @@ Depuis **2.8.0** les générateurs peuvent être plafonnés pour ne produire qu'
 
 ## Journal des modifications
 
-!!! warning "Nouveautés dans v2.8.0 — nécessite BentoBox 3.14.0 / Java 21"
+??? warning "Nouveautés dans v2.9.0 — les générateurs verrouillés par permission sont maintenant révoqués"
+    **Publié :** 8 juillet 2026
+
+    Ajoute une progression de déverrouillage plus riche et plusieurs améliorations admin/API.
+
+    - 🔒 **Générateurs préalables.** Verrou un générateur derrière un ou plusieurs autres pour que les niveaux se déverrouillent dans une progression conçue. Configuré via un nouveau sélecteur d'interface graphique admin. Corrige [#88](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/88).
+    - 🧱 **Verrouillage OneBlock / AOneBlock.** Exiger une phase AOneBlock spécifique, ou un nombre de blocs cassés sur une île OneBlock, avant qu'un générateur soit disponible. Corrige [#121](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/121), [#117](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/117).
+    - ⚙️ **Re-verrouiller les niveaux au perte de niveau.** Un nouveau paramètre `lose-tiers-on-level-loss` (défaut `false`) re-verrouille les générateurs déverrouillés par niveau si le niveau d'une île chute. Les niveaux achetés sont toujours conservés. Corrige [#118](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/118).
+    - ✨ **Activer au déverrouillage.** Les générateurs peuvent maintenant s'activer automatiquement au moment où ils sont déverrouillés. Corrige [#106](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/106).
+    - 💰 **Confirmation d'achat.** Demander éventuellement aux joueurs de confirmer avant que l'argent ne soit pris pour un générateur. Corrige [#109](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/109).
+    - 🛠️ **Réinitialisation des données administrateur.** Une nouvelle commande `/[admin_command] generator reset <player>` réinitialise les générateurs déverrouillés, achetés et actifs d'un joueur après une invite de confirmation. Corrige [#149](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/149).
+    - 🔌 **Nouveaux événements API annulables** `GeneratorPreBuyEvent` et `GeneratorTreasureDropEvent` pour que d'autres addons se connectent (voir la section API ci-dessous).
+    - 🔺 **Comportement changé :** les générateurs verrouillés par permission sont maintenant **révoqués** lorsque le propriétaire en ligne de l'île n'a plus la permission requise — par exemple après un transfert de propriété. Les niveaux achetés sont conservés, donc l'accès revient si la permission est retrouvée.
+    - 🔡 **Remarque sur les locales :** de nouvelles clés `en-US.yml` ont été ajoutées pour le sélecteur préalable, l'activation au déverrouillage, la confirmation d'achat, la commande de réinitialisation admin, et les messages d'exigence OneBlock/AOneBlock. Régénérez ou mettez à jour vos fichiers de locale pour récupérer les nouvelles chaînes.
+
+    [Release v2.9.0](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/releases/tag/2.9.0)
+
+??? warning "Nouveautés dans v2.8.0 — nécessite BentoBox 3.14.0 / Java 21"
     **Publié :** 3 juillet 2026
 
     - ⚙️ **Épuisement du générateur.** Limitation optionnelle du nombre de blocs qu'un générateur produit par période, avec un cooldown une fois la limite atteinte. Configurable globalement (`exhaustion.*` dans `config.yml`) et par niveau de générateur (`exhaustion-limit` dans le modèle). Opt-in et désactivé par défaut. Voir la section Configuration ci-dessus.
@@ -424,6 +461,67 @@ La JavaDoc pour MagicCobblestoneGenerator peut être trouvée [ici](https://ci.c
 
             String generator = event.getGenerator();
             String generatorID = event.getGeneratorID();
+        }
+        ```
+
+=== "GeneratorPreBuyEvent"
+    !!! summary "Description"
+        Événement qui est déclenché **avant** qu'un générateur soit acheté, permettant à l'achat d'être annulé ou inspecté. Étend la base partagée `GeneratorEvent`.
+        Cet événement est annulable.
+
+        Depuis la version 2.9.0.
+
+        Lien vers la classe: [GeneratorPreBuyEvent](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/blob/develop/src/main/java/world/bentobox/magiccobblestonegenerator/events/GeneratorPreBuyEvent.java)
+
+    !!! question "Variables"
+        - `String islandUUID` - l'ID de l'île ciblée.
+        - `UUID targetPlayer` - l'ID du joueur qui achète le générateur.
+        - `String generator` - le nom du générateur en cours d'achat.
+        - `String generatorID` - l'ID du générateur en cours d'achat.
+
+        
+    !!! example "Exemple de code"
+        ```java
+        @EventHandler(priority = EventPriority.LOW)
+        public void onGeneratorPreBuy(GeneratorPreBuyEvent event) {
+            UUID user = event.getTargetPlayer();
+            String island = event.getIslandUUID();
+            String generatorID = event.getGeneratorID();
+
+            // Veto the purchase if needed
+            if (someCondition) {
+                event.setCancelled(true);
+            }
+        }
+        ```
+
+=== "GeneratorTreasureDropEvent"
+    !!! summary "Description"
+        Événement qui est déclenché quand un trésor est sur le point de tomber d'un générateur, permettant à la chute d'être annulée ou modifiée. Étend la base partagée `GeneratorEvent`.
+        Cet événement est annulable.
+
+        Depuis la version 2.9.0.
+
+        Lien vers la classe: [GeneratorTreasureDropEvent](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/blob/develop/src/main/java/world/bentobox/magiccobblestonegenerator/events/GeneratorTreasureDropEvent.java)
+
+    !!! question "Variables"
+        - `String islandUUID` - l'ID de l'île ciblée.
+        - `UUID targetPlayer` - l'ID du joueur pour lequel le trésor tombe.
+        - `String generator` - le nom du générateur qui lâche le trésor.
+        - `String generatorID` - l'ID du générateur qui lâche le trésor.
+        - `Location location` - l'emplacement où le trésor est sur le point de tomber.
+        - `ItemStack itemStack` - l'élément de trésor sur le point de tomber (peut être modifié).
+
+        
+    !!! example "Exemple de code"
+        ```java
+        @EventHandler(priority = EventPriority.LOW)
+        public void onTreasureDrop(GeneratorTreasureDropEvent event) {
+            Location location = event.getLocation();
+            ItemStack treasure = event.getItemStack();
+
+            // Cancel the drop or swap the item
+            event.setCancelled(true);
         }
         ```
 

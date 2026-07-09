@@ -33,6 +33,9 @@ Chaque mode de jeu a sa propre commande d'administration. Pour BSkyBlock c'est `
 |---|---|
 | `/[admin] info <player>` | Affiche les détails complets de l'île d'un joueur |
 | `/[admin] delete <player>` | Supprime l'île d'un joueur |
+| `/[admin] delete` | *(3.19.0)* Sans argument joueur, supprime en douceur l'île sur laquelle vous **êtes debout** après confirmation (refusé si elle a encore une équipe) |
+| `/[admin] undelete` | *(3.19.0)* Efface l'état de suppression en attente de l'île sur laquelle vous **êtes debout**, la laissant sans propriétaire, avant que ses fichiers de région ne soient purgés |
+| `/[admin] register <player>` | Enregistre une île sans propriétaire à un joueur. Sur une île en attente de suppression, cela affiche désormais une invite de confirmation et annule la suppression au lieu de refuser |
 | `/[admin] setrange <player> <range>` | Change la plage de protection de l'île d'un joueur |
 | `/[admin] range removebonus <player> [id]` | Supprime tous les bonus de plages de protection d'une seule île, ou seulement ceux d'un id donné |
 | `/[admin] range purgebonus <id>` | Supprime un id de plage de bonus de **toutes** les îles du monde — idéal après désinstallation d'un addon qui accordait des bonus de plages. L'analyse s'exécute de façon asynchrone pour ne pas geler les gros serveurs |
@@ -102,7 +105,23 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! warning "Nouveautés dans v3.18.0 — Support Minecraft 26.2 nécessite Java 25 (serveur)"
+!!! warning "Nouveautés dans v3.19.0 — Lits/ancres de respawn maintenant honorées"
+    **Publié :** 8 juillet 2026
+
+    Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
+
+    - 🔡 **Nouveau drapeau de protection `FISHING`.** Empêche les joueurs de pêcher dans les zones protégées depuis l'extérieur de l'île (le drapeau vérifie la position du crochet). Par défaut au rang visiteur, donc rien ne change jusqu'à ce que vous l'augmentiez.
+    - 🔺 **Les respawns au lit et à l'ancre de respawn sont maintenant honorés.** Mourir sur une île vous rend désormais à votre lit ou à votre ancre de respawn chargée si elle se trouve sur une île dont vous êtes membre. Contrôlé par le nouveau paramètre mondial `BED_ANCHOR_RESPAWN` (**activé par défaut**) ; les serveurs sensibles à l'économie qui veulent l'ancien comportement « toujours respawn à l'accueil de l'île » devraient le désactiver.
+    - 🐛 **Le portail de sortie de l'End ne vous jette plus au spawn du monde.** Sauter par le portail de sortie de l'End vous achemine maintenant vers votre accueil d'île sûr sur les serveurs multi-modes de jeu.
+    - 🐛 **Les cadres et peintures survivent aux plans.** Les cadres conservent leur orientation et leur contenu, et les peintures restaurent leur œuvre d'art, au lieu de disparaître ou de faire face à la mauvaise direction.
+    - 🔡 **Récupérer les îles en attente de suppression.** Le nouveau `/[admin] undelete`, un `/[admin] delete` debout (sans argument joueur), et une invite de confirmation sur `/[admin] register` peuvent maintenant sauver les îles supprimées en douceur avant que leurs fichiers de région soient purgés (voir le tableau Commandes d'Administration par Mode de Jeu ci-dessus).
+    - ⚙️ **La couche d'île BlueMap survit aux recharges.** Les épingles de propriétaire et les boîtes de zone ne disparaissent plus après `/bluemap reload`. Une nouvelle section `bluemap` dans `config.yml` ajoute les commutateurs `island-markers` et `island-areas` (tous deux par défaut `true`), reflétant les commutateurs Dynmap, plus la personnalisation des marqueurs.
+    - ⚙️ **Icônes de bouton de panneau d'équipe configurables + texte membre/prospect.** Les boutons STATUS, RANK-filter et INVITE du panneau d'équipe honorent désormais le `icon:` défini dans `team_panel.yml`, et le nom et la description du bouton membre/prospect sont maintenant commandés par les clés de locale. Les valeurs par défaut reproduisent exactement l'apparence précédente.
+    - ⚡ **Le spam de clic GUI Paramètres n'augmente plus le MSPT.** Le spam de clic `/is settings` est passé de ~30-40 MSPT à négligeable via l'actualisation du panneau en place et un cache de traduction.
+
+    [Release v3.19.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.19.0)
+
+??? warning "Nouveautés dans v3.18.0 — Support Minecraft 26.2 nécessite Java 25 (serveur)"
     **Publié :** 27 juin 2026
 
     - 🔺 **Support Minecraft 26.2 + Java 25.** BentoBox fonctionne désormais sur la ligne Minecraft 26.x (26.2 supporté à l'exécution) et la compilation a migré vers la chaîne d'outils Java 25. **Votre serveur doit fonctionner sur une build Paper capable de Java 25 pour la ligne 26.x.** Les jars d'addon déjà compilés continuent à fonctionner sans modification — seuls les *développeurs* d'addon recompilant contre cette version doivent passer leur propre compilation à Java 25. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.

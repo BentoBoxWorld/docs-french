@@ -114,6 +114,16 @@ Les permissions complètes sont listées [ici](Permissions).
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.28.4"
+    **Publié :** 6 juillet 2026
+
+    Version de maintenance axée sur la précision et la persistance fiable des comptages d'entités. Aucune modification de configuration ou locale n'est requise.
+
+    - 🐛 **Les comptages d'entités ne dérivent plus au-dessus de la réalité.** Dans certaines séquences d'apparition/suppression, le comptage d'entités suivi pouvait dépasser le nombre d'entités réellement présentes sur l'île, bloquant finalement les apparitions qui auraient dû être autorisées. Les comptages restent maintenant synchronisés avec la population réelle de l'île. [[#273](https://github.com/BentoBoxWorld/Limits/pull/273)]
+    - 🐛 **Persistance du comptage d'entités centralisée.** Toutes les mutations de comptage d'entités passent maintenant par `BlockLimitsListener`, afin que les modifications soient intégrées dans le cycle de sauvegarde par lot normal au lieu d'être écrites uniquement à la désactivation du addon. Cela prévient la perte de comptages lors d'un arrêt anormal ou d'un crash. [[#274](https://github.com/BentoBoxWorld/Limits/pull/274)]
+
+    [Release v1.28.4](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.4)
+
 ??? note "Nouveautés dans v1.28.3"
     **Publié :** 29 juin 2026
 
