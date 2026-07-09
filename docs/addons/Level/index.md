@@ -66,6 +66,17 @@ Cette section définit un certain nombre de paramètres généraux pour le modul
 
     Par défaut : `true`
 
+??? note "donations-only"
+    Si true, l'analyse des blocs de l'île est entièrement ignorée et le niveau de l'île est calculé uniquement à partir des blocs donnés via `/island donate`. Cela supprime le coût CPU de l'analyse de l'île à chaque recalcul.
+
+    `/island level`, `/island top`, `/island value` et `/island donate` continuent de fonctionner. `/island detail` n'est pas enregistré dans ce mode, puisqu'il n'y a aucun bloc analysé à détailler. Le bouton de spectateur du panneau top-ten n'affiche plus « Cliquez pour voir » et n'ouvre plus le panneau de détail.
+
+    L'analyse à zéro qui s'exécute lors de la création/réinitialisation de l'île continue de s'exécuter quand `zero-new-island-levels: true`, donc le handicap de l'île de démarrage est enregistré dans `initialCount` et appliqué correctement si un administrateur désactive `donations-only` plus tard. Tant que `donations-only` est activé, le `initialCount` stocké est ignoré au moment de `/island level`, donc activer ce mode sur un serveur ayant déjà des îles ne pousse pas les joueurs vers des niveaux extrêmement négatifs.
+
+    Requiert BentoBox 3.16.0 ou une version ultérieure.
+
+    Par défaut : `false`
+
 ??? note "login"
     Permet de définir que le niveau de l'île est calculé à la connexion du joueur.
 
@@ -181,13 +192,15 @@ Cette section définit les valeurs des blocs et les limites pour ceux-ci.
 
     Format : `MATERIAL: NUMBER`
 
-    Les blocs personnalisés CraftEngine sont également pris en charge (requiert BentoBox 3.15.0+). Utilisez leur ID namespacé comme clé :
+    Les blocs personnalisés d'Oraxen, Nexo, ItemsAdder et CraftEngine sont également pris en charge. Utilisez leur ID namespacé comme clé :
 
     ```yaml
     blocks:
       mynamespace:my_block: 50
       mynamespace:custom_ore: 3
     ```
+
+    Depuis Level 2.27.0, les blocs personnalisés ne sont plus filtrés de `/level value`, sont rendus avec leur texture/données de modèle et leur nom d'affichage réels dans `/level detail` et le panneau de valeur, et peuvent être donnés via `/island donate hand`, `/island donate inv` et le panneau de don. Les objets CraftEngine sont résolus via les utilitaires `CraftEngineHook.getItemId` / `getItemStack` de BentoBox 3.16.0 — les versions antérieures de BentoBox refuseront de charger Level 2.27.0+.
 
 ??? note "worlds"
     Répertoriez les blocs qui ont une valeur différente dans un monde spécifique.
