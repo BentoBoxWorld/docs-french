@@ -33,15 +33,28 @@ La configuration a également des paramètres pour enregistrer tous les chats si
 ```
 # Configuration file for Chat
 team-chat:
+  # Lists the gamemodes in which you want the Team Chat to be effective.
   gamemodes:
   - BSkyBlock
   - AcidIsland
   - CaveBlock
   - SkyGrid
+  # If players are outside a game world, team chat can still exist for one game mode.
+  default-teamchat-gamemode: ''
+  # Additional worlds (per game mode) where team chat should be captured.
+  # Useful for shared spawn/hub worlds where players still want team chat to work.
+  # If more than one game mode covers a world, chat may go to multiple teams.
+  # Example:
+  #   extra-chat-worlds:
+  #     BSkyBlock:
+  #       - world
+  #       - world_nether
+  #       - spawn_world
+  extra-chat-worlds: {}
   # Log team chats to console.
   log: false
 island-chat:
-  # Lists the gamemodes in which you want the Chat addon to be effective.
+  # Lists the gamemodes in which you want the Island Chat to be effective.
   gamemodes:
   - BSkyBlock
   - AcidIsland
@@ -51,9 +64,9 @@ island-chat:
   log: false
 chat-listener:
   # Sets priority of AsyncPlayerChatEvent. Change this if Chat addon
-  # is conflicting with other plugins which listen to the same event
+  # is conflicting with other plugins which listen to the same event.
   # Acceptable values: lowest, low, normal, high, highest, monitor
-  priority: normal
+  priority: NORMAL
 ```
 
 ## Permissions
