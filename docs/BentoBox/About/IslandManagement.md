@@ -47,6 +47,14 @@ Cela supprime l'île de la base de données et marque la zone pour le nettoyage.
 
 Depuis BentoBox 3.16.1, les fichiers de région réels sont récupérés lors du prochain passage de maintenance (par défaut : 24 h) plutôt qu'à la demande. Si l'île partage un fichier de région avec d'autres îles actives, la zone supprimée reste en place jusqu'à ce que la région soit libre. Pour forcer un nettoyage immédiat, lancez `/bbox admin purge deleted` après la suppression — il ne retirera les blocs que si le fichier de région n'héberge plus aucune île active. Pour une suppression de blocs chirurgicale dans une région partagée, utilisez WorldEdit ou retirez les blocs manuellement.
 
+### Supprimer et récupérer l'île sur laquelle vous êtes
+
+Depuis BentoBox 3.19.0, une suppression peut être déclenchée — et annulée — sans nommer un joueur, tant que vous êtes sur l'île. Parce que les fichiers de région ne sont récupérés que lors du prochain passage de maintenance, une île supprimée provisoirement peut être sauvée jusqu'à ce que ce nettoyage ne s'exécute :
+
+- `/[admin_command] delete` (sans argument de joueur) supprime provisoirement l'île sur laquelle vous êtes après une invite de confirmation. Elle est refusée si l'île a encore une équipe.
+- `/[admin_command] undelete` efface le statut de suppression en attente de l'île sur laquelle vous êtes, la laissant sans propriétaire.
+- `/[admin_command] register <player>` sur une île en attente de suppression affiche maintenant une invite de confirmation ; confirmer enregistre l'île pour ce joueur et annule sa suppression.
+
 ## Nettoyage des Îles Inactives
 
 Si les joueurs abandonnent le serveur, leurs îles restent dans le monde. BentoBox ne supprime pas automatiquement les îles inactives, mais le **drapeau de suppression** et les outils externes peuvent être utilisés pour cela. De nombreux administrateurs de serveur gèrent cela en définissant une limite de réinitialisation et en examinant périodiquement les joueurs inactifs.

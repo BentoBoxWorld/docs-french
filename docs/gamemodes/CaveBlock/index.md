@@ -38,6 +38,43 @@ Vous pouvez trouver le dernier fichier config : [config.yml](https://github.com/
 
         Permet de créer un peu d'air frais au-dessus de votre caverne.
 
+=== "world.structures"
+    !!! summary "Description"
+        *Ajoutée dans la v1.23.0.* Une carte des structures vanilla qui peuvent générer dans le monde souterrain de l'**Overworld**. Définissez une structure sur `false` pour arrêter sa génération ; les structures non listées ici se génèrent normalement. Utilisez la clé de structure vanilla, par exemple `ancient_city`, `trial_chambers`, `mineshaft`, `mineshaft_mesa`, `stronghold`, `mansion`, `monument`, `pillager_outpost`, `ruined_portal`, `trail_ruins`, `village_plains`, `desert_pyramid`, `jungle_pyramid`, `igloo`, `swamp_hut`.
+
+        Les grandes structures comme les Villes Antiques et les Salles d'Épreuve peuvent remplir ou déséquilibrer un monde souterrain solide, c'est pourquoi elles sont **désactivées par défaut**. N'affecte que les chunks de l'Overworld nouvellement générés.
+
+        Par défaut :
+        ```yaml
+        structures:
+          ancient_city: false
+          trial_chambers: false
+          mansion: false
+          mineshaft: true
+          stronghold: true
+        ```
+
+=== "world.overworld-cave-fill"
+    !!! summary "Description"
+        *Ajoutée dans la v1.23.0.* Densité des cavernes de l'Overworld. Vanilla génère un réseau de cavernes dense 1.18+ (cavernes fromage et spaghetti) qui, dans un monde souterrain solide, peut sembler « rien que des passages ». Ceci re-solidifie une fraction de cet air de caverne après la génération en utilisant un champ de bruit à basse fréquence, de sorte que des régions entières se ferment en chambres séparées plutôt que de créer des trous uniques aléatoires.
+
+        - `0.0` conserve chaque caverne vanilla (la plus dense, le comportement original).
+        - `1.0` remplit presque toutes les cavernes (presque solide).
+        - Essayez `0.4` – `0.6` pour les réduire.
+
+        Les biomes souterrains, les minerais, les décorations et les structures sont conservés de toute façon. N'affecte que les chunks nouvellement générés.
+
+        Par défaut : `0.0`
+
+=== "world.overworld-carvers"
+    !!! summary "Description"
+        *Ajoutée dans la v1.23.0.* Générer les cavernes de carver vanilla (grandes ravines et longs tunnels ronds) dans l'Overworld. Celles-ci se superposent aux cavernes de bruit. Définissez sur `false` pour supprimer les ravines et tunnels larges tout en conservant les cavernes de bruit.
+
+        !!! warning
+            BentoBox ne supporte pas de changer cette valeur en milieu de partie. Si vous avez besoin de le changer, effectuez une réinitialisation complète de vos mondes et bases de données.
+
+        Par défaut : `true`
+
 === "world.normal.roof"
     !!! summary "Description"
         Autoriser le basculement si le bloc supérieur de l'Overworld doit être un bloc de bedrock. Sinon, il sera composé de pierre.
@@ -124,7 +161,35 @@ L'addon introduit 1 drapeau de paramètres BentoBox :
 
 ## Journal des modifications
 
-!!! warning "Nouveautés dans v1.21.0 — Modification : génération du monde remaniée"
+??? note "Nouveautés dans v1.23.0"
+    **Publié :** 7 juillet 2026
+
+    Donne aux administrateurs un contrôle direct sur ce qui remplit le monde souterrain de l'Overworld, en s'appuyant sur le travail de génération 1.22.0.
+
+    - ⚙️ **Structures d'Overworld configurables.** Une nouvelle section `structures:` dans `config.yml` active/désactive les structures vanilla individuelles (Villes Antiques, Salles d'Épreuve, Manoirs, Mineshafts, Forteresses et plus). Les plus grandes structures remplissant le monde sont désactivées par défaut. Corrige [#112](https://github.com/BentoBoxWorld/CaveBlock/issues/112).
+    - ⚙️ **Contrôle de la densité des cavernes de l'Overworld.** Un nouveau paramètre `overworld-cave-fill` (`0.0`–`1.0`, par défaut `0.0`) re-solidifie une fraction du réseau de cavernes dense vanilla pour que les mondes ressemblent moins à des passages interminables, tout en conservant les biomes, les minerais, les décorations et les structures intacts. Corrige [#111](https://github.com/BentoBoxWorld/CaveBlock/issues/111).
+    - ⚙️ **Bascule des cavernes de carver.** Un nouveau paramètre `overworld-carvers` (par défaut `true`) supprime les ravines vanilla et les tunnels larges tout en conservant les cavernes de bruit. Celui-ci ne peut pas être changé en milieu de partie.
+
+    Les nouvelles options sont écrites dans `config.yml` automatiquement au premier lancement et n'affectent que les chunks **nouvellement générés** ; les valeurs par défaut préservent le comportement 1.22.0, sauf que les plus grandes structures sont maintenant désactivées par défaut. Voir la section Configuration ci-dessus.
+
+    [Release v1.23.0](https://github.com/BentoBoxWorld/CaveBlock/releases/tag/1.23.0)
+
+??? warning "Nouveautés dans v1.22.0 — Génération du Nether et de l'End remaniée"
+    **Publié :** 6 juillet 2026
+
+    Reconstruit comment le **Nether** et **l'End** sont générés. Auparavant, les deux dimensions étaient un bloc solide de roche parsemé de blocs individuels aléatoires — y compris du feu flottant qui causait des ralentissements — et n'avaient pas de véritables cavernes.
+
+    - 🔺 **Refonte de la génération du Nether et de l'End.** Les deux dimensions sont maintenant remplies de façon solide et taillées par un générateur de cavernes de bruit 3D en tunnels et chambres connectés, avec une marge solide contre le sol et le toit.
+    - 🌋 **Mer de lave du Nether.** Les vides des cavernes les plus basses se remplissent de lave plutôt que d'air ouvert ; le sol et le toit restent solides pour que le monde reste fermé.
+    - 🗺️ **Biomes Nether naturels.** Les cinq biomes du Nether sont partagés en régions naturelles, grossièrement égales, de sorte que plusieurs biomes apparaissent dans une seule île.
+    - 🌿 **Décorations tenant compte des biomes.** Nylium cramoisi/déformé, racines, champignons et vignes ; vallées de sable de l'âme avec feu de l'âme et os ; deltas de basalte avec colonnes et feu de magma ; taches de plafond de pierre lumineuse ; tiges de fin et chorus dans l'End.
+    - ⚡ **Plus de feu flottant qui cause des ralentissements.** Le feu est maintenant clairsemé et enraciné sur la netherrack/magma.
+
+    🔺 **Génération du monde changée :** Le nouveau générateur n'affecte que les chunks **nouvellement générés**. Les chunks Nether/End existants conservent l'ancien apparence, vous pouvez donc voir une couture où l'ancien rencontre le nouveau. Régénérez ces dimensions (ou commencez de nouveaux mondes) si vous voulez un apparence cohérente.
+
+    [Release v1.22.0](https://github.com/BentoBoxWorld/CaveBlock/releases/tag/1.22.0)
+
+??? warning "Nouveautés dans v1.21.0 — Modification : génération du monde remaniée"
     **Publié :** 27 juin 2026
 
     Un remaniement majeur de la génération. CaveBlock cible désormais **Paper 1.21.11 sur Java 21** et l'**API BentoBox 3.14**.

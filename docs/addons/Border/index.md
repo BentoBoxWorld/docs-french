@@ -32,15 +32,15 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 
 ### border type {...}
 **Commande**: `/[player command] border type {barrier | vanilla}`
-**Description**: Définit le type de bordure.
-**Permission**: `[gamemode].border.set-type`. Défaut: `true`.
+**Description**: Définit le type de bordure. Exécutez sans argument pour basculer entre les types disponibles.
+**Permission**: `[gamemode].border.type`. Défaut: `true`.
 **Exemple**: `/[player command] border type barrier`
 
-### couleur {red|green|blue}
-**Commande**: `/[player command] color {red | green | blue}`  
+### border color {red|green|blue}
+**Commande**: `/[player command] border color {red | green | blue}`  
 **Description**: Définit la couleur de la bordure monde vanilla pour le joueur. S'applique uniquement avec le type de bordure vanilla.  
-**Permission**: `[gamemode].color.red`, `[gamemode].color.green`, `[gamemode].color.blue` (ou `[gamemode].color.*` pour toutes). Défaut: `op`.  
-**Exemple**: `/[player command] color green`
+**Permission**: `[gamemode].border.color.red`, `[gamemode].border.color.green`, `[gamemode].border.color.blue` (ou `[gamemode].border.color.*` pour toutes). Défaut: `op`.  
+**Exemple**: `/[player command] border color green`
 
 !!! tip
     `[gamemode]` est un préfixe qui diffère selon le mode de jeu que vous exécutez.
@@ -70,6 +70,33 @@ Valeur par défaut:
 disabled-gamemodes: []
 ```
 
+### Type de bordure
+Le type de bordure par défaut que les nouveaux joueurs reçoivent. Il y a deux choix :
+
+- `VANILLA` — utilise l'effet de bordure de monde natif de Minecraft (le mur tremblotant que vous voyez dans le jeu vanilla). Elle peut être teintée d'une couleur.
+- `BARRIER` — utilise des blocs de barrière invisibles et des particules colorées qui n'apparaissent que lorsque vous vous en approchez.
+
+Les joueurs disposant d'une permission peuvent changer leur propre bordure avec `/[player command] border type`. S'ils n'ont pas la permission, ils reçoivent ce que vous avez défini ici.
+
+```yml
+type: VANILLA
+```
+
+### Couleur de la bordure vanilla
+La couleur de la bordure de monde vanilla. Utilisée uniquement lorsque le type de bordure est `VANILLA`.  
+Les choix sont `RED`, `GREEN` ou `BLUE`. Les joueurs disposant d'une permission peuvent choisir leur propre couleur avec `/[player command] border color`.
+
+```yml
+color: BLUE
+```
+
+### Renvoyer les objets
+Si `true`, les objets qu'un joueur jette contre la bordure sont renvoyés à l'intérieur au lieu de s'envoler. Définissez sur `false` pour laisser les objets lancés passer à travers.
+
+```yml
+bounce-back: true
+```
+
 ### Retour à la téléportation
 Contrôle si les joueurs qui réussissent à passer à travers la bordure (par exemple par téléportation dans le même monde) devraient être téléportés de retour à leurs îles.
 
@@ -87,6 +114,13 @@ return-teleport: true
     use-barrier-blocks: false
     return-teleport: false
     ```
+
+### Bloc de sécurité du retour à la téléportation
+Utilisé uniquement lorsque `return-teleport` est `true`. Si un joueur est téléporté de retour à l'intérieur de la bordure et se retrouve quelque part sans sécurité (par exemple au-dessus d'une chute ou dans la lave), ceci place un bloc sécurisé sous ses pieds pour qu'il ne se fasse pas mal.
+
+```yml
+return-teleport-safety-block: true
+```
 
 ### Utiliser des blocs de barrière.
 S'applique uniquement aux joueurs qui n'utilisent **pas** le type de bordure vanilla.
@@ -127,11 +161,19 @@ Définissez sur `false` si vous ne voulez **aucune** particule de mur à affiche
 show-particles: true
 ```
 
-### Afficher les warps sur la carte
-Contrôle si la fonctionnalité de couleur de bordure monde vanilla est disponible. Les couleurs par joueur sont définies avec la commande `/[player_command] color`. Nécessite un plugin de carte web (Dynmap ou BlueMap) et le hook de carte BentoBox.
+### Décalage de la barrière
+Applicable uniquement aux joueurs qui n'utilisent **pas** le type de bordure vanilla.
+
+Normalement, la bordure est exactement au bord de la plage de protection du joueur. Ce paramètre pousse la barrière vers l'**extérieur** du nombre de blocs que vous donnez, afin que les joueurs puissent marcher un peu au-delà de leur zone protégée avant de heurter le mur.
+
+Choses importantes à savoir :
+
+- Cela ne rend **pas** la zone protégée plus grande — les joueurs ne peuvent toujours pas construire ni protéger l'espace supplémentaire, ils peuvent seulement s'y tenir.
+- La bordure ne dépassera jamais la distance de l'île, peu importe le nombre que vous définissez.
+- La valeur minimale (et par défaut) est `0`, ce qui signifie que la bordure se situe exactement sur la plage de protection.
 
 ```yml
-show-warps-on-map: true
+barrier-offset: 0
 ```
 
 ## Placeholders
@@ -139,6 +181,51 @@ show-warps-on-map: true
 | Placeholder | Description | Version |
 |---|---|---|
 | `%Border_color%` | La couleur de bordure actuelle du joueur (`red`, `green` ou `blue`) | 4.8.0 |
+
+## FAQ
+
+??? question "Comment puis-je modifier la taille de la bordure?"
+    La bordure n'a pas sa propre taille — elle est dessinée autour de la **plage de protection** de chaque île. Donc, pour agrandir ou réduire la bordure, vous modifiez la plage de protection.
+
+    - Donnez aux joueurs une plage plus grande avec une permission comme `[gamemode].island.range.<number>` (par exemple `bskyblock.island.range.150`).
+    - Les admins peuvent définir la plage sur une île spécifique avec la commande admin de plage, par exemple `/bsbadmin range set <player> <number>`.
+    - La plage ne peut jamais être plus grande que **la moitié de la distance entre les îles**, et cette distance est définie une fois à la création du monde et ne peut pas être modifiée ensuite.
+
+    Consultez [Plage d'Île et Espacement](../../BentoBox/About/IslandManagement.md#plage-dile-et-espacement) pour tous les détails.
+
+??? question "Puis-je faire la bordure un peu plus grande que la plage de l'île?"
+    Oui ! Utilisez le paramètre `barrier-offset` dans `config.yml`. Il pousse la bordure vers l'extérieur du nombre de blocs que vous choisissez, afin que les joueurs puissent marcher un peu au-delà de leur zone protégée avant de heurter le mur.
+
+    N'oubliez pas que cela déplace uniquement le mur — cela ne donne **pas** aux joueurs de terrain supplémentaire sur lequel ils peuvent construire ou protéger. Consultez le paramètre [Décalage de la barrière](#decalage-de-la-barriere) ci-dessus.
+
+??? question "Quelle est la différence entre les types de bordure barrier et vanilla?"
+    - **Vanilla** utilise l'effet de bordure de monde natif de Minecraft — le mur scintillant que vous connaissez déjà du jeu normal. Vous pouvez le teinter en rouge, vert ou bleu.
+    - **Barrier** utilise des blocs de barrière invisibles plus des particules colorées qui ne s'affichent que lorsque vous vous approchez du bord.
+
+    Les joueurs disposant d'une permission peuvent basculer entre eux avec `/[player command] border type`.
+
+??? question "Je ne veux pas d'un mur solide — puis-je simplement montrer une ligne que les joueurs peuvent traverser?"
+    Oui. Définissez `use-barrier-blocks: false` pour qu'il n'y ait pas de mur solide, et `return-teleport: false` pour que les joueurs ne soient pas tirés en arrière. Cela ne laisse que la bordure visuelle. Mettez ceci dans `config.yml`:
+
+    ```yml
+    use-barrier-blocks: false
+    return-teleport: false
+    ```
+
+??? question "Comment puis-je modifier la couleur de la bordure?"
+    Les couleurs ne fonctionnent qu'avec le type de bordure **vanilla**. Définissez une valeur par défaut au niveau du serveur avec le paramètre `color` dans `config.yml` (`RED`, `GREEN` ou `BLUE`). Les joueurs disposant d'une permission peuvent choisir leur propre couleur en jeu avec `/[player command] border color {red|green|blue}`.
+
+??? question "Comment puis-je désactiver la bordure?"
+    Les joueurs peuvent basculer leur propre bordure activée ou désactivée avec `/[player command] border` (ils ont besoin de la permission `[gamemode].border.toggle`). Pour l'avoir désactivée pour tout le monde par défaut, définissez `show-by-default: false` dans `config.yml`.
+
+??? question "La bordure ne s'affiche pas — que dois-je vérifier?"
+    - Assurez-vous que le mode de jeu n'est pas répertorié dans `disabled-gamemodes` dans `config.yml`.
+    - Vérifiez que le joueur a réellement la bordure activée (`/[player command] border`) et que `show-by-default` est `true`.
+    - La bordure n'apparaît que autour de la plage de protection de votre propre île, donc vous devez être près d'une arête pour la voir.
+    - Si vous utilisez le type **barrier** avec `show-particles: false`, le mur est invisible jusqu'à ce que vous le touchiez — c'est normal.
+
+??? question "Pouvez-vous ajouter une fonctionnalité X?"
+    Veuillez la demander sur le [issue tracker](https://github.com/BentoBoxWorld/Border/issues).
 
 ## Journal des modifications
 
