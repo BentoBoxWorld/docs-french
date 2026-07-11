@@ -26,10 +26,15 @@ Le config.yml a les sections suivantes :
 * blocklimits
 * blocklimits-nether
 * blocklimits-end
+* blockgrouplimits *(1.29.0+)*
+* blockgrouplimits-nether / blockgrouplimits-end *(1.29.0+)*
 * worlds
 * entitylimits
 * entitylimits-nether
 * entitylimits-end
+* entitygrouplimits
+
+Il possède également ces commutateurs de premier niveau (tous ajoutés en **1.29.0** sauf mention contraire) : `apply-member-limit-perms`, `show-limit-messages`, `stacked-plants-count-as-one` et `log-limits-on-join`.
 
 !!! info "Limites par dimension (1.28.2+)"
     Depuis la version **1.28.2**, les comptages de blocs, les comptages d'entités, les limites et les offsets sont suivis **indépendamment pour l'Overworld, le Nether et l'End**. Une limite unique définie dans `blocklimits` ou `entitylimits` s'applique séparément à chaque dimension — par exemple `HOPPER: 10` autorise 10 entonnoirs dans l'Overworld, 10 dans le Nether et 10 dans l'End (30 au total sur l'île). Utilisez les sections optionnelles `-nether` / `-end` pour remplacer une seule dimension.
@@ -77,6 +82,78 @@ entitygrouplimits:
       - CREEPER
 ```
 
+### blockgrouplimits
+
+!!! info "Depuis la 1.29.0"
+    Le pendant côté blocs de `entitygrouplimits` : une limite partagée sur un ensemble de matériaux de blocs. Les comptages de chaque membre sont additionnés et vérifiés par rapport à la limite du groupe, de sorte que les joueurs ne peuvent pas contourner une limite en convertissant des blocs apparentés (par exemple herbe → terre) ou en les répartissant entre variantes (piston / piston collant). Les `blocklimits` individuelles s'appliquent toujours par-dessus si les deux sont définies.
+
+Définissez un groupe nommé avec une `icon`, une `limit` partagée et une liste de `materials` :
+
+```yaml
+blockgrouplimits:
+  Pistons:
+    icon: PISTON
+    limit: 10
+    materials:
+    - PISTON
+    - STICKY_PISTON
+  Soil:
+    icon: GRASS_BLOCK
+    limit: 200
+    materials:
+    - GRASS_BLOCK
+    - DIRT
+    - DIRT_PATH
+    - FARMLAND
+```
+
+Les remplacements par environnement sont pris en charge via `blockgrouplimits-nether` / `blockgrouplimits-end`, qui remplacent uniquement la limite numérique d'un groupe déjà défini dans `blockgrouplimits` :
+
+```yaml
+blockgrouplimits-nether:
+  Pistons: 5
+```
+
+!!! warning "Lancez un recomptage après avoir modifié les groupes"
+    Après avoir ajouté un groupe de blocs (ou modifié `stacked-plants-count-as-one` ci-dessous), lancez `/[player_command] limits recount` pour que les comptages stockés correspondent aux nouvelles règles de comptage.
+
+### Blocs personnalisés ItemsAdder & Oraxen
+
+!!! info "Depuis la 1.29.0"
+    Les blocs personnalisés d'**ItemsAdder** et d'**Oraxen** peuvent être limités en utilisant leurs identifiants directement dans la section `blocklimits` existante (et ses remplacements `-nether`/`-end` et `worlds:`). L'application utilise les propres événements de pose/casse de chaque plugin via les hooks BentoBox, enregistrés uniquement lorsque le plugin est installé. Mettez entre guillemets les clés contenant deux-points.
+
+```yaml
+blocklimits:
+  "iafestivities:christmas/christmas_tree/green_orb": 5
+  "oraxen:caveblock": 10
+```
+
+### Autres commutateurs
+
+=== "apply-member-limit-perms"
+    !!! summary "Description"
+        (**1.29.0+**) Lorsque `true`, les permissions `<gamemode>.island.limit.*` d'un membre de l'équipe sont fusionnées dans les limites de l'île lors de sa connexion — la valeur la plus élevée l'emporte. Les joueurs coopérants et de confiance ne sont pas membres de l'équipe et leurs permissions ne s'appliquent jamais.
+
+        Par défaut : `false`
+
+=== "show-limit-messages"
+    !!! summary "Description"
+        (**1.29.0+**) Lorsque `false`, les limites sont appliquées silencieusement — les poses et apparitions sont toujours bloquées, mais les joueurs ne reçoivent aucun message de limite atteinte.
+
+        Par défaut : `true`
+
+=== "stacked-plants-count-as-one"
+    !!! summary "Description"
+        (**1.29.0+**) Lorsque `true`, une tige de `SUGAR_CANE` ou de `BAMBOO` compte comme une seule plante quelle que soit sa hauteur — seul le segment de base est compté. Lancez un recomptage après avoir modifié cette option.
+
+        Par défaut : `false`
+
+=== "log-limits-on-join"
+    !!! summary "Description"
+        Journalise les limites d'une île dans la console lorsque son propriétaire se connecte. Depuis la **1.29.0**, cette option est **par défaut à `false`** (elle était auparavant à `true`) car elle inondait la console sur les serveurs comportant de nombreuses limites basées sur les permissions. Remettez-la à `true` si vous vous appuyiez sur cette sortie pour le débogage.
+
+        Par défaut : `false`
+
 ## Permissions
 
 Les propriétaires d'îles peuvent avoir des permissions exclusives qui remplacent les paramètres par défaut ou spécifiques au monde. Deux formats sont pris en charge :
@@ -113,6 +190,27 @@ Les permissions complètes sont listées [ici](Permissions).
 
 
 ## Journal des modifications
+
+??? note "Nouveautés dans v1.29.0"
+    **Publié :** 10 juillet 2026
+
+    Compatibilité : API BentoBox 2.7.1 · Paper Minecraft 1.21.11 – 26.2 · Java 21.
+
+    - ⚙️ **Limites de groupes de blocs.** Une limite partagée sur un ensemble de matériaux de blocs (par exemple pistons + pistons collants, ou herbe/terre/terre labourée), afin que les joueurs ne puissent pas contourner une limite en convertissant des blocs apparentés. Configuré sous `blockgrouplimits`, avec des remplacements `-nether`/`-end`. Voir la section Configuration ci-dessus.
+    - ⚙️ **Limites de blocs personnalisés ItemsAdder & Oraxen.** Limitez les blocs personnalisés directement depuis `blocklimits` en utilisant leurs identifiants avec espace de noms.
+    - ⚙️ **Permissions de limite des membres de l'équipe (optionnel).** Avec `apply-member-limit-perms: true`, les permissions `island.limit.*` des membres de l'équipe peuvent contribuer aux limites de l'île, et pas seulement celles du propriétaire.
+    - 🔡 **Placeholders et API des limites atteintes.** De nouveaux placeholders `%Limits_<gamemode>_island_reached_limits%` (plus `_overworld`/`_nether`/`_end`) listent quelles limites sont au maximum, soutenus par une nouvelle API `Limits#getReachedLimits(...)`. Clôt le plus ancien ticket ouvert du suivi (déposé en 2018).
+    - ⚙️ **Les plantes empilables peuvent compter comme une seule.** Comptez optionnellement toute une tige de canne à sucre ou de bambou comme une seule plante (`stacked-plants-count-as-one`).
+    - ⚙️ **Option d'application silencieuse.** `show-limit-messages: false` désactive les messages de chat de limite atteinte tout en maintenant les limites appliquées.
+    - 🔡 **Traductions manuelles des noms de matériaux/entités.** Les fichiers de locale peuvent désormais traduire les noms de blocs/entités affichés dans l'interface graphique et les messages de limite atteinte.
+    - **Les cadres, cadres lumineux et peintures peuvent désormais être limités** sous `entitylimits`.
+    - 🐛 **Correction : comptages d'entités fantômes provenant de mobs passés par un portail** (par exemple `Chicken 10/10` sans aucune poule sur l'île) et un golem de cuivre contournant la limite `COPPER_CHEST` en construisant.
+    - ⚙️ **`log-limits-on-join` est désormais par défaut à `false`** — remettez-le à `true` si vous vous appuyiez sur cette sortie console.
+
+    !!! warning "Les nouvelles options de configuration ne sont pas ajoutées automatiquement"
+        Les nouvelles clés n'apparaissent **pas** dans un `config.yml` existant — ajoutez celles que vous voulez depuis la liste ci-dessus, ou supprimez la config pour la régénérer. Après avoir ajouté un groupe de blocs ou modifié `stacked-plants-count-as-one`, lancez un recomptage pour que les comptages stockés correspondent aux nouvelles règles de comptage.
+
+    [Release v1.29.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.29.0)
 
 ??? note "Nouveautés dans v1.28.4"
     **Publié :** 6 juillet 2026
@@ -196,5 +294,6 @@ Certains articles ne peuvent pas être limités (pour l'instant). Les raisons so
 * Ender crystals
 * Ender pearls
 * Ender dragon
-* Item frames
-* Paintings
+
+!!! tip "Les cadres et peintures peuvent désormais être limités (1.29.0)"
+    Les cadres, cadres lumineux et peintures figuraient auparavant sur cette liste. Depuis la **1.29.0**, le comptage des entités est persistant et piloté par événements, donc les trois peuvent maintenant être configurés sous `entitylimits` comme n'importe quelle autre entité.

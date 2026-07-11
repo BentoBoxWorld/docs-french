@@ -105,7 +105,20 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! warning "Nouveautés dans v3.19.0 — Lits/ancres de respawn maintenant honorées"
+!!! note "Nouveautés dans v3.20.0 — suggestions de commandes & suppression des structures dans le cœur"
+    **Publié :** 11 juillet 2026
+
+    Une version de confort. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+. Rien ne change à la mise à niveau, sauf si vous activez explicitement une option.
+
+    - 🔡 ⚙️ **Suggestions de commandes « vouliez-vous dire ».** Une commande mal tapée comme `/teams` ou `/island invit Floris` propose désormais la commande BentoBox la plus proche — cliquable, ou acceptée en tapant `yes`/`y` dans les 30 secondes — au lieu d'afficher le texte d'aide. Les suggestions correspondent aux libellés et aux alias de toutes les arborescences de commandes, sont filtrées par permission, et utilisent le monde du mode de jeu où se trouve le joueur pour lever l'ambiguïté. Deux nouveaux commutateurs sous `general.did-you-mean` dans `config.yml` — `unknown-commands` et `subcommands` — tous deux **activés** par défaut ; mettez l'un ou l'autre à `false` puis `/bbox reload` pour désactiver.
+    - ⚙️ 🔺 **Suppression des structures vanilla au niveau du cœur pour chaque mode de jeu.** Désactiver une structure vanilla est désormais un unique paramètre du cœur au lieu d'une tâche par complément. Une nouvelle liste `world.disabled-structures` dans `config.yml` (appliquée à chaque Overworld/Nether/End BentoBox) empêche les structures listées de se générer **et** les ignore dans les recherches de structures — `/locate`, Yeux de l'Ender, cartes d'explorateur/au trésor, dauphins et échanges de cartographe villageois — corrigeant le gel du thread principal de `/locate` de longue date et les fuites de structures près du spawn. Les clés sont insensibles à la casse et aux séparateurs (`trial_chambers`, `ancient-city`). Un mode de jeu peut surcharger la liste structure par structure. **La liste est vide par défaut, donc le comportement est inchangé jusqu'à ce que vous l'activiez.**
+    - 🔌 **Hook Nexo.** BentoBox peut désormais placer et détecter les blocs et objets personnalisés [Nexo](https://nexomc.com/), aux côtés des autres intégrations d'objets personnalisés.
+    - 🔌 **Placement de blocs Oraxen.** `OraxenHook.placeBlock` expose le placement de blocs personnalisés Oraxen aux compléments, à l'image des autres hooks de blocs personnalisés.
+    - 🔡 **Note sur les locales :** trois nouvelles clés `general.did-you-mean` ont été ajoutées aux 22 locales fournies, et la clé manquante préexistante `commands.admin.team.setowner.specify-island` a été remplie dans chaque fichier non anglais. Régénérez ou mettez à jour tout fichier de locale personnalisé.
+
+    [Release v3.20.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.20.0)
+
+??? warning "Nouveautés dans v3.19.0 — Lits/ancres de respawn maintenant honorées"
     **Publié :** 8 juillet 2026
 
     Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
