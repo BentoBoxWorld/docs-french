@@ -161,6 +161,16 @@ L'addon introduit 1 drapeau de paramètres BentoBox :
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.23.1"
+    **Publié :** 9 juillet 2026
+
+    Une version de correction qui comble la faille de suppression des structures introduite en 1.23.0. Recommandée pour tous les serveurs sous 1.23.0 qui désactivent des structures vanilla.
+
+    - 🔺 **Les structures désactivées ne gèlent plus le serveur.** Désactiver une structure n'annulait que son *placement*, pas ses *règles* de placement, de sorte que les recherches de structures (`/locate`, Yeux de l'Ender, cartes d'explorateur/au trésor, dauphins, échanges de cartes de villageois) continuaient à scanner jusqu'au rayon maximal et à geler le thread principal. Un nouveau gestionnaire `StructuresLocateEvent` retire désormais les structures désactivées de la recherche dès le départ, renvoyant « introuvable » instantanément. Corrige [#116](https://github.com/BentoBoxWorld/CaveBlock/issues/116).
+    - 🔺 **Les structures ne se faufilent plus dans la zone de spawn.** L'écouteur de suppression est désormais enregistré tôt dans `createWorlds()`, avant que les premiers chunks de spawn ne se génèrent, de sorte qu'une structure désactivée ne peut plus apparaître près du spawn.
+
+    [Release v1.23.1](https://github.com/BentoBoxWorld/CaveBlock/releases/tag/1.23.1)
+
 ??? note "Nouveautés dans v1.23.0"
     **Publié :** 7 juillet 2026
 

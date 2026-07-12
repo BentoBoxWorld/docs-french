@@ -168,6 +168,20 @@ Depuis **2.9.0**, les générateurs peuvent être verrouillés derrière des exi
 !!! warning "Les générateurs verrouillés par permission sont maintenant révoqués"
     Depuis **2.9.0**, un générateur déverrouillé via permission est re-vérifié et **révoqué** des listes déverrouillées et actives de l'île lorsque le propriétaire actuel (en ligne) n'a plus la permission requise — par exemple après un transfert de propriété. Les niveaux achetés sont conservés, donc l'accès revient si la permission est retrouvée ; les propriétaires hors ligne sont laissés intacts. Auparavant, une telle concession était permanente.
 
+### Sorties en blocs personnalisés (ItemsAdder, CraftEngine, Oraxen, Nexo)
+
+Depuis **2.10.0**, un niveau de générateur peut produire des **blocs personnalisés** d'ItemsAdder, CraftEngine, Oraxen et Nexo, et pas seulement des matériaux vanilla — par exemple un minerai ItemsAdder incrusté de diamants entre dans le mélange aléatoire pondéré aux côtés de tout le reste. Tous les accès à ces plugins passent par les hooks du cœur de BentoBox, de sorte que le complément n'en dépend jamais directement.
+
+- Les blocs sont stockés sous forme d'identifiants texte : des noms vanilla comme `COBBLESTONE`, ou des identifiants préfixés par fournisseur `itemsadder:namespace:id`, `craftengine:namespace:id`, `oraxen:id`, `nexo:id`. **Les bases de données et modèles existants se chargent sans modification.**
+- Le panneau d'édition admin gagne un bouton **Ajouter un bloc personnalisé** — saisissez l'identifiant dans le chat et il est validé par rapport au registre des hooks. Les panneaux affichent les blocs personnalisés avec la texture et le nom d'affichage propres au fournisseur.
+- Si un bloc personnalisé sélectionné est indisponible au moment de la génération (le fournisseur ou le bloc est absent), le générateur se rabat sur le bloc vanilla et explique pourquoi via `/[admin_command] generator why`, plutôt que d'échouer silencieusement. Les blocs personnalisés non enregistrés dans un modèle sont importés avec un avertissement, afin que les modèles restent portables entre serveurs.
+
+!!! note "Disponibilité des fournisseurs"
+    ItemsAdder et CraftEngine génèrent des blocs dès aujourd'hui. Oraxen et Nexo sont câblés et généreront une fois que les hooks correspondants du cœur de BentoBox seront livrés (BentoBox 3.20.0 ajoute le hook Nexo et `OraxenHook.placeBlock`).
+
+!!! warning "Nécessite BentoBox 3.19.1 ou plus récent"
+    2.10.0 dépend de l'API de hook de blocs personnalisés ajoutée dans BentoBox 3.19.1 et **ne se chargera pas sur un cœur plus ancien**. Mettez à jour BentoBox avant d'installer ce jar.
+
 ## Commandes
 
 !!! tip
@@ -318,6 +332,20 @@ Depuis **2.9.0**, les générateurs peuvent être verrouillés derrière des exi
     ```
 
 ## Journal des modifications
+
+??? warning "Nouveautés dans v2.10.0 — blocs personnalisés, nécessite BentoBox 3.19.1"
+    **Publié :** 11 juillet 2026
+
+    Les générateurs peuvent désormais produire des blocs personnalisés d'autres plugins, acheminés via les hooks du cœur de BentoBox.
+
+    - 🔺 **Prise en charge des blocs personnalisés.** Les niveaux de générateur peuvent produire des blocs d'**ItemsAdder, CraftEngine, Oraxen et Nexo** en plus des matériaux vanilla. Les blocs sont stockés sous forme d'identifiants texte (`COBBLESTONE`, ou `itemsadder:namespace:id`, `craftengine:namespace:id`, `oraxen:id`, `nexo:id`) ; les bases de données existantes se chargent sans modification. Corrige [#103](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/issues/103). Voir la section Configuration ci-dessus.
+    - ✨ **Bouton de panneau Ajouter un bloc personnalisé** avec validation de la saisie chat par rapport au registre des hooks ; les panneaux affichent les blocs personnalisés avec la texture et le nom propres au fournisseur. Les blocs personnalisés indisponibles se rabattent sur le bloc vanilla avec un rapport `/why` au lieu d'échouer silencieusement. ItemsAdder et CraftEngine génèrent dès aujourd'hui ; Oraxen et Nexo génèrent une fois les hooks de BentoBox 3.20.0 présents.
+    - 🐛 **Les modifications de chance de trésor sont désormais enregistrées.** La modification de la chance d'un trésor dans le panneau admin écrivait dans le `treasureChanceMap` déprécié au lieu de `treasureItemChanceMap`, de sorte que les modifications étaient perdues — corrigé.
+    - ⚙️ **Les modèles acceptent les blocs personnalisés.** `generatorTemplate.yml` accepte désormais des clés de blocs préfixées par fournisseur et entre guillemets. Aucune action de configuration n'est requise pour les installations existantes ; les blocs personnalisés non enregistrés sont importés avec un avertissement.
+    - 🔡 **Note sur les locales :** de nouvelles clés `en-US.yml` ont été ajoutées pour l'interface des blocs personnalisés. Régénérez ou mettez à jour vos fichiers de locale pour récupérer les nouvelles chaînes.
+    - 🔺 **Nécessite BentoBox 3.19.1 ou plus récent.** L'API de hook de blocs personnalisés que cette version appelle n'est disponible qu'à partir de 3.19.1 ; le complément ne se chargera pas sur un cœur plus ancien. Mettez d'abord BentoBox à jour.
+
+    [Release v2.10.0](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/releases/tag/2.10.0)
 
 ??? warning "Nouveautés dans v2.9.0 — les générateurs verrouillés par permission sont maintenant révoqués"
     **Publié :** 8 juillet 2026
