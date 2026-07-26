@@ -105,7 +105,19 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! note "Nouveautés dans v3.20.0 — suggestions de commandes & suppression des structures dans le cœur"
+!!! note "Nouveautés dans v3.21.0 — boîtes de dialogue modales"
+    **Publié :** 22 juillet 2026
+
+    Une version axée sur l'expérience joueur. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
+
+    - ⚙️ 🔡 **Boîtes de dialogue modales pour les actions à friction élevée.** Les confirmations de commandes sensibles, le sélecteur de destination de `/island go`, les invitations d'équipe et le choix du mode de jeu à la première connexion peuvent désormais apparaître sous forme de véritables boîtes de dialogue modales, que le joueur ne peut ni mal lire ni faire défiler sans les voir. Une nouvelle section `island.dialogs` dans `config.yml` contient un commutateur par flux — `confirmations`, `go-picker` et `team-invites` sont **activés** par défaut, `game-mode-selection` est **désactivé** par défaut car il est intrusif par conception. Les boîtes de dialogue nécessitent un serveur Minecraft 26+ ; sur toute version antérieure, chaque commutateur est ignoré et le comportement classique en chat/commande est utilisé, donc aucune action n'est nécessaire.
+    - **Correspondance tolérante pour `/island go`.** `/island go myisland`, `hom`, ou un nom saisi avec la mauvaise casse ou une double espace parasite téléporte désormais le joueur là où il le souhaitait, au lieu d'échouer sur une correspondance exacte et d'afficher la liste complète. Voir [Emplacements du Foyer](IslandManagement.md#emplacements-du-foyer).
+    - 🔡 **Note sur les locales :** de nouvelles clés de dialogue (`general.dialogs.*`, ainsi que des clés de dialogue et de sélecteur sous les commandes de confirmation, `island go` et d'invitation d'équipe) ont été ajoutées aux 22 locales fournies. Régénérez ou mettez à jour tout fichier de locale personnalisé.
+    - 🔧 **Les développeurs de compléments** disposent de la même API `world.bentobox.bentobox.api.dialogs` que celle utilisée par le cœur — voir [Boîtes de dialogue modales](../Developer-Documentation.md#boites-de-dialogue-modales).
+
+    [Release v3.21.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.21.0)
+
+??? note "Nouveautés dans v3.20.0 — suggestions de commandes & suppression des structures dans le cœur"
     **Publié :** 11 juillet 2026
 
     Une version de confort. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+. Rien ne change à la mise à niveau, sauf si vous activez explicitement une option.

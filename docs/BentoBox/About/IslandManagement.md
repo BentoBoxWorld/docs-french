@@ -25,6 +25,18 @@ Les joueurs peuvent définir plusieurs emplacements du foyer sur leur île avec 
 [gamemode].island.home.maxhomes.<number>
 ```
 
+### Trouver le bon foyer
+
+Depuis BentoBox 3.21.0, `/island go <name>` n'exige plus une correspondance exacte et sensible à la casse. Le nom saisi est résolu par ordre décroissant de certitude :
+
+1. Une correspondance exacte avec un nom d'île ou de foyer.
+2. Une correspondance en ignorant la casse, les codes de couleur et les espaces superflus — ainsi `myisland` trouve `MyIsland`, et une double espace parasite est pardonnée.
+3. Un préfixe unique insensible à la casse — `hom` trouve `Home`.
+
+Tout ce qui reste ambigu retombe sur la liste habituelle des destinations plutôt que de deviner, et le nom canonique résolu est utilisé pour la téléportation, afin que les foyers nommés restent exacts.
+
+Si le joueur exécute `/island go` sans aucun nom et qu'il a plus d'une île ou d'un foyer au choix, BentoBox peut afficher un **sélecteur de destination** — une boîte de dialogue modale avec un bouton par destination. Cela nécessite un serveur Minecraft 26+ et est contrôlé par `island.dialogs.go-picker` dans le `config.yml` de BentoBox (par défaut `true`). Sur les serveurs plus anciens, ou si le commutateur est désactivé, la liste cliquable classique dans le chat est affichée à la place.
+
 ## Réinitialisation d'une Île
 
 Les joueurs peuvent recommencer à zéro en réinitialisant leur île avec `/island reset`. Cela **supprime l'île actuelle** et crée une toute nouvelle. Les administrateurs peuvent :
