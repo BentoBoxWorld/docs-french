@@ -61,3 +61,39 @@ PlayerEvent.builder()
 ```
 
 C'est purement additif — toutes les classes sont nouvelles et aucune API existante n'a changé, donc la 3.17.0 est compatible binairement avec les addons existants. L'[addon Inventory Switcher](../addons/InvSwitcher/index.md) utilise ces événements pour protéger les inventaires et soldes par monde lors des réinitialisations. Voir [Release 3.17.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.17.0).
+
+# Boîtes de dialogue modales
+
+*Ajouté dans BentoBox 3.21.0.*
+
+`world.bentobox.bentobox.api.dialogs` encapsule le système de boîtes de dialogue modales de Paper, qui nécessite **Minecraft 26 ou une version ultérieure**. Les boîtes de dialogue viennent compléter l'API Panels : un panneau est un inventaire que le joueur peut refermer d'un clic, une boîte de dialogue est une fenêtre modale à laquelle le joueur doit répondre. Le cœur les utilise pour les confirmations de commandes, le sélecteur de destination de `/island go`, les invitations d'équipe et le choix du mode de jeu à la première connexion.
+
+| Classe | Rôle |
+| --- | --- |
+| `Dialogs` | `Dialogs.isSupported()` — indique si ce serveur peut afficher des boîtes de dialogue |
+| `DialogBuilder` | Builder fluide : `title`, `body`, `escapable`, `pause`, `confirmation`, `button`, `build` |
+| `DialogButton` | Un libellé, une infobulle facultative et un gestionnaire de clic `Consumer<User>` |
+| `BBDialog` | La boîte de dialogue construite — `show(User)` pour l'afficher |
+
+`title(...)`, `body(...)` et `DialogButton.of(...)` acceptent chacun soit un `Component` Adventure, soit un `User` accompagné d'une référence de locale (avec des variables facultatives), de sorte que le texte des boîtes de dialogue est traduit comme le reste de votre addon. Tout est basé sur `Component` de bout en bout, donc les actions de clic sont préservées.
+
+```java
+if (!Dialogs.isSupported()) {
+    // Serveur antérieur à la 26 : repli sur votre flux en chat ou en panneau
+    askInChat(user);
+    return;
+}
+new DialogBuilder()
+    .title(user, "myaddon.confirm.title")
+    .body(user, "myaddon.confirm.body", "[name]", island.getName())
+    .confirmation(
+        DialogButton.of(user, "myaddon.confirm.yes", u -> doTheThing(u)),
+        DialogButton.of(user, "myaddon.confirm.no", u -> u.sendMessage("myaddon.confirm.cancelled")))
+    .build()
+    .show(user);
+```
+
+!!! warning "Prévoyez toujours un repli"
+    Vérifiez `Dialogs.isSupported()` et conservez votre comportement précédent en chat ou en panneau pour les serveurs plus anciens, exactement comme le fait le cœur. Les gestionnaires de clic des boutons s'exécutent sur le thread principal, ils peuvent donc utiliser directement l'API Bukkit.
+
+Voir [Release 3.21.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.21.0).

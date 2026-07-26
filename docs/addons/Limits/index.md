@@ -191,6 +191,20 @@ Les permissions complètes sont listées [ici](Permissions).
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.29.1"
+    **Publié :** 23 juillet 2026
+
+    Compatibilité : API BentoBox 2.7.1 · Paper Minecraft 1.21.11 – 26.2 · Java 21. Aucun changement de configuration ni de locale — c'est un remplacement direct.
+
+    - 🐛 **La reproduction naturelle respecte désormais les limites d'entités.** La reproduction qui se produit sans intervention d'un joueur (abeilles, renards, reproducteurs gérés par des villageois, et similaires) contournait entièrement la vérification des limites, donc les décomptes pouvaient dépasser la limite configurée. Toute reproduction est désormais vérifiée. Les joueurs op ou disposant de la permission de contournement restent exemptés.
+    - 🐛 **Les reproducteurs automatiques ne réessaient plus à chaque tick.** Quand une tentative de reproduction est refusée à la limite, les deux parents sont mis en temps de recharge de reproduction, et aucun message de limite atteinte n'est envoyé aux joueurs proches sauf si un joueur a réellement nourri les animaux.
+    - 🐛 **Les entrées de joueurs ne fuient plus dans la carte de suivi des entités.** Les joueurs étaient ajoutés à la carte de suivi entité-île sans jamais en être retirés.
+    - 🐛 **Les bateaux sont désormais inclus dans `recount`.** Le recomptage admin comptait les wagonnets mais ignorait les bateaux, ce qui mettait à zéro des décomptes de bateaux que le suivi en direct ne pouvait ensuite pas récupérer.
+
+    Merci à [@daniel-skopek](https://github.com/daniel-skopek) pour les correctifs.
+
+    [Release v1.29.1](https://github.com/BentoBoxWorld/Limits/releases/tag/1.29.1)
+
 ??? note "Nouveautés dans v1.29.0"
     **Publié :** 10 juillet 2026
 

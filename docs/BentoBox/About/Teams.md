@@ -140,6 +140,12 @@ Il y a une petite chance que l'inviteur perde le rang requis pour inviter les jo
 !!! tip "Temps de Confirmation"
     Le temps par défaut que les joueurs ont pour confirmer une commande est 10 secondes. Si vos joueurs ont besoin de plus de temps, augmentez cette valeur dans le `config.yml` BentoBox. Les joueurs peuvent également appuyer sur la flèche vers le haut pour rappeler la commande précédente plutôt que de la retaper.
 
+#### Boîtes de dialogue d'invitation
+
+Depuis BentoBox 3.21.0, la réception d'une invitation d'équipe peut ouvrir automatiquement une boîte de dialogue modale **[Accepter] / [Refuser]**, afin que le joueur n'ait pas à remarquer le message dans le chat puis à taper la commande d'acceptation ou de refus. Cela nécessite un serveur Minecraft 26+ et est contrôlé par `island.dialogs.team-invites` dans le `config.yml` de BentoBox (par défaut `true`). Sur les serveurs plus anciens, ou si le commutateur est désactivé, l'invitation arrive sous la forme du message habituel dans le chat.
+
+Les confirmations de commandes sensibles — comme `team kick` et `team leave` — peuvent également être présentées sous forme de boîte de dialogue **[Confirmer] / [Annuler]** au lieu de demander au joueur de retaper la commande une seconde fois. Il s'agit de `island.dialogs.confirmations` (par défaut `true`), qui retombe sur le comportement « retapez la commande » dès que les boîtes de dialogue ne sont pas disponibles.
+
 #### Ce qui se passe quand un joueur accepte
 
 Quand un joueur accepte une invitation d'équipe, BentoBox le fait automatiquement :
