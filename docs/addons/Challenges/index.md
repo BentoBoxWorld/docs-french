@@ -24,6 +24,35 @@ Le fichier de configuration contient les fonctions principales du module.
 
 Le dernier config.yml se trouve [ici](https://github.com/BentoBoxWorld/Challenges/blob/develop/src/main/resources/config.yml).
 
+??? note "gui-settings.undeployed-view-mode"
+    Comment les défis non déployés apparaissent dans l'interface graphique du joueur.
+
+    - `VISIBLE` — les défis non déployés sont toujours affichés.
+    - `HIDDEN` — les défis non déployés ne sont jamais affichés.
+    - `TOGGLEABLE` — l'interface graphique du joueur reçoit un bouton permettant à chaque joueur d'afficher ou de masquer les défis non déployés pour lui-même. Ils sont affichés par défaut, le comportement initial est donc celui de `VISIBLE`. Pratique pour faire monter l'attente autour des défis à venir tout en laissant les joueurs alléger leur vue. Réellement implémenté en 1.8.0 ; auparavant ce mode se comportait comme `VISIBLE`.
+
+    Par défaut : `VISIBLE`
+
+??? note "gui-settings.open-anywhere"
+    Permet aux joueurs d'ouvrir l'interface graphique des défis sans se trouver sur leur île. Terminer un défi nécessite toujours d'être sur l'île lorsque la protection du monde est activée.
+
+    Par défaut : `false` (ajouté en 1.8.0)
+
+??? note "gui-settings.description-color"
+    Couleur par défaut appliquée à chaque ligne du texte de description propre à un défi, pour ne pas avoir à préfixer chaque défi avec la même couleur. Utilise les balises MiniMessage, y compris hexadécimales (par exemple `<white>`, `<#55FFFF>` ou `<color:#55FFFF>`) ; les anciens codes `&` fonctionnent également toujours. Laissez vide pour ne pas définir de couleur par défaut. Une couleur écrite dans la description elle-même l'emporte toujours sur ce réglage. Sans effet sur les substitutions de locale propres à un défi.
+
+    Par défaut : `''` (ajouté en 1.8.0)
+
+??? note "gui-settings.reward-text-color"
+    Couleur par défaut appliquée à chaque ligne du texte de récompense propre à un défi, aussi bien pour la première fois que pour les répétitions. Même format que `description-color`. Laissez vide pour ne pas définir de couleur par défaut.
+
+    Par défaut : `''` (ajouté en 1.8.0)
+
+??? note "include-undeployed"
+    Détermine si les défis non déployés comptent pour l'achèvement d'un niveau. En désactivant cette option, seuls les défis déployés sont comptés, si bien qu'un défi non déployé n'empêchera pas un niveau d'être terminé.
+
+    Par défaut : `true` (fourni dans `config.yml` depuis la 1.8.0)
+
 ### Template
 
 Le module challenges contient un fichier template qui peut être utilisé pour importer des défis dans la base de données. Ce fichier est utile pour ajouter en masse des défis pour ceux qui n'aiment pas utiliser l'interface graphique en jeu. Cependant, soyez conscient que toutes les fonctions ne sont pas disponibles pour le fichier template, et certains éléments/options ne peuvent être ajoutés que via l'interface graphique.
@@ -48,6 +77,15 @@ Le fichier template d'exemple : [template.yml](https://github.com/BentoBoxWorld/
     - **Par membre (« Roll Call Feast »)** — chaque membre présent doit contribuer sa propre part, donc personne ne peut se faire écraser ; le montant configuré est le total d'équipe, divisé entre les membres en ligne.
 
     Les récompenses vont à chaque membre en ligne, la complétion et le cooldown sont partagés par toute l'équipe, et les défis de statistique d'équipe ne comptent que la progression gagnée *en étant dans l'équipe*. Les défis d'équipe peuvent être affichés grisés aux joueurs solitaires comme incitation au recrutement ou cachés entièrement. Cinq défis de référence — **All Hands on Deck**, **Pooled Tribute**, **Synchronized Build**, **Combined Effort** et **Roll Call Feast** — sont livrés dans le `default.json` fourni, et l'éditeur de défis d'admin expose les bascules pour toutes les nouvelles options.
+
+??? question "Une récompense peut-elle être rendue rare, ou jouée aux dés ?"
+    Oui. Depuis la **1.8.0**, chaque défi peut recevoir un pourcentage de chance d'accorder réellement sa récompense à l'achèvement, réglable défi par défi dans l'éditeur admin. Cela permet de construire des défis « à la chance » où la récompense n'est pas garantie — utile pour les défis répétables et pour un style de jeu axé sur le butin.
+
+??? question "Terminer un défi peut-il augmenter le niveau de l'île ?"
+    Oui. Depuis la **1.8.0**, un défi ou un niveau peut accorder directement des points de niveau d'île via l'[addon Level](/en/latest/addons/Level/), afin que les défis alimentent la progression de l'île au lieu de se contenter de distribuer des objets, de l'argent et de l'expérience. Cela se configure dans l'éditeur admin, à côté des autres types de récompenses.
+
+??? question "Un défi peut-il exiger que le joueur se trouve dans un biome particulier ?"
+    Oui, pour les défis d'île. Depuis la **1.8.0**, les défis d'île disposent d'une option **Biomes requis** : le joueur doit se tenir dans l'un des biomes choisis pour terminer le défi. Les biomes se choisissent dans un sélecteur de biomes paginé de l'interface graphique admin — clic gauche pour ajouter, clic droit pour tout effacer. Les biomes sont enregistrés par clé, les données restent donc robustes d'une version de Minecraft à l'autre et les biomes inconnus ne correspondent tout simplement jamais.
 
 ??? question "Puis-je spécifier un enchantement sur les éléments requis/récompensés ?"
     Malheureusement, Spigot n'a pas de mécanique d'analyse d'éléments générale. Les auteurs de plugins doivent créer la leur. Le module challenges utilise le [Item Parser](/en/latest/BentoBox/ItemParser/) de BentoBox. Si la fonction n'est pas supportée par celui-ci, alors vous ne pouvez pas. Cependant, vous pouvez toujours utiliser l'interface graphique admin en jeu pour définir les éléments que vous voulez. Il n'y a pas de limitation.
@@ -283,6 +321,33 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     ```
 
 ## Journal des modifications
+
+!!! warning "Nouveautés dans v1.8.0 — les défis non déployés à bascule nécessitent une mise à jour du panneau"
+    **Publié :** 26 juillet 2026
+
+    Compatibilité : BentoBox 3.14.0 · Minecraft 1.21.x · Java 21.
+
+    - ✨ **Chance de récompense facultative.** Chaque défi peut désormais tirer un pourcentage de chance configurable pour accorder réellement sa récompense, les récompenses peuvent donc être rendues rares ou jouées aux dés. Réglable défi par défi dans l'éditeur admin.
+    - 💎 **Récompenses de niveau d'île.** Terminer un défi ou un niveau peut augmenter directement le niveau de l'île via l'addon Level, de sorte que les défis alimentent la progression de l'île au lieu de se contenter de distribuer des objets, de l'argent et de l'expérience.
+    - 🔡 **Exigence de biome pour les défis d'île.** Les défis d'île peuvent exiger que le joueur se tienne dans l'un des biomes choisis, sélectionnés depuis un nouveau sélecteur paginé dans l'interface graphique admin. Les biomes sont enregistrés par clé, les biomes inconnus ne correspondent donc tout simplement jamais.
+    - 🔡 ⚙️ 🔺 **Défis non déployés à bascule.** `undeployed-view-mode: TOGGLEABLE` était auparavant sans effet et se comportait comme `VISIBLE`. Ce mode est maintenant pleinement implémenté : les joueurs obtiennent un bouton pour afficher ou masquer les défis non déployés pour eux-mêmes, affichés par défaut.
+    - ⚙️ **Couleur de texte par défaut.** Deux nouveaux réglages — `gui-settings.description-color` et `gui-settings.reward-text-color` — appliquent une couleur MiniMessage par défaut à chaque ligne du texte de description et de récompense d'un défi, au lieu de préfixer chaque défi à la main. Une couleur écrite dans le texte l'emporte toujours sur la valeur par défaut.
+    - 📊 **Placeholders de pourcentage d'achèvement.** Nouveaux placeholders `[gamemode]_challenges_completed_percent` et `[gamemode]_challenges_latest_level_completed_percent` pour les tableaux de score, les listes de tab et autres affichages pilotés par des placeholders.
+    - 🔡 ⚙️ **Ouvrir l'interface graphique hors de l'île.** La nouvelle option `gui-settings.open-anywhere` permet aux joueurs d'ouvrir l'interface graphique des défis sans se tenir sur leur île. Terminer un défi nécessite toujours d'être sur l'île lorsque la protection du monde est activée.
+    - 🐛 Les niveaux verrouillés n'affichent plus leur message de déverrouillage « Félicitations… » alors que leur statut indique encore « verrouillé ».
+    - 🐛 L'interface graphique du joueur respecte désormais l'indicateur `removeWhenCompleted` propre à chaque défi : les défis uniques terminés portant cet indicateur disparaissent comme prévu.
+    - 🐛 Terminer des défis pour un joueur via le mode admin exécute maintenant la vérification d'achèvement de niveau, les achèvements effectués par un administrateur comptent donc bien pour terminer un niveau.
+    - 🐛 Avec l'option « ignorer les métadonnées », les exigences de potion comparent désormais le type de potion de base au lieu de traiter les potions comme un objet vierge.
+    - 🔡 Les invites de confirmation indiquent désormais aux joueurs de taper `confirm` / `cancel` : les confirmations d'importation, de réinitialisation et d'effacement ne sont plus une devinette.
+    - ⚙️ Le réglage `include-undeployed` est maintenant fourni et documenté dans `config.yml`.
+
+    🔺 **Les défis non déployés à bascule nécessitent une mise à jour du panneau.** Le nouveau bouton d'affichage/masquage se trouve dans le modèle de panneau joueur (`panels/main_panel.yml`). Les serveurs qui possèdent déjà ce fichier ne verront pas le bouton tant qu'ils n'auront pas supprimé le fichier pour qu'il soit régénéré, ou ajouté le bouton `TOGGLE_UNDEPLOYED` à la main. Les nouvelles installations l'obtiennent automatiquement. Les modes `VISIBLE` et `HIDDEN` sont inchangés.
+
+    ⚙️ **Les nouvelles clés de configuration** `gui-settings.open-anywhere`, `gui-settings.description-color`, `gui-settings.reward-text-color` et `include-undeployed` (au niveau racine) sont ajoutées automatiquement à votre `config.yml` avec des valeurs par défaut sûres — aucun changement de comportement.
+
+    🔡 **Note sur les locales.** Plusieurs clés de locale ont été ajoutées (chance de récompense, sélecteur de biomes, bouton de bascule, instruction de confirmation, et d'autres). Si vous maintenez des traductions personnalisées, régénérez-les ou fusionnez-les afin que les nouvelles chaînes apparaissent.
+
+    [Release v1.8.0](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.8.0)
 
 ??? note "Nouveautés dans v1.7.0"
     **Publié :** 1er juillet 2026
