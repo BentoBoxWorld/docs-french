@@ -36,11 +36,23 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 **Permission**: `[gamemode].border.type`. Défaut: `true`.
 **Exemple**: `/[player command] border type barrier`
 
+### bordertype {...}
+**Commande**: `/[player command] bordertype {barrier | vanilla}`  
+**Description**: La même commande que `border type`, enregistrée directement sous la commande du mode de jeu.  
+**Permission**: `[gamemode].border.bordertype`. Défaut: `false`.  
+**Exemple**: `/[player command] bordertype vanilla`  
+
 ### border color {red|green|blue}
-**Commande**: `/[player command] border color {red | green | blue}`  
+**Commande**: `/[player command] border color {red | green | blue}` (également disponible sous la forme `/[player command] bordercolor {red | green | blue}`)  
 **Description**: Définit la couleur de la bordure monde vanilla pour le joueur. S'applique uniquement avec le type de bordure vanilla.  
-**Permission**: `[gamemode].border.color.red`, `[gamemode].border.color.green`, `[gamemode].border.color.blue` (ou `[gamemode].border.color.*` pour toutes). Défaut: `op`.  
+**Permission**: `[gamemode].border.color` pour pouvoir exécuter la commande. Défaut: `true`.  
+Chaque couleur nécessite ensuite sa propre permission : `[gamemode].border.color.red`, `[gamemode].border.color.green`, `[gamemode].border.color.blue` (ou `[gamemode].border.color.*` pour toutes). Défaut: `op`.  
 **Exemple**: `/[player command] border color green`
+
+!!! warning "Changements de permissions en 4.8.5"
+    `[gamemode].border.color` n'avait jamais été déclarée avant la 4.8.5 : elle retombait donc silencieusement sur op uniquement, et les joueurs ordinaires ne pouvaient pas du tout utiliser la commande de couleur. Elle est désormais déclarée avec `true` par défaut.
+
+    Le nœud déclaré `[gamemode].bordertype` a également été renommé en `[gamemode].border.bordertype`, qui est le nœud réellement vérifié par la commande. Si vous aviez accordé ou refusé `[gamemode].bordertype` dans LuckPerms (ou équivalent), mettez la règle à jour — l'ancien nœud n'a jamais eu le moindre effet.
 
 !!! tip
     `[gamemode]` est un préfixe qui diffère selon le mode de jeu que vous exécutez.
@@ -263,6 +275,20 @@ barrier-offset: 0
     Aucune modification de config ou de locale n'est requise. Si vous contourniez le bug avec `bordertype barrier`, vous pouvez revenir à `vanilla` une fois la 4.8.4 installée.
 
     [Release v4.8.4](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.4)
+
+??? warning "Nouveautés dans v4.8.5 — changements de permissions"
+    **Publié :** 1er août 2026
+
+    Un correctif de compatibilité et de permissions. Aucun changement de configuration ni de traduction n'est nécessaire.
+
+    - 🐛 **Les objets lâchés à la mort ne sont plus détournés des autres plugins.** La protection des objets lâchés ajoutée en 4.7.0 retirait chaque objet de `PlayerDeathEvent`, les faisait apparaître elle-même, puis vidait la liste. Tout plugin qui stocke ces objets — DeathChest, les plugins de tombes, les fonctionnalités de conservation d'inventaire — s'exécute à une priorité ultérieure et voyait un événement vide, alors que les objets jonchaient déjà le sol. Avec `bounce-back: true` par défaut, cela cassait silencieusement tous ces plugins. Border ne touche plus aux objets de l'événement : il s'exécute en priorité MONITOR et ne renvoie à l'intérieur que les objets que le serveur fait lui-même apparaître au tick suivant près du lieu de la mort. Si un autre plugin récupère les objets, rien n'est renvoyé ; s'ils subsistent, ils rebondissent à l'intérieur de la bordure exactement comme avant, en conservant les vitesses et les délais de disparition d'origine.
+    - 🔺 **`[gamemode].border.color` est maintenant déclarée avec `true` par défaut,** de sorte que les joueurs ordinaires peuvent utiliser la commande de couleur comme le décrit la documentation. Elle n'avait jamais été déclarée dans `addon.yml` et retombait donc sur op uniquement. Les couleurs individuelles (`.red`, `.green`, `.blue`) restent en `op`. Si vous les accordiez explicitement pour contourner le problème, ces attributions restent valables.
+    - 🔺 **`[gamemode].bordertype` renommée en `[gamemode].border.bordertype`,** qui est le nœud réellement vérifié par `BorderTypeCommand`. Sa valeur par défaut `false` est inchangée. Mettez à jour toute règle LuckPerms qui référence l'ancien nœud — il n'avait de toute façon aucun effet.
+    - Les versions sont désormais publiées automatiquement sur CurseForge et Hangar en plus de Modrinth, et la fiche Modrinth couvre 1.21.5 – 1.21.11 et 26.1.x.
+
+    Compatibilité : BentoBox API 3.12.0+, Minecraft 1.21.5 – 1.21.11 et 26.1.x, Java 21.
+
+    [Release v4.8.5](https://github.com/BentoBoxWorld/Border/releases/tag/4.8.5)
 
 ## Traductions
 

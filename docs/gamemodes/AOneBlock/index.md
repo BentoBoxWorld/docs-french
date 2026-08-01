@@ -824,3 +824,14 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     Aucune modification des fichiers de phase n'est nécessaire : les anciens noms d'enchantements dans le YAML de phase fourni (`PROTECTION_FALL` et compagnie) sont toujours traduits par le serveur, donc les fichiers de coffres personnalisés fonctionnent tels quels. Les objets que les joueurs ont **déjà** récupérés restent en l'état — les métadonnées ont été perdues au moment du remplissage du coffre, il n'y a donc rien à réparer après coup. Tous les coffres générés à partir de maintenant sont corrects.
 
     [Release v1.26.2](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.26.2)
+
+??? note "Nouveautés dans v1.26.3"
+    **Publié :** 29 juillet 2026
+
+    Version corrective pour l'interface des phases — remplacement direct, sans changement de configuration, de traduction ni de fichier de phase.
+
+    - 🐛 **« Cliquez pour changer » n'est proposé que lorsque le clic peut aboutir.** Le panneau `/[player_command] phases` décidait de proposer l'action de changement de phase à partir du seul état de l'île et des prérequis de la phase, sans jamais vérifier si le joueur disposait de la permission `aoneblock.island.setcount` que le clic utilise réellement. Sur les serveurs où cette permission est retirée à certains rangs ou à tous, les joueurs voyaient l'infobulle sur chaque phase éligible et obtenaient *« Vous n'avez pas la permission d'exécuter cette commande »* en cliquant. Le panneau vérifie désormais la permission avant de proposer l'action. Si la sous-commande ne peut être résolue pour une raison quelconque, le panneau reste permissif comme auparavant : aucune phase ne devient donc impossible à cliquer à cause de ce changement. Les joueurs qui **détiennent** la permission ne voient aucune différence.
+
+    Compatibilité : BentoBox API 3.15.0+, Minecraft 1.21.5 ou ultérieur (la phase Sulfur Caves elle-même s'active à partir de Minecraft 26.2), Java 21.
+
+    [Release v1.26.3](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.26.3)
