@@ -195,6 +195,19 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
     [Release v1.19.0](https://github.com/BentoBoxWorld/Warps/releases/tag/1.19.0)
 
+??? note "Nouveautés dans v1.19.1"
+    **Publié :** 30 juillet 2026
+
+    Version corrective — aucun changement de configuration ni de traduction n'est nécessaire.
+
+    - 🐛 **Les propriétaires de panneau sont désormais notifiés lorsqu'un warp retombe sur le bloc du panneau.** Lorsqu'aucun emplacement sûr n'existe devant un panneau de warp — cas fréquent quand les panneaux se trouvent au bord d'une plateforme avec le vide devant — les visiteurs étaient téléportés en silence sur le bloc du panneau lui-même : pas de `WarpInitiateEvent`, pas de vérification du vanish, et aucun message « X s'est téléporté à votre panneau de warp ! » pour le propriétaire. Ce repli passe maintenant par le même chemin de finalisation qu'un warp normal : les événements, la gestion du vanish, le son et la notification du propriétaire se comportent donc de façon identique, où que le visiteur atterrisse. L'orientation à l'arrivée correspond également à celle du panneau.
+    - La publication sur CurseForge et Hangar est automatisée via GitHub Actions à la publication d'une version, en plus du flux Modrinth existant, et MC 26.1.2 a été ajouté à la liste des versions Modrinth.
+    - `addon.yml` : version d'API portée à 3.12.0 et ajout d'entrées softdepend supplémentaires pour un meilleur ordre de chargement.
+
+    Compatibilité : BentoBox API 3.12.0+, Minecraft 1.21.x, Java 21.
+
+    [Release v1.19.1](https://github.com/BentoBoxWorld/Warps/releases/tag/1.19.1)
+
 ## Traductions
 
 {{ translations("Warps") }}

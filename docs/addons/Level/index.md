@@ -185,6 +185,12 @@ Cette section définit les valeurs des blocs et les limites pour ceux-ci.
 
     Format : `MATERIAL: NUMBER`
 
+    Depuis Level 2.28.0, ces limites s'appliquent également aux blocs **donnés**, afin qu'un joueur ne puisse pas gagner de points au-delà du plafond d'un bloc en le donnant plutôt qu'en le posant :
+
+    - Le calcul du niveau plafonne chaque type de bloc donné à sa limite actuelle. Si vous abaissez une limite après que des joueurs ont donné, seule la part inférieure à la nouvelle limite est comptabilisée.
+    - `/[player_command] donate hand`, `/[player_command] donate inv` et le panneau de don vérifient tous la limite en amont : ils réduisent l'invite de confirmation au montant réellement comptabilisé (avec une ligne d'avertissement en cas de réduction) et refusent purement et simplement lorsque tout ce qui est proposé atteint déjà sa limite.
+    - La recherche des limites ignore la casse, si bien que les identifiants de blocs personnalisés à casse mixte (par exemple des objets Oraxen) se résolvent partout vers la même limite.
+
 ??? note "blocks"
     Cette section répertorie la valeur d'un bloc dans tous les gamemodes (mondes).
     Pour spécifier des valeurs spécifiques au monde, utilisez la section suivante.
@@ -336,6 +342,9 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - `/[player_command] donate hand [amount]`: donne l'objet actuellement tenu dans la main du joueur (ou le montant spécifié) directement au niveau de l'île sans ouvrir l'interface. Nécessite la permission `[gamemode].island.level.donate`.
     - `/[player_command] donate inv`: répertorie chaque bloc donnable dans l'inventaire du joueur avec les valeurs par matériau et un total, puis sur confirmation donne tout et exécute un recalcul de niveau. Les objets sans valeur configurée et non-blocs restent dans l'inventaire. Nécessite la permission `[gamemode].island.level.donate`.
 
+    !!! note
+        Depuis la 2.28.0, les trois voies de don respectent les `limits` de blocs définies dans [`blockconfig.yml`](#blockconfigyml), et les points donnés sont recalculés à partir des valeurs de blocs actuelles à chaque recalcul.
+
 
 === "Commandes admin"
     - `/[admin_command] level <player>`: déclenche le calcul du niveau pour le joueur. Nécessite la permission `[gamemode].admin.level`.
@@ -485,6 +494,34 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     🔡 **Locales mises à jour.** Les 18 locales expédiées ont gagné de nouvelles clés `island.donate.inv.*` (`keyword`, `confirm-header`, `confirm-line`, `confirm-total`). Si vous avez des fichiers de locale personnalisés dans `plugins/BentoBox/addons/Level/locales/`, copiez le nouveau bloc `donate.inv` dedans ou le nouveau flux `/island donate inv` montrera des clés brutes.
 
     [Release v2.27.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.27.0)
+
+??? warning "Nouveautés dans v2.28.0 — action requise"
+    **Publié :** 28 juillet 2026
+
+    Compatibilité : BentoBox API 3.16.0, Minecraft 1.21.x et 26.1.x, Java 21.
+
+    - 🔺 **Les limites de don sont appliquées de bout en bout.** Les limites de blocs définies dans [`blockconfig.yml`](#blockconfigyml) s'appliquent désormais partout où des dons interviennent. Le calcul du niveau plafonne chaque type de bloc donné à sa limite actuelle, et `/island donate hand`, `/island donate inv` ainsi que l'interface de don vérifient tous la limite en amont — l'invite de confirmation est réduite au montant réellement comptabilisé, les matériaux déjà au plafond sont ignorés, et un message clair « limites de don atteintes » remplace une invite trompeuse à 0 point. Les rapports de niveau destinés aux administrateurs plafonnent également les lignes de dons à la limite actuelle (indiquées « capped at N ») pour que leur somme corresponde au total donné.
+    - **Les points donnés suivent maintenant les valeurs de blocs actuelles.** Ils sont recalculés à partir de la carte des blocs donnés en utilisant les valeurs actuelles (et spécifiques au monde) à chaque recalcul : modifier une valeur dans `blockconfig.yml` s'applique donc rétroactivement aux dons passés au lieu de reposer sur un total stocké périmé. Le montant « Actuellement donné » de l'interface de don affiche les mêmes points effectifs que ceux utilisés par le niveau.
+    - La recherche des limites ignore la casse, si bien que les identifiants de blocs personnalisés à casse mixte (par exemple des objets Oraxen) se résolvent partout vers la même limite.
+    - Les versions sont désormais publiées automatiquement sur CurseForge et Hangar en plus de Modrinth, et Minecraft 26.1.2 a été ajouté aux versions prises en charge.
+
+    🔺 **Les niveaux d'île peuvent baisser après la mise à jour** sur les serveurs où des joueurs avaient donné au-delà de la limite d'un bloc : ces blocs sont maintenant exclus du calcul du niveau. C'est le comportement voulu, mais préparez-vous aux questions.
+
+    🔡 **Traductions mises à jour.** Les 17 fichiers de langue fournis ont reçu trois nouvelles clés sous `island.donate` (`limit-reached`, `limit-notice`, `limit-reached-all`). Si vous avez personnalisé des fichiers de langue dans `plugins/BentoBox/addons/Level/locales/`, ajoutez-y ces clés, sinon les avertissements de limite afficheront les clés brutes.
+
+    !!! note "Pour les utilisateurs de builds de développement"
+        Le moteur expérimental de remise à zéro par chunk apparu dans les snapshots de ce cycle a été retiré avant la sortie et ne fait **pas** partie de la 2.28.0. Les utilisateurs de la version stable ne sont pas concernés.
+
+    [Release v2.28.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.28.0)
+
+??? note "Nouveautés dans v2.28.1"
+    **Publié :** 29 juillet 2026
+
+    Version corrective — remplacement direct de la 2.28.0, sans changement de traduction, de configuration ni de panneau.
+
+    - 🐛 **Le bouton de recherche du panneau des valeurs n'empile plus les invites de chat en double.** Chaque clic lançait une nouvelle conversation de 90 secondes « Veuillez saisir une valeur de recherche ». Si la première invite n'était pas visible — par exemple lorsqu'un plugin de gestion du chat comme CMI l'avalait — les joueurs cliquaient de façon répétée, empilant des conversations qui se rejouaient ensuite en spam alternant `Conversation cancelled!` et `Please enter a search value`, l'interface se rouvrant à chaque fois. La saisie de recherche vérifie désormais si une conversation est déjà en attente : le cas échéant, elle répète simplement la question au lieu d'en mettre une seconde en file.
+
+    [Release v2.28.1](https://github.com/BentoBoxWorld/Level/releases/tag/2.28.1)
 
 ## Translations
 

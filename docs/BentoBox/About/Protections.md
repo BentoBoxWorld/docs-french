@@ -78,6 +78,14 @@ Les propriétaires d'îles ouvrent l'interface graphique des paramètres avec `/
 | **Décomposition des feuilles** | Si les blocs de feuilles se décomposent naturellement quand les bûches sont supprimées. |
 | **Génération de mobs** | Si les monstres ou les animaux peuvent apparaître sur l'île, y compris à partir des blocs générateurs. |
 
+### Consulter les Règles du Monde Hors Île
+
+Depuis BentoBox 3.22.0, `/island settings` fonctionne également lorsque le joueur ne se tient sur aucune île et n'en possède aucune — en pleine nature, ou dans un mode de jeu où les joueurs ne possèdent jamais d'île.
+
+Dans ce cas, le panneau s'ouvre avec un unique onglet **Protections du monde** en lecture seule, qui indique pour chaque drapeau de protection s'il est actif ou désactivé pour le monde. C'est ce qui régit réellement un joueur hors île : sans île sous ses pieds, un drapeau de protection se résout à l'interrupteur du monde et non à un rang. Rien n'est cliquable, et l'onglet des paramètres d'île n'est pas affiché, puisqu'il n'y a aucune île à configurer.
+
+Les joueurs qui se trouvent sur une île ou en possèdent une voient exactement le panneau qu'ils ont toujours connu.
+
 ## Paramètres Mondiaux Controlés par les Administrateurs
 
 Ces paramètres s'appliquent à tout le monde du mode de jeu. Seuls les administrateurs peuvent les modifier, via `/[admin_command] settings`. Les joueurs peuvent voir (mais ne pas modifier) ceux-ci en mode lecture seule pour qu'ils comprennent les règles du serveur.
