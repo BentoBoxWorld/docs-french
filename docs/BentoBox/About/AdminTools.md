@@ -105,7 +105,34 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! note "Nouveautés dans v3.22.0 — commandes Brigadier"
+!!! note "Nouveautés dans v3.22.3 — désactivation de bStats et Paper 26.2"
+    **Publié :** 22 août 2026
+
+    Principalement une version de correction de bugs et d'API. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
+
+    - ⚙️ **Désactivation des métriques bStats.** Une nouvelle option `general.metrics` dans `config.yml` (par défaut **`true`**) vous permet de désactiver les statistiques d'utilisation anonymes et agrégées de BentoBox sans toucher au commutateur global dans `plugins/bStats/config.yml`, qui désactive bStats pour tous les plugins du serveur. Réglez-la à `false` et **redémarrez** — le collecteur est enregistré au démarrage, donc `/bbox reload` ne suffit pas. Aucune donnée personnelle n'est jamais envoyée ; consultez [Confidentialité et collecte de données](../Privacy.md).
+    - 🔺 **Construit contre Paper 26.2 et Adventure 5.** Auteurs d'addons : Adventure 5 scelle `Component` (Mockito ne peut plus le simuler) et remplace `ClickEvent.value()` par `payload()`. Les addons déjà déployés sur un serveur 26.2 peuvent être affectés à l'exécution ; recompiler contre BentoBox 3.22.3 met à surface les problèmes à la compilation — consultez [PR #3067](https://github.com/BentoBoxWorld/BentoBox/pull/3067) pour la liste complète des suppressions. Les administrateurs du serveur n'ont rien à faire.
+    - 🔲 **Disposition de grille de dialogue pour les développeurs d'addons.** `DialogBuilder#columns(int)` dispose les boutons d'un dialogue multi-action dans une grille au lieu de la liste par défaut de deux colonnes, et `DialogButton` gagne une largeur (1–1024) plus `withWidth(int)`. Les appelants existants ne sont pas affectés.
+    - 🐛 **Les erreurs HTTP 429 des têtes de joueur arrêtées.** L'ouverture d'un panneau avec des têtes de joueur (une liste top-dix, par exemple) pouvait inonder la console d'erreurs HTTP 429 de `sessionserver.mojang.com`, car les têtes livrées sans données de texture étaient re-résolues à chaque ouverture. Les têtes sans texture se dégradent maintenant en une tête simple, et une récupération échouée n'évince plus une tête en cache qui fonctionne déjà.
+    - 🐛 **Les nombres YAML se chargent dans le type de champ déclaré.** Une valeur de configuration telle que `20`, écrite sans point décimal, se charge maintenant correctement dans les champs `double`, `float` et `long` au lieu de lever `ClassCastException`.
+    - 🐛 **Les noms de couleur littéraux dans les panneaux.** Le panneau de gestion affichait les noms d'addons comme `whiteChallenges` après une refonte des couleurs ; corrigé.
+    - 📄 Schémas JSON publiés (brouillon 2020-12) pour les formats de fichier `.blueprint` et bundle de modèles.
+
+    [Release v3.22.3](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.22.3)
+
+??? note "Nouveautés dans v3.22.2"
+    **Publié :** 10 août 2026
+
+    Un correctif de bug au-dessus de la 3.22.0 — pas de nouvelles fonctionnalités, clés de configuration ou modifications de locale ; un remplacement sans problème. Il n'y a pas de version 3.22.1. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
+
+    - 🔺 🐛 **Les recherches de noms de joueurs se résolvent au bon compte.** `/[player_command] team trust <name>` et `/[player_command] info <name>` pouvaient répondre silencieusement pour un UUID qui n'avait pas porté ce nom depuis des mois : les enregistrements de noms remplacés n'étaient jamais supprimés de la base de données, et la recherche prenait la première correspondance. Les noms sont maintenant appairés sans tenir compte de la casse, les enregistrements périmés sont supprimés, et les joueurs en ligne sont vérifiés en premier. **Faites une sauvegarde avant la mise à jour** — les bases de données existantes se réparent au fil de la connexion des joueurs (la purge s'exécute une fois par renommage, pas par connexion) et aucune migration manuelle n'est nécessaire.
+    - 🐛 **Les joueurs Bedrock peuvent à nouveau utiliser les panneaux.** Geyser développe un appui en plusieurs paquets de clic Java dans le même tick, et la vérification `panel.click-cooldown-ms` introduite dans 3.22.0 avalait celle qui importait — chaque appui recevait `slow-down` et rien ne se produisait. Les clics du même tick sont maintenant traités comme un geste ; la protection contre les abus reste inchangée à un clic porteur d'action par tick.
+    - 🐛 **Un addon désactivé ne laisse plus les commandes cassées derrière lui.** Un mode de jeu abandonné pour une dépendance manquante (ChunkBlock sans Level, par exemple) conservait ses commandes enregistrées, et chaque sous-commande levait une NPE. Les commandes, les drapeaux et les écouteurs sont maintenant tous retirés quand un addon échoue à s'activer.
+    - 🐛 **Revenir d'un nether standard vous débarque sur votre propre île.** Avec un nether partagé et `create-and-link-portals: false` (le défaut d'AOneBlock), les joueurs revenant par un portail étaient débarqués sur l'île qui s'assied la plus proche de 0,0. La destination tombe maintenant sur l'emplacement personnel de l'île.
+
+    [Release v3.22.2](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.22.2)
+
+??? note "Nouveautés dans v3.22.0 — commandes Brigadier"
     **Publié :** 1er août 2026
 
     Une version consacrée aux commandes et à leur visibilité. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.

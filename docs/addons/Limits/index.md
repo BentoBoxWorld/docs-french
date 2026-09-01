@@ -45,6 +45,8 @@ Il possède également ces commutateurs de premier niveau (tous ajoutés en **1.
 
 Cette section répertorie le nombre maximum de blocs autorisés pour chaque matériau de bloc. N'utilisez pas de matériaux non-blocs car ils ne fonctionneront pas. Les limites s'appliquent indépendamment dans chaque dimension (Overworld, Nether, End).
 
+Les variantes de croissance et d'endommagement sont normalisées vers leur bloc canonique — `BAMBOO_SAPLING` compte comme `BAMBOO`, et depuis **1.30.0** `KELP_PLANT` compte comme `KELP` — de sorte qu'un nom de variante utilisé comme clé de limite (par ex. `KELP_PLANT` ou `CHIPPED_ANVIL`) configure la limite du bloc canonique.
+
 ### blocklimits-nether / blocklimits-end
 
 Sections optionnelles qui remplacent les valeurs par défaut de `blocklimits` respectivement pour le Nether ou l'End. Elles sont commentées dans la configuration par défaut ; décommentez-les et ajoutez des entrées pour définir des limites de blocs spécifiques à une dimension.
@@ -144,7 +146,7 @@ blocklimits:
 
 === "stacked-plants-count-as-one"
     !!! summary "Description"
-        (**1.29.0+**) Lorsque `true`, une tige de `SUGAR_CANE` ou de `BAMBOO` compte comme une seule plante quelle que soit sa hauteur — seul le segment de base est compté. Lancez un recomptage après avoir modifié cette option.
+        (**1.29.0+**) Lorsque `true`, une tige de `SUGAR_CANE`, `BAMBOO` ou `KELP` (kelp depuis **1.30.0**) compte comme une seule plante quelle que soit sa hauteur — seul le segment de base est compté. Lancez un recomptage après avoir modifié cette option.
 
         Par défaut : `false`
 
@@ -190,6 +192,18 @@ Les permissions complètes sont listées [ici](Permissions).
 
 
 ## Journal des modifications
+
+??? warning "Nouveautés dans v1.30.0 — recomptage de varech recommandé"
+    **Publié :** 15 août 2026
+
+    Deux corrections de précision de comptage. Compatibilité : API BentoBox 2.7.1 · Paper Minecraft 1.21.11 – 26.2 · Java 21. Aucune modification de configuration ou locale.
+
+    - 🐛 **Les abeilles peuvent toujours quitter leurs ruches.** Une abeille quittant une ruche n'est pas une nouvelle abeille — son décompte a déjà été soustrait quand elle est entrée — mais la sortie était toujours vérifiée par limite. Sur une île à sa limite d'abeilles, la libération était annulée, le serveur réessayait chaque quelques ticks, les joueurs à proximité étaient spammés avec « La reproduction des abeilles est limitée à … » et les abeilles stockées restaient piégées pour toujours. Les sorties de ruche sont maintenant exemptes de la vérification tout en restant comptées, de sorte que le cycle d'entrée/sortie reste net-zéro. Un élément de ruche placé transportant des abeilles jamais comptées peut laisser l'île légèrement au-dessus de sa limite ; cela bloque simplement les apparitions supplémentaires et l'élevage jusqu'à ce que la population chute.
+    - 🔺 🐛 **Les colonnes de varech comptent correctement.** La croissance du varech convertit le `KELP` tip en segment de tige `KELP_PLANT` sans événement Bukkit, de sorte que l'ancien bloc n'a jamais été décrémenté et les comptages de varech ne faisaient que croître, bloquant finalement la pose à totaux fantômes. `KELP_PLANT` est maintenant normalisé à `KELP` (comme `BAMBOO_SAPLING`/`BAMBOO`) : la croissance est neutre pour le comptage, casser la base d'une colonne décrémente chaque segment, `KELP` participe à `stacked-plants-count-as-one`, et les noms de variantes tels que `KELP_PLANT` ou `CHIPPED_ANVIL` utilisés comme clés de limite configurent la limite canonique.
+
+    🔺 **Si vous limitez le varech, lancez un recomptage.** Les comptages de varech stockés peuvent avoir dérivé vers le haut sous les versions précédentes. Lancez `/[admin_command] limits calc <joueur>` sur les îles affectées — ou laissez les joueurs exécuter `/[player_command] limits recount` — pour que les décomptes correspondent à la réalité.
+
+    [Release v1.30.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.30.0)
 
 ??? note "Nouveautés dans v1.29.1"
     **Publié :** 23 juillet 2026

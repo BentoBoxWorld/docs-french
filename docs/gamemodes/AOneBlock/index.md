@@ -34,6 +34,11 @@ Le fichier `config.yml` principal contient les informations de base sur la confi
 Après que l'addon soit installé avec succès, il créera un fichier config.yml. Chaque option de ce fichier est accompagnée de commentaires les expliquant. Veuillez vérifier le fichier pour plus d'informations.
 Vous pouvez trouver le dernier fichier config : [config.yml](https://github.com/BentoBoxWorld/AOneBlock/blob/develop/src/main/resources/config.yml)
 
+!!! new "Depuis AOneBlock 1.27.0 — `island.save-every`"
+    À quelle fréquence la progression de l'île est écrite dans la base de données, en blocs cassés. La progression est aussi sauvegardée à chaque changement de phase, quand un joueur se déconnecte, et à l'arrêt, donc cela ne décide que combien peut être perdu si le serveur meurt *sans* s'arrêter proprement (un crash, un `kill -9`, un forçage de redémarrage du panneau d'hébergement). Plus bas est plus sûr mais écrit plus souvent ; le minimum est `1`.
+
+    Défaut: `10` (remplaçant l'ancien hardcodé 50). Les configs existantes récupèrent le défaut automatiquement.
+
 ### L'index des phases — `phases_index.yml`
 
 !!! new "Ajouté dans AOneBlock 1.26.0"
@@ -71,6 +76,9 @@ Un `adminLengths: true` de premier niveau est écrit automatiquement la premièr
     Un index mal formé retombe sur l'ancien chargement direct des fichiers, donc une mauvaise modification ne peut pas bloquer l'addon.
 
 ### Fichiers de configuration de phase
+
+!!! abstract "Guide complet : [Personnalisation des phases](Phases.md)"
+    Une procédure complète des fichiers de phase — ce que chaque nombre signifie, comment fonctionne le pool pondéré de bloc/mob avec des exemples travaillés, coffres, blocs personnalisés, gestion des versions, et comment construire une phase à partir de zéro.
 
 Les fichiers de configuration pour créer les phases se trouvent dans le dossier `phases`.
 
@@ -518,6 +526,37 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
 ??? question "Mon bloc magique est liquide ! Comment puis-je le miner ?"
     Utilisez un seau.
 
+??? question "Comment empêcher les visiteurs de miner les blocs magiques d'autres joueurs ?"
+    Cette option existe déjà — vous n'avez pas besoin d'un nouveau paramètre de configuration. Si les visiteurs minent le bloc de quelqu'un d'autre, le propriétaire de cette île a défini les paramètres de protection `Casser des blocs` et `Bloc magique` pour le permettre. La correction est de réinitialiser ces paramètres dans le monde, puis de masquer les icônes afin que les propriétaires ne puissent pas les réactiver.
+
+    Faites ces étapes **dans cet ordre**, sinon l'étape 3 annulera l'étape 1.
+
+    **1. Définir les valeurs par défaut pour les nouvelles îles**
+
+    Exécutez `/oba settings` et ouvrez l'onglet **Paramètres par défaut de l'île** (l'icône de briques en pierre craquelée). Clic gauche `Casser des blocs` et `Bloc magique` jusqu'à ce que les deux lisent **Membre**. Cela sauvegarde automatiquement dans le `config.yml` d'AOneBlock.
+
+    **2. Recharger**
+
+    Exécutez `/bbox reload`, ou redémarrez le serveur.
+
+    **3. Appliquer ces valeurs par défaut à toutes les îles existantes**
+
+    ```
+    /oba resetflags BREAK_BLOCKS
+    /oba resetflags MAGIC_BLOCK
+    ```
+
+    Confirmez chacune. Cela réécrit ce que chaque île a actuellement avec le défaut que vous avez défini à l'étape 1, donc cela doit venir après l'étape 1.
+
+    **4. Masquer les paramètres afin que les propriétaires ne puissent pas les changer en arrière**
+
+    Comme un Op, tenez-vous sur une île, exécutez `/ob settings`, et SHIFT-CLIC GAUCHE `Casser des blocs` et `Bloc magique`. Chacune gagne un Malédiction du Vanissement luisant, ce qui signifie qu'elle est maintenant cachée. Les Ops la voient toujours ; tous les autres n'ont plus l'icône dans leur panneau du tout.
+
+    Chaque île refusera maintenant à quiconque en dessous du rang Membre de casser des blocs, y compris le bloc magique, et les joueurs ne peuvent pas le changer.
+
+    !!! tip
+        SHIFT-CLIC GAUCHE masque *n'importe quel* paramètre de protection de cette manière, par monde, et la liste cachée est sauvegardée dans la configuration du mode de jeu. SHIFT-CLIC GAUCHE un paramètre caché à nouveau pour le ramener.
+
 ??? question "Quels mobs peuvent apparaître ?"
     Chaque phase a un ensemble différent de mobs qui peuvent apparaître. Soyez prudent car ils pourraient vous faire tomber ! Si vous écoutez attentivement, vous pouvez entendre des mobs hostiles arriver.
 
@@ -545,6 +584,8 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
     Vous devez installer ce plugin pour utiliser les sections d'hologrammes !
 
     Cependant, depuis la version 1.13 et Minecraft 1.19.4, vous n'avez besoin d'aucun plugin supplémentaire pour les hologrammes. Ils seront affichés en utilisant Minecraft Text Entity.
+
+    Le texte de l'hologramme accepte les codes de couleur hérités `&`, les couleurs hex `&#RRGGBB` et les balises MiniMessage (gradients inclus) — les formes hex et MiniMessage depuis 1.27.0. Voir [Personnalisation des phases](Phases.md#holograms).
 
 ??? question "Dois-je utiliser l'addon Levels ?"
     C'est à vous de décider, mais si vous le faites, sachez que les niveaux pourraient devenir très élevés car les joueurs ont un bloc infini.
@@ -835,3 +876,30 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     Compatibilité : BentoBox API 3.15.0+, Minecraft 1.21.5 ou ultérieur (la phase Sulfur Caves elle-même s'active à partir de Minecraft 26.2), Java 21.
 
     [Release v1.26.3](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.26.3)
+
+!!! warning "Nouveautés dans v1.27.0 — nécessite BentoBox 3.22.0 et Java 25"
+    **Publié :** 8 août 2026
+
+    Corrige la perte silencieuse et répétée de la progression de l'île au redémarrage, et ajoute MiniMessage et les couleurs hex au texte de phase. Compatibilité : API BentoBox 3.22.0+ · Minecraft 26.x ou 1.21.5+ (la phase Sulfur Caves s'active à partir de 26.2+) · **serveur Java 25**.
+
+    - 🔺 🐛 **La progression de l'île n'est plus perdue au redémarrage.** Si un joueur était en ligne quand le serveur a redémarré, son décompte de blocs a fait un retour en arrière au dernier point de contrôle — jusqu'à 49 blocs d'exploitation défaits, à chaque redémarrage. AOneBlock est un Pladdon, donc le serveur le désactive *avant* BentoBox, et la sauvegarde d'arrêt est allée dans une queue que chaque BentoBox avant 3.22.0 a discrètement jeté. La sauvegarde d'arrêt est maintenant une écriture directe, indépendante du cœur.
+    - ⚙️ **Nouvelle option `island.save-every`** — à quelle fréquence la progression est écrite dans la base de données, en blocs cassés. Par défaut **10**, remplaçant l'ancien hardcodé 50, donc au maximum 9 blocs peuvent être perdus à un crash plutôt que 49. La progression est aussi sauvegardée à chaque changement de phase, déconnexion et arrêt. Ajouté aux configs existantes automatiquement. Voir la section Configuration ci-dessus.
+    - 🎨 **MiniMessage et couleurs hex dans le texte de phase.** Les hologrammes ne comprenaient que les seize codes `&` hérités, et la barre d'action utilisait un sérialiseur différent ; tous deux acceptent maintenant les codes hérités, `&#RRGGBB` hex, les balises MiniMessage et les gradients, mélangés librement — le même s'applique aux chaînes de locale. Corrige aussi les codes `§` apparaissant comme texte littéral dans l'hologramme de démarrage et la barre d'action. Les codes `&` existants restent fonctionnels ; rien n'a besoin de changer.
+    - 📄 `0_plains.yml` explique maintenant ce que les nombres signifient — les poids dans `blocks:`/`mobs:`/`custom-blocks:`, les positions dans `fixedBlocks:`/`holograms:` — et documente les syntaxes de couleur acceptées.
+
+    🔺 **Mettez à jour BentoBox à 3.22.0 ou plus récent en premier.** `api-version` a été augmenté, donc sur un cœur plus ancien BentoBox refuse de charger l'addon (*"Cannot load AOneBlock because it requires BentoBox version 3.22.0 or greater"*). BentoBox 3.22.0 à son tour a besoin d'un serveur **Java 25** — mettez à niveau la JVM avant n'importe quel jar si vous êtes toujours sur Java 21.
+
+    [Release v1.27.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.27.0)
+
+??? note "Nouveautés dans v1.27.1"
+    **Publié :** 29 août 2026
+
+    Version corrective — pas de changement de configuration ou de fichier de phase, et les personnalisations de locale existantes restent fonctionnelles. Compatibilité : API BentoBox 3.22.0+ · Minecraft 26.x ou 1.21.5+ · Java 25.
+
+    - 🐛 **Les espaces réservés `my_island_*` fonctionnent à nouveau pour les membres de l'équipe.** Depuis 1.26.0, `%aoneblock_my_island_count%`, `%aoneblock_my_island_percent_done%`, `%aoneblock_my_island_phase%` et le reste ne fonctionnaient que pour le **propriétaire** de l'île ; les membres de l'équipe obtenaient les valeurs par défaut vides (`0`, `0%`, `Unknown`). La recherche est maintenant un ordre de préférence : une île que le joueur possède gagne, et un joueur qui n'en possède aucune retombe sur l'île de l'équipe auquel il appartient.
+    - 🐛 **La barre de boss ne se casse plus sous les plugins minion/NPC.** Quand JetsMinions (ou n'importe quel plugin qui casse des blocs via des entités armor-stand) minait le bloc magique, `MagicBlockEvent` ne transportait pas d'UUID de joueur et l'écouteur de barre de boss levait `IllegalArgumentException` à chaque cassure. Il retourne maintenant tôt quand il n'y a personne à qui montrer une barre.
+    - 🐛 **Le lichen luisant et la vigne survivent à la pose.** Les plantes multifacettes (`GLOW_LICHEN`, `VINE`, `SCULK_VEIN`, `RESIN_CLUMP`) s'attachaient à aucune face, donc la première mise à jour de bloc voisin les supprimait et la farine d'os ne pouvait pas les étendre. Elles s'attachent maintenant à quels que soient les voisins solides qui existent ; s'il n'y a rien, le bloc magique devient un bloc de support (mousse, ou sculk pour les veines sculk) avec la plante poussant dessus.
+    - 🔡 **Les 18 fichiers de locale fournis convertis en MiniMessage.** Les codes `&` hérités analysent toujours, donc les fichiers personnalisés dans `locales/` restent fonctionnels inchangés.
+    - 🔡 **Chinois traditionnel (`zh-TW`) complété** par @qwe664 — les 26 clés manquantes depuis 1.27.0 ajoutées et la terminologie révisée.
+
+    [Release v1.27.1](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.27.1)
