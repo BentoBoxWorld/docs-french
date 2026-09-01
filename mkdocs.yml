@@ -16,16 +16,35 @@ nav:
         - Outils d'administration: BentoBox/About/AdminTools.md
     - Glossaire: Glossary.md
     - FAQ: FAQ.md
+    - Confidentialité: BentoBox/Privacy.md
+    - Politique IA: BentoBox/AI-Policy.md
+    - Code de conduite: BentoBox/CodeOfConduct.md
+    - Contribuer: BentoBox/Contributing.md
     - Modes de jeu:
         - Choisir un mode de jeu: gamemodes/Comparison.md
         - AcidIsland: gamemodes/AcidIsland/index.md
-        - AOneBlock: gamemodes/AOneBlock/index.md
+        - AOneBlock:
+            - Aperçu: gamemodes/AOneBlock/index.md
+            - Personnaliser les phases: gamemodes/AOneBlock/Phases.md
         - BSkyBlock: gamemodes/BSkyBlock/index.md
         - Boxed: gamemodes/Boxed/index.md
         - CaveBlock: gamemodes/CaveBlock/index.md
+        - ChunkBlock:
+            - Aperçu: gamemodes/ChunkBlock/index.md
+            - Revendiquer des chunks: gamemodes/ChunkBlock/Chunks.md
+            - Phases: gamemodes/ChunkBlock/Phases.md
+            - Commandes: gamemodes/ChunkBlock/Commands.md
+            - Permissions: gamemodes/ChunkBlock/Permissions.md
+            - Placeholders: gamemodes/ChunkBlock/Placeholders.md
         - Poseidon: gamemodes/Poseidon/index.md
         - SkyGrid: gamemodes/SkyGrid/index.md
         - Stranger Realms: gamemodes/StrangerRealms/index.md
+        - TradeWinds:
+            - Aperçu: gamemodes/TradeWinds/index.md
+            - Le manuel du marin: gamemodes/TradeWinds/Gameplay.md
+            - Commandes: gamemodes/TradeWinds/Commands.md
+            - Permissions: gamemodes/TradeWinds/Permissions.md
+            - Placeholders: gamemodes/TradeWinds/Placeholders.md
 
     - Extensions:
         - Bank: addons/Bank/index.md
@@ -36,6 +55,7 @@ nav:
         - Chat: addons/Chat/index.md
         - CheckMeOut: addons/CheckMeOut/index.md
         - ControlPanel: addons/ControlPanel/index.md
+        - DeathChest: addons/DeathChest/index.md
         - DimensionalTrees: addons/DimensionalTrees/index.md
         - ExtraMobs: addons/ExtraMobs/index.md
         - FarmersDance: addons/FarmersDance/index.md
@@ -65,9 +85,11 @@ nav:
         - "API de base de données": BentoBox/Database-API.md
         - "API de métadonnées": BentoBox/MetadataAPI.md
         - "API Panneau de modèle": Tutorials/api/Templated-Panel.md
+        - "Format de fichier Blueprint": BentoBox/Blueprint-Format.md
         - "Obtenir des données depuis les Extensions": BentoBox/Request-Handler-API---How-plugins-can-get-data-from-addons.md
 theme:
   name: material
+  custom_dir: overrides
   language: fr
   palette:
     scheme: slate

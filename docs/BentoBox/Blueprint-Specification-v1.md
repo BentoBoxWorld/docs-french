@@ -2,6 +2,9 @@
 
 **Version 1**
 
+!!! warning "Remplacée"
+    Cette page est conservée pour référence historique. La spécification complète et actuelle — y compris tous les champs des blueprints, blocs, entités et bundles, plus les JSON Schemas publiés pour la validation — se trouve sur la page [Format de Fichier Blueprint](Blueprint-Format.md).
+
 Les mots clés « MUST », « MUST NOT », « REQUIRED », « SHALL », « SHALL NOT », « SHOULD », « SHOULD NOT », « RECOMMENDED », « MAY » et « OPTIONAL » dans ce document doivent être interprétés tel que décrit dans [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
 ## Introduction

@@ -34,7 +34,7 @@ Ajoutez ce qui suit à votre fichier `pom.xml`.
 <repositories>
   <repository>
     <id>codemc-repo</id>
-    <url>https://repo.codemc.org/repository/maven-public/</url>
+    <url>https://repo.codemc.io/repository/bentoboxworld/</url>
   </repository>
 </repositories>
 
@@ -54,7 +54,7 @@ Ajoutez ce qui suit à votre fichier `build.gradle`.
 
 ```groovy
 repositories {
-  maven { url "https://repo.codemc.org/repository/maven-public/" }
+  maven { url "https://repo.codemc.io/repository/bentoboxworld/" }
 }
 
 dependencies {

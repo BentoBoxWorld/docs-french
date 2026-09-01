@@ -37,7 +37,9 @@ Les fichiers modèles sont principalement pour les utilisateurs qui n'aiment pas
         # Icône utilisée dans les interfaces graphiques. Le nombre à la fin permet de spécifier la taille de la pile pour l'article.
         # Valeur par défaut: Paper.
         icon: "PAPER:1"
-        # Type de générateur: COBBLESTONE, STONE ou BASALT. Auto-explicatif.
+        # Type de générateur : quelle mécanique de lave vanilla ce niveau remplace.
+        # COBBLESTONE, STONE, BASALT, COBBLESTONE_OR_STONE, BASALT_OR_COBBLESTONE,
+        # BASALT_OR_STONE ou ANY. Voir la section "Types de générateur" ci-dessous.
         # Valeur par défaut: COBBLESTONE
         type: COBBLESTONE
         # Indique si le générateur est le générateur par défaut. Les générateurs par défaut ignorent la section des conditions.
@@ -113,6 +115,25 @@ Les fichiers modèles sont principalement pour les utilisateurs qui n'aiment pas
           - generator_id_1
           - generator_id_2
     ```
+
+### Types de générateur (quelle mécanique de lave remplace un niveau)
+
+Minecraft crée des blocs à partir de lave de quatre façons différentes, et un niveau de générateur ne fonctionne que pour ceux que son **type** couvre. C'est le paramètre principal qui contrôle *où* un générateur peut être utilisé :
+
+| Mécanique vanilla | Bloc que vanilla crée | Type de générateur |
+|---|---|---|
+| Une **source** de lave touche l'eau | Obsidienne | *non géré par l'addon* |
+| La **lave qui s'écoule** touche l'eau au même niveau | Pavé | `COBBLESTONE` |
+| La **lave qui s'écoule** s'écoule dans l'eau | Pierre | `STONE` |
+| La **lave qui s'écoule** s'écoule sur la terre maudite à côté de la glace bleue | Basalte | `BASALT` |
+
+Le type est défini par niveau de générateur, soit dans l'interface graphique Admin — `/[admin] generator` → choisir un niveau → le bouton **Type**, qui ouvre un sélecteur listant chaque type avec un indice sur la mécanique derrière — soit avec la clé `type:` dans le fichier modèle. Les types combinés `COBBLESTONE_OR_STONE`, `BASALT_OR_COBBLESTONE`, `BASALT_OR_STONE` et `ANY` rendent un niveau actif pour plus d'une mécanique.
+
+!!! warning "Les générateurs `STONE` fonctionnent sur n'importe quel plan d'eau"
+    Un générateur `STONE` fonctionne partout où un joueur peut verser de la lave sur l'eau — y compris l'océan ouvert dans la gamme de protection de l'île. Sur les modes de jeu riches en eau comme **AcidIsland**, un seul seau de lave peut donc convertir de grandes quantités d'océan en blocs de générateur, et augmenter le niveau de l'île avec. Deux façons d'empêcher cela :
+
+    - **Ne donnez pas aux joueurs des niveaux `STONE`.** Utilisez les types `COBBLESTONE` et/ou `BASALT` uniquement, pour que la génération de blocs nécessite un générateur correctement construit.
+    - **Limitez la plage de hauteur.** Donnez aux niveaux `STONE` un Y minimum et maximum qui exclut le niveau des mers, pour qu'ils fonctionnent dans les grottes ou bien au-dessus de l'eau mais pas à la surface de l'océan. Voir [Plages de hauteur par bloc](#plages-de-hauteur-par-bloc).
 
 ### Épuisement du générateur (limitation du débit)
 
@@ -253,6 +274,9 @@ Depuis **2.10.0**, un niveau de générateur peut produire des **blocs personnal
 ??? question "J'ai un générateur qui s'affiche dans l'interface graphique Admin, mais les joueurs ne le voient pas."
     C'est probablement dû au statut de "déploiement". Pour éviter les problèmes quand les joueurs commencent à activer les générateurs tandis qu'un admin les ajoute, les générateurs ne sont pas déployés et personne ne peut les utiliser. Vous pouvez les activer en modifiant le générateur via l'interface graphique Admin et en cliquant sur le levier dans l'interface graphique Editer le Générateur.
     ![déployé](resources/deployed.png){: loading=lazy }
+
+??? question "Les joueurs utilisent un seau de lave sur l'océan pour générer des blocs. Comment puis-je arrêter cela ?"
+    C'est un générateur `STONE` qui fonctionne comme prévu : vanilla transforme l'eau en pierre chaque fois que la lave s'écoule dessus, donc un niveau `STONE` fonctionne sur n'importe quelle eau que le joueur peut atteindre, l'océan ouvert inclus. Soit arrêtez de distribuer les niveaux `STONE` et utilisez les types `COBBLESTONE` et/ou `BASALT` à la place, soit donnez à vos niveaux `STONE` une plage de hauteur qui exclut le niveau de la mer. Voir [Types de générateur](#types-de-générateur-quelle-mécanique-de-lave-remplace-un-niveau).
 
 ??? question "Qu'est-ce que les trésors?"
     Les trésors sont des choses qui sont lâchées lors de la génération de bloc. Cela permet de donner une personnalisation supplémentaire pour chaque générateur.

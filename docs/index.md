@@ -11,7 +11,7 @@ hide:
 <div class="bb-hero">
   <p class="bb-hero__eyebrow">docs.bentobox.world</p>
   <h1>Vos joueurs vont passer un excellent moment.</h1>
-  <p>BSkyBlock, AOneBlock, AcidIsland, CaveBlock, SkyGrid, Boxed, Poseidon, Stranger Realms &mdash; tous tournant côte à côte sur votre serveur Paper, chacun avec son propre monde, ses règles et sa progression. Un seul plugin. Ajoutez les modes de jeu que vous voulez.</p>
+  <p>BSkyBlock, AOneBlock, ChunkBlock, AcidIsland, CaveBlock, SkyGrid, Boxed, Poseidon, Stranger Realms, TradeWinds &mdash; tous tournant côte à côte sur votre serveur Paper, chacun avec son propre monde, ses règles et sa progression. Un seul plugin. Ajoutez les modes de jeu que vous voulez.</p>
 
   <div class="bb-cta-row">
     <a href="BentoBox/First-Steps" class="bb-btn bb-btn-primary">Premiers 30 minutes &rarr;</a>
@@ -30,7 +30,7 @@ hide:
       <div class="bb-stat__l">extensions</div>
     </div>
     <div class="bb-stat">
-      <div class="bb-stat__n">8</div>
+      <div class="bb-stat__n">10</div>
       <div class="bb-stat__l">modes de jeu</div>
     </div>
     <div class="bb-stat">
@@ -62,7 +62,7 @@ hide:
         <span class="bb-step-time">5 min</span>
       </div>
       <p class="bb-step-title">Choisir un mode de jeu</p>
-      <p class="bb-step-body">BSkyBlock, AOneBlock, AcidIsland, CaveBlock, Boxed, Poseidon &mdash; commencez par un seul.</p>
+      <p class="bb-step-body">BSkyBlock, AOneBlock, ChunkBlock, AcidIsland, CaveBlock, Boxed, Poseidon, TradeWinds &mdash; commencez par un seul.</p>
       <a href="gamemodes/Comparison" class="bb-step-link">Comparer les modes &rarr;</a>
     </div>
     <div class="bb-step-card">
@@ -96,6 +96,10 @@ hide:
       <span class="bb-mode-swatch" style="background:#e8d49e"></span>
       <span><span class="bb-mode-name">AOneBlock</span><span class="bb-mode-sub">un bloc</span></span>
     </a>
+    <a href="gamemodes/ChunkBlock/" class="bb-mode-card">
+      <span class="bb-mode-swatch" style="background:#d99a6c"></span>
+      <span><span class="bb-mode-name">ChunkBlock</span><span class="bb-mode-sub">un bloc &middot; muré</span></span>
+    </a>
     <a href="gamemodes/CaveBlock/" class="bb-mode-card">
       <span class="bb-mode-swatch" style="background:#a09689"></span>
       <span><span class="bb-mode-name">CaveBlock</span><span class="bb-mode-sub">souterrain</span></span>
@@ -115,6 +119,10 @@ hide:
     <a href="gamemodes/StrangerRealms/" class="bb-mode-card">
       <span class="bb-mode-swatch" style="background:#cf6e72"></span>
       <span><span class="bb-mode-name">StrangerRealms</span><span class="bb-mode-sub">mystère</span></span>
+    </a>
+    <a href="gamemodes/TradeWinds/" class="bb-mode-card">
+      <span class="bb-mode-swatch" style="background:#8fcabe"></span>
+      <span><span class="bb-mode-name">TradeWinds</span><span class="bb-mode-sub">commerce maritime</span></span>
     </a>
   </div>
 </div>

@@ -24,12 +24,14 @@ Ceux-ci créent le monde dans lequel vos joueurs jouent réellement. Installez-e
 |---|---|
 | **BSkyBlock** | Skyblock Classique — île flottante dans le ciel |
 | **AOneBlock** | Commencez avec un seul bloc magique se régénérant |
+| **ChunkBlock** | Un bloc dans un chunk muré — dépensez les niveaux d'île pour réclamer plus (nécessite Level) |
 | **AcidIsland** | Skyblock où l'océan est de l'acide |
 | **CaveBlock** | Survie dans un monde souterrain solide |
 | **SkyGrid** | Blocs uniques éparpillés à travers le vide |
 | **Boxed** | Une boîte qui s'agrandit quand vous complétez les avancées |
 | **Poseidon** | Survie aquatique |
 | **StrangerRealms** | Survie avec une dimension en miroir dangereuse |
+| **TradeWinds** | Commerce maritime dans un océan infini de ports PNJ (nécessite Vault) |
 
 Voir [Modes de Jeu](GameModes.md) pour des descriptions complètes, ou [les comparer](../../gamemodes/Comparison.md) pour aider à en choisir un.
 

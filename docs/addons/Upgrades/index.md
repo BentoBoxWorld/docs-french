@@ -7,7 +7,7 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 {{ addon_description("Upgrades", true) }}
 
 !!! warning "La version 1.0.0 est une réécriture complète"
-    Upgrades 1.0.0 a remplacé l'ancien système basé sur les fichiers de configuration par une architecture entièrement **pilotée par base de données**. Les définitions d'amélioration, les niveaux, les prix et les récompenses sont maintenant stockés dans la base de données de BentoBox et gérés entièrement en jeu. **L'ancien `config.yml` n'est plus utilisé** — supprimez-le avant d'installer 1.0.0 si vous mettez à jour depuis la version 0.x.
+    Upgrades 1.0.0 a remplacé l'ancien système basé sur les fichiers de configuration par une architecture entièrement **pilotée par base de données**. Les définitions d'amélioration, les niveaux, les prix et les récompenses sont maintenant stockés dans la base de données de BentoBox et gérés entièrement en jeu. **L'ancien `config.yml` ne définit plus les améliorations** — supprimez-le avant d'installer 1.0.0 si vous mettez à jour depuis la version 0.x. Le fichier 1.0.x généré ne contient que quelques paramètres ; voir [Ce que `config.yml` fait toujours](#ce-que-configyml-fait-toujours).
 
 ## Installation
 
@@ -22,11 +22,23 @@ Les améliorations, leurs niveaux, prix et récompenses sont stockés dans la ba
 
 Au premier démarrage, 8 exemples d'améliorations sont créés. Une fois qu'une amélioration exemple est supprimée, elle ne sera plus recréée au prochain redémarrage. Pour déclencher à nouveau la création, supprimez le fichier marqueur `.seeded-gamemodes` du dossier de données de l'addon.
 
+### Ce que `config.yml` fait toujours
+
+!!! info "Depuis 1.0.4"
+    Le `config.yml` indique maintenant clairement que les améliorations **ne** sont pas définies là, et les sections inertes `range-upgrade`, `command-upgrade`, `entity-icon`, `entity-group-icon` et `command-icon` de l'ancien système axé sur la configuration ont été supprimées. Le dernier fichier est [ici](https://github.com/BentoBoxWorld/Upgrades/blob/develop/src/main/resources/config.yml).
+
+    Trois sections sont toujours lues — `block-limits-upgrade`, `entity-limits-upgrade` et `entity-group-limits-upgrade` — mais elles **ne** créent pas d'améliorations. Elles indiquent à Upgrades quelles limites il possède, afin que les limites basées sur les permissions du propre addon [Limits](../Limits/index.md) soient supprimées pour elles et que les deux ne se battent pas sur la même limite. **Seuls les noms de clés importent** (`HOPPER`, `CHICKEN`, `group1`…) ; les valeurs de palier au-dessous d'elles sont ignorées et conservées uniquement pour que les fichiers plus anciens se chargent toujours. Un bloc `gamemodes:` peut remplacer l'ensemble par mode de jeu.
+
+    `disabled-gamemodes` (modes de jeu où Upgrades est inactif) et `chat-input-escape` (la chaîne qui annule une invite de chat dans les panneaux admin, défaut `END`) s'appliquent aussi toujours. Tout le reste dans un fichier plus ancien est inerte et peut être supprimé ; les fichiers existants ne sont pas réécrits lors de la mise à jour.
+
+    🔺 Avant 1.0.4, une entrée `entity-limits-upgrade` n'avait d'effet que si la même entité apparaissait aussi dans la section `entity-icon` maintenant supprimée. Les entrées d'entité ont maintenant effet d'elles-mêmes — si vous aviez une entité listée sans icône correspondante, ses permissions Limits sont maintenant supprimées là où auparavant elles ne l'étaient pas.
+
 ## Niveaux et paliers
 
 Chaque amélioration est composée d'un ou plusieurs **paliers**. Un palier couvre une plage de niveaux — par exemple, un palier peut couvrir les niveaux 0 à 4, ce qui signifie que tout joueur dont le niveau d'amélioration se situe dans cette plage bénéficie des récompenses de ce palier.
 
 - Chaque fois qu'un joueur achète une amélioration, son niveau augmente de 1.
+- Le panneau d'achat affiche la progression de chaque amélioration dans l'étiquette de l'objet, par ex. `Niveau : 2 / 5` — le niveau actuel de l'île et le niveau le plus élevé que ses paliers permettent. La ligne est stylisée par la clé de locale `upgrades.ui.upgradepanel.currentlevel` ; videz la clé pour la masquer. *(Depuis 1.0.5.)*
 - Les récompenses appliquées sont toujours celles du palier dont la plage contient le niveau actuel du joueur. Entrer dans la plage d'un nouveau palier bascule immédiatement vers les récompenses de ce palier.
 - Un palier peut exiger **plusieurs prix** (tous doivent être payés) et accorder **plusieurs récompenses** (toutes sont appliquées).
 - Les formules de prix et de récompenses peuvent utiliser des variables (voir [Variables de formule](#variables-de-formule)) pour s'adapter automatiquement au niveau, au niveau d'île ou à la taille de l'équipe.
@@ -87,6 +99,8 @@ Les trois récompenses Limites utilisent toutes le **même éditeur de récompen
 | **Type** | Cliquez pour faire défiler entre `BLOCK`, `ENTITY` et `ENTITY_GROUP`. Choisissez `BLOCK` pour limiter un bloc tel qu'un entonnoir. |
 | **Cible** | L'élément limité. Tapez-le dans le chat. Pour `BLOCK`, utilisez un nom de [Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) Bukkit (par ex. `HOPPER`, `CHEST`) ; pour `ENTITY`, un nom d'[EntityType](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html) (par ex. `CHICKEN`) ; pour `ENTITY_GROUP`, un nom de groupe qui **correspond à un groupe défini dans l'addon Limits**. |
 | **Montant** | De combien la limite est augmentée **par niveau**. Accepte un nombre simple ou une formule utilisant les [Variables de formule](#variables-de-formule) (par ex. `1`, ou `[level] * 2`). |
+
+4. Listez la même Cible dans la section correspondante de `config.yml` (`block-limits-upgrade`, `entity-limits-upgrade` ou `entity-group-limits-upgrade`) afin que la limite basée sur les permissions du addon Limits pour elle soit supprimée — voir [Ce que `config.yml` fait toujours](#ce-que-configyml-fait-toujours).
 
 Un panneau vert dans l'éditeur de récompense signifie que la configuration est valide ; un panneau rouge signifie qu'un champ requis (généralement la Cible) est toujours manquant.
 
@@ -155,6 +169,23 @@ Les permissions sont accordées automatiquement par l'addon selon la configurati
 La classe `UpgradeAPI` est exposée pour que d'autres addons puissent interroger et modifier les données d'amélioration de manière programmatique. Consultez les JavaDocs liés depuis la description de l'addon ci-dessus.
 
 ## Journal des modifications
+
+??? note "Nouveautés dans v1.0.5"
+    **Publié :** 3 août 2026
+
+    - 🔡 **Niveau actuel / max dans l'étiquette de l'amélioration.** Chaque élément d'amélioration dans le panneau d'achat conduit maintenant son étiquette avec une ligne `Niveau : courant / max`, y compris sur les améliorations au maximum, afin que les joueurs puissent voir leur progression en un coup d'œil. Piloté par la nouvelle clé de locale `upgrades.ui.upgradepanel.currentlevel` (traduite dans les cinq locales fournies) — restylisez ou videz-la pour personnaliser ou masquer la ligne.
+    - **API :** `UpgradeAPI` gagne un crochet `getMaxLevel(Island)` remplaçable (défaut `-1` = inconnu, qui omet la ligne) afin que les améliorations personnalisées puissent adhérer.
+
+    [Release v1.0.5](https://github.com/BentoBoxWorld/Upgrades/releases/tag/1.0.5)
+
+??? note "Nouveautés dans v1.0.4"
+    **Publié :** 2 août 2026
+
+    - 🔺 **Les améliorations de limites fonctionnent à nouveau.** L'achat d'améliorations de bloc/entité/groupe d'entité a échoué avec une `NoSuchMethodError` contre les versions actuelles de l'addon Limits. Upgrades utilise maintenant l'API Limits par environnement — **mettez à jour Limits à 1.28.2 ou plus récent**.
+    - ⚙️ **`config.yml` nettoyé.** Le fichier documente maintenant que les améliorations sont pilotées par base de données ; les sections inertes de l'ancien système axé sur la configuration ont été supprimées. Les noms de clés `block/entity/entity-group-limits-upgrade` sont toujours lus pour supprimer les propres limites basées sur les permissions du addon Limits.
+    - Neuf bugs latents corrigés (NPEs potentielles dans les chemins de formule) et nettoyage interne des classes inutilisées.
+
+    [Release v1.0.4](https://github.com/BentoBoxWorld/Upgrades/releases/tag/1.0.4)
 
 ??? note "Nouveautés dans v1.0.3"
     **Publié le :** 16 juin 2026

@@ -27,6 +27,14 @@ Les joueurs commencent avec un seul bloc magique flottant dans le vide. Chaque f
 
 ---
 
+### ChunkBlock — Un Bloc dans un Chunk Muré
+
+Les joueurs commencent sur le même bloc magique qui se régénère qu'AOneBlock, mais le monde est un seul chunk 16×16 avec une bordure que rien ne peut traverser — pas marcher, voler, perler ou creuser. Le niveau d'île est la devise du territoire : construisez le niveau, marchez vers le mur et frappez-le dans la direction où vous voulez, et le prochain chunk s'ouvre. Perdez les niveaux et les derniers chunks se verrouillent à nouveau (les constructions sont intactes) jusqu'à ce que les niveaux reviennent. Nécessite le module [Level](../../addons/Level/index.md).
+
+**Meilleur pour :** Les serveurs qui veulent la boucle d'un bloc avec une raison solide de continuer à monter de niveau, et l'expansion que les joueurs gagnent un chunk à la fois.
+
+---
+
 ### AcidIsland — Survie dans l'Acide
 
 Similaire à Skyblock, mais l'océan entourant les îles est rempli d'acide qui endommage les joueurs. La natation est dangereuse, donc les joueurs doivent construire avec soin et éviter de tomber dedans.
@@ -72,6 +80,14 @@ Les joueurs commencent à la surface de l'océan ou dessous et doivent construir
 Les joueurs survivent dans l'Overworld tout en gérant une dimension miroir sinistre — l'Envers — qui est une copie sombre et dangereuse de leur monde. Les interactions entre les deux dimensions créent des défis uniques.
 
 **Meilleur pour :** Les serveurs qui veulent une expérience de survie plus complexe et inspirée par une histoire avec des mécaniques dimensionnelles.
+
+---
+
+### TradeWinds — Commerce Maritime
+
+Les joueurs commencent avec un bateau à rames et un peu de charbon sur un océan infini généré procéduralement parsemé d'îles de commerce PNJ. Le bateau est la cargaison : achetez bon marché à un port, vendez cher à un autre, améliorez la coque, cartographiez les nouvelles îles pour monter les rangs de Marin, et finalement réclamez votre propre îlot. Nécessite Vault et un module d'économie.
+
+**Meilleur pour :** Les serveurs qui veulent un jeu d'économie axé sur le commerce — les eaux sûres près du spawn conviennent aux joueurs occasionnels, tandis que la contrebande, les pirates et les primes PvP attendent plus loin.
 
 ---
 
