@@ -22,7 +22,7 @@ hide:
 
   <div class="bb-stats">
     <div class="bb-stat">
-      <div class="bb-stat__n">1&nbsp;100+</div>
+      <div class="bb-stat__n">1&nbsp;400+</div>
       <div class="bb-stat__l">serveurs</div>
     </div>
     <div class="bb-stat">
@@ -34,7 +34,7 @@ hide:
       <div class="bb-stat__l">modes de jeu</div>
     </div>
     <div class="bb-stat">
-      <div class="bb-stat__n">MC 1.15 &rarr; 26.1.x</div>
+      <div class="bb-stat__n">MC 1.15 &rarr; 26.2.x</div>
       <div class="bb-stat__l">supporté</div>
     </div>
   </div>
@@ -178,7 +178,7 @@ hide:
     <div class="bb-sponsor-card">
       <p class="bb-card-eyebrow" style="color:oklch(0.78 0.13 220)">Open source</p>
       <p class="bb-card-title">Sponsoriser BentoBox</p>
-      <p class="bb-card-body">Chaque contribution maintient les jeux en vie et les mises à jour arrivent. Gratuit et open source, utilisé sur plus de 1&nbsp;100 serveurs dans le monde.</p>
+      <p class="bb-card-body">Chaque contribution maintient les jeux en vie et les mises à jour arrivent. Gratuit et open source, utilisé sur plus de 1&nbsp;400 serveurs dans le monde.</p>
       <div class="bb-btn-row">
         <a href="https://github.com/sponsors/tastybento" class="bb-btn bb-btn-sm bb-btn-ink">&#9829; GitHub Sponsors</a>
         <a href="https://www.paypal.me/BentoBoxWorld" class="bb-btn bb-btn-sm bb-btn-ghost">PayPal</a>
