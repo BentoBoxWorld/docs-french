@@ -69,6 +69,27 @@ Les administrateurs peuvent plus tard afficher le Drapeau en réitérant la mêm
 
 *Vue du joueur de tous les Drapeaux de Base autorisés à être affichés.*
 
+### Personnaliser le Panneau des Paramètres { #customizing-the-settings-panel }
+
+!!! new "Ajouté dans BentoBox 3.23.0"
+    Le Panneau des Paramètres est mis en page par un fichier modèle, comme les autres [interfaces personnalisables](/en/latest/Tutorials/generic/Customizable-GUI/).
+
+La mise en page du Panneau des Paramètres provient de `plugins/BentoBox/panels/settings_panel.yml`, que BentoBox écrit au premier démarrage. Un addon de mode de jeu peut fournir sa propre copie dans son dossier `panels` (par exemple `plugins/BentoBox/addons/BSkyBlock/panels/settings_panel.yml`), qui est alors utilisée pour ce mode de jeu. Le fichier par défaut reproduit exactement le panneau tel qu'il était auparavant, donc rien ne change tant que vous ne le modifiez pas. Si le fichier ne peut pas être lu, BentoBox enregistre une erreur et affiche le panneau intégré.
+
+Chaque bouton est placé avec un `data.type` :
+
+| Type | Ce qu'il affiche |
+| --- | --- |
+| `TAB` | Un bouton d'onglet. `data.tab` vaut `PROTECTION`, `SETTING` ou `WORLD_PROTECTION` (la vue en lecture seule qu'obtient un joueur lorsqu'il ne se trouve pas sur une île). Un onglet qui ne s'applique pas n'est pas affiché et le `fallback` du bouton est utilisé à la place. |
+| `FLAG` | Un emplacement de la liste paginée des Drapeaux. Placez-en autant que vous voulez de Drapeaux par page. Avec `data.flag: <FLAG_ID>`, l'emplacement affiche toujours ce Drapeau, qui quitte alors la liste paginée ; c'est ainsi que sont placées les icônes de verrouillage et de modification des paramètres. |
+| `MODE` | Le sélecteur de mode d'affichage. Les icônes peuvent être définies par mode avec `basic-icon`, `advanced-icon` et `expert-icon` dans `data`. |
+| `RESET` | Réinitialise tous les Drapeaux à leur valeur par défaut. Seul le propriétaire de l'île le voit. |
+| `NEXT`, `PREVIOUS` | Pagination. Affichés uniquement lorsqu'il existe une page vers laquelle aller. |
+
+**Le titre et les noms d'onglets sont distincts.** Le titre du panneau est le `title` du modèle, par défaut l'entrée de langue `panels.settings.title`, traduite avec `[tab]` (le nom de l'onglet affiché) et `[world_name]`. La valeur par défaut est simplement `[tab]`. Chaque bouton d'onglet a ses propres `title` et `description`, par défaut `protection.panel.PROTECTION.title` et les entrées similaires. Vous pouvez donc styliser le titre d'une façon et les boutons d'onglets d'une autre, dans le modèle ou dans le fichier de langue.
+
+**Mise en page de la description (lore).** La description d'un Drapeau est construite à partir de `protection.panel.flag-item.description-layout` (Drapeaux de protection), `setting-layout` (paramètres) ou `menu-layout` (Drapeaux qui ouvrent un sous-panneau) dans le fichier de langue. Depuis la 3.23.0, ces mises en page peuvent contenir `[ranks]`, où la liste des rangs d'un Drapeau de protection est insérée, et `[tooltips]`, où sont insérées les infobulles des `actions` du bouton de Drapeau dans le modèle. Sans `[ranks]`, la liste des rangs est ajoutée après la mise en page, comme auparavant ; sans `[tooltips]`, les infobulles éventuelles sont ajoutées après une ligne vide. Pour déplacer les indications de clic sous la liste des rangs, retirez-les de la mise en page, placez `[ranks]` et `[tooltips]` où vous le souhaitez, et déclarez les indications comme infobulles sur le `flag_button` dans le modèle. Le `title` et la `description` propres à un bouton de Drapeau dans le modèle peuvent désigner une autre entrée de langue à utiliser comme nom et mise en page de description pour ce panneau uniquement.
+
 ![Malédiction de Disparition](https://user-images.githubusercontent.com/20014332/80591692-6799b500-8a1e-11ea-9ab8-e076f47d2220.png)
 
 *La « Malédiction de Disparition » appliquée à l'un des Drapeaux.*
@@ -150,6 +171,9 @@ Les refroidissements de commande et les délais de préchauffage de téléportat
 ## Panneau des Paramètres d'Administration
 
 Le **Panneau des Paramètres d'Administration** est accessible via `/[admin_command] settings` (sans argument). Il contient trois onglets :
+
+!!! new "Ajouté dans BentoBox 3.23.0"
+    Le Panneau des Paramètres d'Administration est mis en page par `plugins/BentoBox/panels/admin_settings_panel.yml`, de la même manière que le [Panneau des Paramètres du joueur](#customizing-the-settings-panel). Ses types d'onglets sont `WORLD_SETTING`, `WORLD_DEFAULTS` et `ISLAND_DEFAULTS` ; les deux derniers nécessitent la permission `[gamemode].admin.set-world-defaults` et sont masqués sans elle. Le même fichier met en page `/[admin_command] settings <player_name>` : chaque onglet de monde désigne un onglet d'île (`PROTECTION`, `SETTING`) comme `fallback`, qui est affiché lorsqu'il y a une île.
 
 ### Paramètres Mondiaux
 

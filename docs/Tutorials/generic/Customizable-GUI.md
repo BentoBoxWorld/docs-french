@@ -207,3 +207,34 @@ panel_name:
     Soyez conscient que toutes les options ne sont pas utilisables par les joueurs.
 
     `action` supporte la génération d'infobulles. Les infobulles seront toujours ajoutées à la fin de la description du bouton et dans l'ordre des actions.
+
+??? question "À quoi sert `fallback` pour les boutons ?"
+    Un bouton peut avoir un `fallback` : une autre définition de bouton (ou le nom d'un `reusable`) affichée lorsque le bouton lui-même ne peut pas l'être, par exemple un onglet qui ne s'applique pas dans la situation actuelle, ou un emplacement paginé sans plus rien à afficher. Un fallback est un bouton complet : il peut donc avoir ses propres `data` et `actions`, et même son propre `fallback`. Les panneaux de paramètres s'en servent pour placer l'onglet affiché hors de l'île dans le même emplacement que l'onglet affiché sur une île.
+    ```yaml
+    2:
+      icon: SHIELD
+      title: protection.panel.PROTECTION.title
+      data:
+        type: TAB
+        tab: PROTECTION
+      fallback:
+        icon: STONE_BRICKS
+        title: protection.panel.WORLD_DEFAULTS.title
+        data:
+          type: TAB
+          tab: WORLD_PROTECTION
+    ```
+    Les fallbacks fonctionnent depuis BentoBox 3.23.0 ; les versions antérieures ignoraient le fallback et affichaient à la place son propre fallback.
+
+??? question "Quels panneaux de BentoBox sont personnalisables ?"
+    BentoBox écrit ces modèles dans `plugins/BentoBox/panels/` au premier démarrage. Un addon de mode de jeu peut fournir sa propre copie de n'importe lequel d'entre eux dans son propre dossier `panels`, qui est alors utilisée pour ce mode de jeu.
+
+    | Fichier | Panneau |
+    | --- | --- |
+    | `island_creation_panel.yml` | Choix du lot de plans (blueprint bundle) lors de la création d'une île |
+    | `island_homes_panel.yml` | `/[player_command] homes` |
+    | `language_panel.yml` | `/[player_command] language` |
+    | `team_panel.yml` et `team_invite_panel.yml` | `/[player_command] team` et son écran d'invitation |
+    | `settings_panel.yml` | `/[player_command] settings`, voir [Personnaliser le Panneau des Paramètres](/en/latest/BentoBox/Island-Protection,-Flags-&-Ranks/#customizing-the-settings-panel) |
+    | `admin_settings_panel.yml` | `/[admin_command] settings` |
+    | `placeholder_panel.yml` et `placeholder_list_panel.yml` | Le navigateur de placeholders |
