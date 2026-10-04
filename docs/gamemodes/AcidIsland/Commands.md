@@ -136,8 +136,8 @@
 <td align='left'></td>
 </tr>
 <tr>
-<td align='left'><b>/acid setrank <player> <rank></b></td>
-<td align='left'>définir le rang d'un joueur sur son île</td>
+<td align='left'><b>/acid setrank <player> <rank> [island owner | x,y,z]</b></td>
+<td align='left'>définir le rang d'un joueur sur son île - fonctionne depuis la console ; le rang peut être un mot-clé (member, sub-owner, trusted, coop), un nom ou un numéro. Nommez le propriétaire ou le centre x,y,z pour choisir une île spécifique</td>
 <td align='left'></td>
 </tr>
 <tr>

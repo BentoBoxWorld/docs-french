@@ -121,8 +121,8 @@
 <td align='left'>poseidon.mod.team</td>
 </tr>
 <tr>
-<td align='left'><b>/padmin setrank <player> <rank></b></td>
-<td align='left'>définir le rang d'un joueur sur son royaume</td>
+<td align='left'><b>/padmin setrank <player> <rank> [island owner | x,y,z]</b></td>
+<td align='left'>définir le rang d'un joueur sur son royaume - fonctionne depuis la console ; le rang peut être un mot-clé (member, sub-owner, trusted, coop), un nom ou un numéro. Nommez le propriétaire ou le centre x,y,z pour choisir un royaume spécifique</td>
 <td align='left'>poseidon.admin.setrank</td>
 </tr>
 <tr>

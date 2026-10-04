@@ -139,6 +139,19 @@ Les placeholders peuvent être trouvés [ici](Placeholders).
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v3.4.1"
+    **Publié :** 25 septembre 2026
+
+    Une version de maintenance. Nécessite BentoBox **3.17.0** ou une version plus récente. Compatibilité : Paper 1.21.x – 26.x · Java 21.
+
+    - 🐛 **Plus de plantage `contloc out of spec` à l'activation.** Au premier démarrage, une carte d'explorateur obtenue d'une caisse de butin pouvait rechercher très loin en dehors de la zone de graine, où la continentalité tombe en dessous de -1,2, et BentoBox a ignoré Boxed. Les valeurs hors plage tombent maintenant dans les bandes les plus externes.
+    - 🐛 **`/boxadmin place ... NO_MOBS` fonctionne.** Le 7e argument était rejeté avant de pouvoir être lu ; il est maintenant accepté et ne se reporte plus aux placements ultérieurs.
+    - 🐛 Une parenthèse manquante choisissait le mauvais biome dans certaines zones de graine de niveau d'érosion 5. Seuls les mondes de graine générés après la mise à niveau sont affectés.
+    - ⚙️ Les commentaires `area.deaths` plus clairs dans `config.yml`, expliquant quels paramètres de mort affectent les niveaux d'île sous [Level](../../addons/Level/index.md) 2.29.0 et lesquels n'affectent que le compteur de morts de BentoBox et `%boxed_deaths%`. Seuls les commentaires ont changé.
+    - Les versions sont maintenant également publiées sur CurseForge et Hangar.
+
+    [Release v3.4.1](https://github.com/BentoBoxWorld/Boxed/releases/tag/3.4.1)
+
 ??? note "Nouveautés dans v3.4.0"
     **Publié le :** 2026-05-30
 

@@ -25,17 +25,19 @@ Toute l'administration BentoBox de haut niveau passe par `/bentobox` (alias `/bb
 | `/bentobox perms` | Affiche les permissions effectives pour BentoBox et tous les compléments |
 | `/bentobox rank` | Liste, ajoute ou supprime les rangs personnalisés |
 
-## Commandes d'Administration par Mode de Jeu
+## Commandes d'Administration par Mode de Jeu { #per-game-mode-admin-commands }
 
 Chaque mode de jeu a sa propre commande d'administration. Pour BSkyBlock c'est `/bsb`, pour AcidIsland c'est `/acid admin`, et ainsi de suite. Celles-ci vous donnent les contrôles spécifiques à ce mode de jeu :
 
 | Commande | Qu'est-ce qu'elle fait |
 |---|---|
-| `/[admin] info <player>` | Affiche les détails complets de l'île d'un joueur |
+| `/[admin] info <player>` | Affiche les détails complets de l'île d'un joueur. *(3.22.4)* Si le joueur a plusieurs îles dans le monde (propres et équipe), chaque île est listée avec son nom |
+| `/[admin] info <player> [island name]` | *(3.22.4)* Affiche seulement l'île nommée. Accepte les noms d'îles et de foyers, assortis avec indulgence (insensible à la casse, préfixe unique), avec complètement par tab ; un nom inconnu liste les valides |
 | `/[admin] delete <player>` | Supprime l'île d'un joueur |
 | `/[admin] delete` | *(3.19.0)* Sans argument joueur, supprime en douceur l'île sur laquelle vous **êtes debout** après confirmation (refusé si elle a encore une équipe) |
 | `/[admin] undelete` | *(3.19.0)* Efface l'état de suppression en attente de l'île sur laquelle vous **êtes debout**, la laissant sans propriétaire, avant que ses fichiers de région ne soient purgés |
 | `/[admin] register <player>` | Enregistre une île sans propriétaire à un joueur. Sur une île en attente de suppression, cela affiche désormais une invite de confirmation et annule la suppression au lieu de refuser |
+| `/[admin] setrank <player> <rank> [island owner | x,y,z]` | *(3.23.0)* Définit le rang d'un membre de l'équipe ; fonctionne depuis la console. Le rang peut être un mot-clé (`member`, `sub-owner`, `trusted`, `coop`, ou tout rang d'addon sans le préfixe `ranks.`), le nom du rang traduit, ou son numéro, insensible à la casse ; un rang inconnu liste les valides. Sans argument d'île, agit sur l'île dont le joueur est *membre* (non celle qu'il possède), donc ne peut pas rétrograder un propriétaire. Nommez le propriétaire de l'île, ou son centre comme `x,y,z`, pour choisir une île spécifique. Les rangs `owner`, `mod` et `admin` sont refusés — utilisez `team setowner` pour transférer la propriété |
 | `/[admin] setrange <player> <range>` | Change la plage de protection de l'île d'un joueur |
 | `/[admin] range removebonus <player> [id]` | Supprime tous les bonus de plages de protection d'une seule île, ou seulement ceux d'un id donné |
 | `/[admin] range purgebonus <id>` | Supprime un id de plage de bonus de **toutes** les îles du monde — idéal après désinstallation d'un addon qui accordait des bonus de plages. L'analyse s'exécute de façon asynchrone pour ne pas geler les gros serveurs |
@@ -105,7 +107,63 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! note "Nouveautés dans v3.22.3 — désactivation de bStats et Paper 26.2"
+!!! note "Nouveautés dans v3.23.3 — correction de la duplication d'obsidienne & modèle Command Ranks"
+    **Publié :** 3 octobre 2026
+
+    Une version de correction de bugs et de panneaux. Aucun changement dans `config.yml` ou les locales. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🐛 **La duplication par trempage d'obsidienne corrigée.** Avec OBSIDIAN_SCOOPING, la lave était distribuée une tick après le clic sans revérification, donc miner l'obsidienne dans cette tick donnait à la fois l'obsidienne et la lave, et déplacer le seau de la main pouvait donner de la lave sans utiliser de seau. Les deux sont maintenant revérifiées d'abord. **La mise à jour est recommandée pour chaque serveur avec OBSIDIAN_SCOOPING activé.**
+    - ⚙️ **Panneau Command Ranks personnalisable.** Présenté par le nouveau `panels/command_ranks_panel.yml` (écrit au premier démarrage ; la copie propre d'un mode de jeu prend précédence), avec les boutons `COMMAND`, `NEXT` et `PREVIOUS`. Il pagine maintenant à 45 commandes — l'ancien panneau laissait silencieusement tomber chaque commande après la 49e. Voir [Personnalisation du panneau Command Ranks](../Island-Protection,-Flags-&-Ranks.md).
+    - ✨ **Améliorations du panneau de paramètres.** `/island settings` s'ouvre dans le mode Basic/Advanced/Expert que le joueur a choisi en dernier, et les onglets Protection et Paramètres partagent un mode (le panneau admin s'ouvre toujours en Expert). Command Ranks cache les sous-commandes pour lesquelles le joueur n'a pas la permission (les ops voient tout). L'icône Break Spawners n'affiche plus l'infobulle de l'œuf de reproduction du jeu.
+    - 🐛 **L'`auto-load` de Multiverse respectée.** Depuis 3.22.0, le crochet Multiverse réinitialisait `auto-load: false` sur chaque monde BentoBox à chaque démarrage. Il est maintenant défini uniquement lorsque BentoBox importe un monde pour la première fois ; les entrées Multiverse existantes sont laissées telles que configurées.
+    - 🧩 **API Addon :** les commandes administrateur `deaths set|add|remove|reset` déclenchent `PlayerDeathsChangedEvent` (monde, joueur, action, montant, anciens et nouveaux décomptes), donc Level peut suivre les changements administrateur. Il n'est pas déclenché pour les morts naturelles.
+
+    [Release v3.23.3](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.3)
+
+??? note "Nouveautés dans v3.23.1 — Support Minecraft 26.3 & panneaux de paramètres basés sur des modèles"
+    **Publié :** 25 septembre 2026
+
+    Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🎮 **Support Minecraft 26.3 « Wilderness Bound ».** Les nouveaux coussins sont protégés par les drapeaux existants — placer nécessite PLACE_BLOCKS, frapper ou tirer nécessite BREAK_BLOCKS, et s'asseoir nécessite RIDING — et les lits de paille sont protégés par BED, donc les visiteurs ne peuvent plus dormir dans (et utiliser) les lits de paille d'une île. Aucun nouveau drapeau. À la sortie, Paper 26.3 n'était disponible qu'en builds alpha (testé sur la build 41).
+    - ⚙️🔡 **Panneaux de paramètres personnalisables.** `/island settings` et `/admin settings` sont construits à partir de `panels/settings_panel.yml` et `panels/admin_settings_panel.yml`, écrits au premier démarrage. La disposition des onglets, les drapeaux épinglés, le titre du panneau et l'ordre de la description d'un drapeau peuvent être personnalisés ; les valeurs par défaut ressemblent exactement aux anciens panneaux. Voir [Personnalisation du Panneau de Paramètres](../Island-Protection,-Flags-&-Ranks.md#customizing-the-settings-panel).
+    - 🐛 **Les îles supprimées ne comptent plus contre un joueur.** Après une réinitialisation ou `/[admin] delete`, l'île restait dans l'index par joueur jusqu'au redémarrage, qui bloquait les transferts (« le joueur possède déjà N îles ») et confondait `/[admin] delete`.
+    - 🐛 Le `fallback:` d'un bouton modèle s'affiche maintenant correctement.
+
+    🔡 **Note sur les locales :** Une nouvelle clé, `panels.settings.title`, définit le titre du panneau de paramètres séparément des noms de tabs. Les fichiers de locale personnalisés sans elle reviennent au texte fourni. La disposition du descriptif des drapeaux (`protection.panel.flag-item.description-layout`) peut maintenant utiliser les espaces réservés `[ranks]` et `[tooltips]`, mais reste inchangée à moins que vous n'optiez.
+
+    [Release v3.23.1](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.1)
+
+??? note "Nouveautés dans v3.23.0 — setrank prêt pour la console"
+    **Publié :** 19 septembre 2026
+
+    Compatibilité : Paper Minecraft 1.21.x – 26.2, Java 25+.
+
+    - 🔡 **`/[admin] setrank` fonctionne depuis la console.** Nouvelle syntaxe `/[admin] setrank <player> <rank> [island owner | x,y,z]`, rétrocompatible. Les rangs peuvent être donnés par mot-clé, nom traduit ou numéro ; la bonne île est choisie lorsque le joueur possède une île et est membre d'une autre ; et une île peut être nommée par son centre. La complètion par tab était décalée d'un et est corrigée. Le joueur affecté est informé que son rang a changé — voir le [tableau de commandes](#per-game-mode-admin-commands) ci-dessus.
+    - 💡 **Changement de comportement :** sans argument d'île, `setrank` agit maintenant sur l'île dont le joueur est *membre* plutôt que sur sa propre île, donc ne peut plus accidentellement rétrograder un propriétaire. Définir `owner` est refusé avec un pointeur vers `setowner`.
+    - 🐛 **Spam de métadonnées de console corrigé.** Les cartes de métadonnées de joueur et d'île sont maintenant thread-safe. Une carte corrompue levait auparavant `NoSuchElementException` à chaque mouvement de joueur (vu via Border) jusqu'au redémarrage.
+
+    🔡 **Note sur les locales :** `commands.admin.setrank` a gagné `cannot-set-owner`, `already-rank` et `admin-changed-rank` ; `unknown-rank` prend maintenant `[rank]` et `[ranks]`. Toutes les 24 locales fournies sont mises à jour ; ajoutez les nouvelles clés à tout fichier de locale personnalisé.
+
+    [Release v3.23.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.0)
+
+??? note "Nouveautés dans v3.22.4"
+    **Publié :** 6 septembre 2026
+
+    Une version de correction de bugs et de performance. Compatibilité : Paper Minecraft 1.21.x – 26.2, Java 25+.
+
+    - 🔡 **`/[admin] info <player>` affiche toutes les îles.** Toutes les îles d'un joueur dans le monde (possédées et équipe) sont listées, chaque bloc précédé du nom de l'île, et un nouvel argument optionnel `[island name]` en choisit une — voir le [tableau de commandes](#per-game-mode-admin-commands) ci-dessus. L'appariement des noms est indulgent (exact, puis insensible à la casse et aux espaces, puis préfixe unique), les noms multi-mots n'ont pas besoin de guillemets, et la complètion par tab offre les noms d'îles et de foyers du joueur.
+    - ⚙️ **Limite d'historique d'îles.** Une nouvelle option `island.history.max-entries` dans `config.yml` limite le nombre d'entrées d'historique (journal) que chaque île conserve ; les plus anciennes sont supprimées en premier. La valeur par défaut **`0`** signifie illimitée, donc les serveurs existants conservent leur comportement actuel. Le plafonnement peut sous-compter l'espace réservé des membres historiques une fois que les anciennes entrées `JOINED` sont supprimées.
+    - 🐛 **La purge ne plante plus.** `/[admin] purge <days> confirm` échouait avec `IslandEvent may only be triggered synchronously` sur la première île complètement récoltée et laissait sa ligne de base de données derrière elle. Les événements d'îles sont maintenant déclenchés sur le thread principal après la suppression de région asynchrone.
+    - 🐛 **Les étiquettes de sous-commande ne changent plus.** Taper un alias tel que `/ob h` renommait la commande `go` partagée en `h` dans la complètion par tab et l'aide de tout le monde — beaucoup plus visible depuis l'enregistrement Brigadier en 3.22.0. Corrigé ; les alias `home` / `h` ne changent pas.
+    - 🐛 **Les têtes des joueurs se résolvent via le serveur.** Les têtes des joueurs en ligne proviennent de leur profil vivant et tout le monde d'autre est recherché dans le cache de profil propre de Paper avant de revenir à mc-heads ou Mojang, donc les panneaux comme TopBlock affichent les vraies têtes au lieu de Steve après les limites de débit.
+    - ⚡ Performance : les vérifications de limites n'allouent plus, les balayages de cartes utilisent des itérateurs, et une instance GSON partagée remplace la construction par appel.
+
+    🔡 **Note sur les locales :** `commands.admin.info.parameters` lit maintenant `<player> [island name]` et une nouvelle clé `commands.admin.info.island-name` a été ajoutée. Toutes les 24 locales fournies sont mises à jour ; si vous maintenez un fichier de locale personnalisé, ajoutez la nouvelle clé ou le bloc d'info administrateur affichera la clé brute pour la ligne du nom de l'île.
+
+    [Release v3.22.4](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.22.4)
+
+??? note "Nouveautés dans v3.22.3 — désactivation de bStats et Paper 26.2"
     **Publié :** 22 août 2026
 
     Principalement une version de correction de bugs et d'API. Compatibilité : Paper Minecraft 1.21.5 – 26.2, Java 25+.
