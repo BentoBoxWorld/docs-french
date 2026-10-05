@@ -161,6 +161,17 @@ Les espaces réservés sont enregistrés séparément pour chaque mode de jeu au
 
 ## Changelog
 
+??? note "Nouveautés dans v2.1.2"
+    **Publié :** 26 septembre 2026
+
+    Version de correctif — aucun changement de configuration, locale ou format de données ; un remplacement direct pour 2.1.1.
+
+    - 🐛 **Plus de lectures de base de données du thread principal lors de l'actualisation du top ten.** 2.1.1 a déplacé la lecture des données d'île du mode de jeu du thread principal, mais l'appariement de chaque entrée à son île BentoBox s'y déroulait toujours. Cela chargeait chaque île hors ligne de la base de données lors de la première actualisation après un redémarrage, et exécutait une requête d'existence par entrée AOneBlock/ChunkBlock périmée à chaque actualisation (un problème sur MySQL et autres backends SQL). Les recherches d'îles s'exécutent maintenant dans la tâche d'actualisation asynchrone, les îles inconnues sont ignorées sans toucher à la base de données, et les îles ne sont plus extraites dans le cache de BentoBox juste pour construire le top ten.
+
+    Si vous êtes toujours sur 2.1.0 et voyez des pics de lag toutes les 5 minutes, mettez à jour maintenant.
+
+    [Release v2.1.2](https://github.com/BentoBoxWorld/TopBlock/releases/tag/2.1.2)
+
 ??? note "Nouveautés dans v2.1.1"
     **Publié :** 27 août 2026
 

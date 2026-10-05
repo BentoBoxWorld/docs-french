@@ -65,6 +65,11 @@ Toutes les commandes sont les mêmes que dans d'autres modes de jeu, comme BSkyB
 <td align='left'></td>
 </tr>
 <tr>
+<td align='left'><b>/boxadmin place <structure> [x y z] [rotation] [mirror] [NO_MOBS]</b></td>
+<td align='left'>placer une structure du monde de graine dans la boîte actuelle ; utilisez ~ pour la coordonnée actuelle. NO_MOBS (3.4.1+) supprime les mobs intégrés de la structure. /boxadmin place undo supprime le dernier placement</td>
+<td align='left'>boxed.commands.boxadmin.place</td>
+</tr>
+<tr>
 <td align='left'><b>/boxadmin range</b></td>
 <td align='left'>Commande de portée d'île admin</td>
 <td align='left'></td>
@@ -130,8 +135,8 @@ Toutes les commandes sont les mêmes que dans d'autres modes de jeu, comme BSkyB
 <td align='left'>boxed.admin.register</td>
 </tr>
 <tr>
-<td align='left'><b>/boxadmin setrank <player> <rank></b></td>
-<td align='left'>définir le rang d'un joueur sur son île</td>
+<td align='left'><b>/boxadmin setrank <player> <rank> [island owner | x,y,z]</b></td>
+<td align='left'>définir le rang d'un joueur sur son île - fonctionne depuis la console ; le rang peut être un mot-clé (member, sub-owner, trusted, coop), un nom ou un numéro. Nommez le propriétaire ou le centre x,y,z pour choisir une île spécifique</td>
 <td align='left'></td>
 </tr>
 <tr>

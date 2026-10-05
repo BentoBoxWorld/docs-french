@@ -178,6 +178,18 @@ Les autres addons peuvent se greffer sur le mécanisme d'offrandes aux geysers g
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v2.1.2 — cheminées de soufre sur Minecraft 26.3"
+    **Publié :** 25 septembre 2026
+
+    Une version de correction de bugs pour Minecraft 26.3. Aucun changement de configuration ou de locale. Compatibilité : API BentoBox 3.14.0 · Minecraft 1.21.5 – 26.3 (la mer de soufre et les geysers ont besoin de 26.2+) · Java 21.
+
+    - 🐛 **Les cheminées de soufre se génèrent intactes sur 26.3.** La décoration de biome vanille s'est déroulée après qu'AcidIsland construisit la mer et écrasa chaque bouchon de cheminée, laissant du soufre nu sans bulles, gaz ou geysers, plus un avertissement `ServerInternalException ... PotentSulfurBlockEntity` par cheminée. Les cheminées sont maintenant placées après la décoration.
+    - ⚙️ Les commentaires `deaths` dans `config.yml` expliquent maintenant quels paramètres affectent les niveaux d'île sous [Level](../../addons/Level/index.md) 2.29.0. Aucun paramètre ou valeur par défaut n'a changé.
+
+    🔺 **Seuls les chunks nouvellement générés sont corrigés.** Les cheminées dans les chunks déjà générés sur 26.3 conservent leurs bouchons nus. Parce que les cheminées sont maintenant placées plus tard, une graine donnée place les cheminées à des endroits différents que dans la 2.1.1.
+
+    [Release v2.1.2](https://github.com/BentoBoxWorld/AcidIsland/releases/tag/2.1.2)
+
 !!! warning "Nouveautés dans v2.1.1 — les cheminées commercent au lieu de jouer aux dés (supprimez `geyser-loot.yml`)"
     **Publié :** 26 juillet 2026
 

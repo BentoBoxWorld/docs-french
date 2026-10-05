@@ -54,24 +54,28 @@ Chaque entrée de la liste `phases:` accepte ces champs :
 | `length` | Nombre de blocs dans la phase. |
 | `enabled` | Facultatif, `true` par défaut. Mettez `false` pour exclure une phase. |
 | `requiredMinecraftVersion` | Facultatif. La phase est ignorée — sans occuper le moindre bloc — sur les serveurs antérieurs à cette version. |
+| `addedIn` | Facultatif, répertoire livré uniquement. La version du addon qui a expédié en premier la phase. Utilisée une fois, lors de la mise à niveau d'un index écrit avant `shippedPhases`, pour distinguer les nouvelles phases de celles qu'un administrateur a supprimées. |
 
 Les blocs de départ sont **calculés** : ils correspondent à la somme cumulée des longueurs des phases activées situées au-dessus, en partant de 0. Cela signifie que les phases peuvent être réordonnées librement et qu'une phase ignorée disparaît de la progression. Après la dernière phase, le décompte de blocs revient à `gotoAtEnd`.
 
 Un `adminLengths: true` de premier niveau est écrit automatiquement la première fois que vous modifiez une longueur dans `/[admin_command] phases`. À partir de ce moment, la réconciliation ne recalcule plus jamais les longueurs, donc vos valeurs survivent aux ajouts de fichiers, renommages et mises à niveau ultérieurs.
 
-#### Réconciliation
+Une liste `shippedPhases` de premier niveau est également écrite automatiquement (depuis 1.28.0). Elle enregistre chaque phase que ce serveur a eu l'occasion d'être proposée par le jar du addon. Laissez-la en place : c'est comment AOneBlock fait la différence entre une phase que vous avez supprimée exprès d'une nouvelle expédiée lors d'une mise à niveau.
+
+#### Réconciliation { #reconciliation }
 
 !!! note "Depuis la 1.26.1, le dossier phases fait autorité"
     L'index est réconcilié avec les fichiers réellement présents sur le disque à chaque chargement, et à chaque enregistrement depuis le panneau admin, donc ce que `/[admin_command] phases` affiche correspond à ce que votre serveur exécute réellement. Surveillez dans le journal de démarrage les lignes commençant par `Phase index:` — elles indiquent exactement ce qui a été modifié.
 
 - Une entrée dont le fichier a été **renommé d'une version de l'addon à l'autre** est repointée vers votre fichier d'après le nom de la phase, afin que la phase se charge à nouveau.
-- Une entrée dont le fichier est **absent mais fourni dans le jar** est restaurée automatiquement. C'est ce qui fait apparaître les nouvelles phases sur les serveurs mis à niveau, puisque les fichiers de `phases/` ne sont jamais écrasés.
+- Une entrée dont le fichier est **absent mais fourni dans le jar** est restaurée automatiquement, puisque les fichiers de `phases/` ne sont jamais écrasés.
+- *(1.28.0)* Une **phase expédiée dans une version de l'addon plus récente** est ajoutée une fois, au premier démarrage après la mise à niveau, si elle n'est pas dans l'index et pas encore dans `shippedPhases`. Elle va directement après la phase qui la précède dans l'ordre expédié, même si vous avez déplacé cette phase, et ses fichiers de phase et de coffre sont copiés dans `phases/`. Le journal affiche `Phase index: added new phase <name>`.
 - Les **fichiers de phase personnalisés** déposés dans le dossier sont ajoutés automatiquement. Une clé numérique s'insère à son bloc de départ historique ; tout autre nom est ajouté à la fin pour que vous l'organisiez dans le panneau.
 - Les entrées dont les fichiers ont définitivement disparu sont retirées avec un avertissement, afin que le panneau ne liste jamais des phases inexistantes.
 - Quand une réparation a été nécessaire, les longueurs sont recalculées d'après les clés de bloc de départ historiques de vos fichiers, ce qui préserve la disposition que votre serveur exécutait réellement avant l'existence de l'index — sauf si `adminLengths` est défini.
 
 !!! warning "Supprimer une phase"
-    Pour retirer une phase définitivement, supprimez ses fichiers, ou désactivez-la dans `/[admin_command] phases`. Supprimer uniquement son entrée d'index ne fonctionne pas — la réconciliation réajoute tout fichier de phase qu'elle trouve dans le dossier.
+    Pour retirer une phase définitivement, supprimez son entrée d'index **et** ses fichiers ; parce qu'elle est déjà listée dans `shippedPhases`, elle ne reviendra pas lors de mises à niveau ultérieures. Pour simplement désactiver une phase, désactivez-la dans `/[admin_command] phases`. Supprimer uniquement son entrée d'index ne fonctionne pas — la réconciliation réajoute tout fichier de phase qu'elle trouve dans le dossier.
 
     Un index mal formé retombe sur l'ancien chargement direct des fichiers, donc une mauvaise modification ne peut pas bloquer l'addon.
 
@@ -499,14 +503,14 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/AOneBlock/issues).
 
 ??? question "Quelles phases y a-t-il ?"
-    Il y a 20 phases fournies, dans cet ordre : Plains, Underground, Winter, Ocean, Jungle, Swamp, Dungeon, Desert, The Nether, Plenty, Desolation, Deep Dark, The End, Lush Caves, Dripstone Caves, Mangrove Swamp, Meadow, Cherry Grove, Jagged Peaks et Sulfur Caves.
+    Il y a 21 phases fournies, dans cet ordre : Plains, Underground, Winter, Ocean, Jungle, Swamp, Dungeon, Desert, The Nether, Plenty, Desolation, Deep Dark, The End, Lush Caves, Dripstone Caves, Mangrove Swamp, Meadow, Cherry Grove, Jagged Peaks, Sulfur Caves et Dappled Forest.
 
     Chaque phase propose un ensemble de blocs, d'articles et de mobs appropriés pour l'environnement.
 
-    Sulfur Caves nécessite Minecraft 26.2 ou une version ultérieure. Sur les serveurs plus anciens, elle est ignorée et Jagged Peaks s'étend jusqu'au point de bouclage à la place. Vous pouvez réordonner, désactiver et redimensionner les phases vous-même avec `/[admin_command] phases`, et ajouter vos propres fichiers de phase dans le dossier `phases`.
+    Sulfur Caves nécessite Minecraft 26.2 ou une version ultérieure, et Dappled Forest nécessite Minecraft 26.3 ou une version ultérieure. Sur les serveurs plus anciens, ils sont ignorés et ne prennent pas de blocs, donc la phase précédente s'étend jusqu'au point de bouclage à la place. Vous pouvez réordonner, désactiver et redimensionner les phases vous-même avec `/[admin_command] phases`, et ajouter vos propres fichiers de phase dans le dossier `phases`.
 
 ??? question "Combien de blocs y a-t-il dans toutes les phases ?"
-    15 500 blocs avec les phases fournies sur un serveur Minecraft 26.2+, ou 15 000 sans la phase Sulfur Caves.
+    16 000 blocs avec les phases fournies sur un serveur Minecraft 26.3+, 15 500 sur 26.2 (pas de Dappled Forest), ou 15 000 sur les serveurs plus anciens (pas de Sulfur Caves non plus).
 
 ??? question "Que se passe-t-il après la dernière phase ?"
     Les phases se répètent — le décompte de blocs revient à la valeur `gotoAtEnd` de `phases_index.yml`, qui est 0 par défaut.
@@ -903,3 +907,17 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     - 🔡 **Chinois traditionnel (`zh-TW`) complété** par @qwe664 — les 26 clés manquantes depuis 1.27.0 ajoutées et la terminologie révisée.
 
     [Release v1.27.1](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.27.1)
+
+!!! warning "Nouveautés dans v1.28.0 — Phase Dappled Forest ajoutée au premier démarrage"
+    **Publié :** 26 septembre 2026
+
+    Compatibilité : API BentoBox 3.22.0+ · Minecraft 26.x ou 1.21.5+ (Sulfur Caves a besoin de 26.2+, Dappled Forest a besoin de 26.3+) · Java 25.
+
+    - 🍂 **Phase Dappled Forest** pour Minecraft 26.3. Elle suit Sulfur Caves pendant 500 blocs, donc la boucle de retour à Plains se déplace du bloc 15500 au bloc 16000. Bûches de peuplier, feuilles de peuplier jaunes, oranges et rouges (persistantes, donc elles ne pourrissent pas), débris de feuilles, buissons rouges et escaliers en laine dans les 16 couleurs ; moutons, porcs, poules, vaches, lapins et renards plus les mobs hostiles habituels ; coffres avec de jeunes pousses de peuplier, des champignons d'étagère, des coussins, des lits de paille, une hache en cuivre, une pique en fer et plus. Sur les serveurs antérieurs à 26.3, la phase est ignorée et ne prend pas de blocs.
+    - 🔺 **Les nouvelles phases atteignent maintenant les serveurs existants.** `phases_index.yml` gagne une liste `shippedPhases`, et une phase expédiée dans une version ultérieure est ajoutée à l'index une fois, directement après la phase qui la précède dans l'ordre expédié. Les phases que vous avez supprimées restent supprimées. Voir [Réconciliation](#reconciliation).
+    - 🐛 Le gestionnaire de cassure de bloc ne lève plus de NullPointerException quand aucune phase ne couvre le décompte de blocs actuel (par exemple un `gotoAtEnd` en dessous de la première phase, ou des fichiers de phase qui n'ont pas pu être chargés). AOneBlock enregistre une erreur avec l'île et le numéro de bloc et annule la cassure, donc le bloc magique n'est pas perdu.
+    - ⚙️ Les commentaires sur les paramètres `deaths` dans `config.yml` expliquent maintenant quels paramètres affectent toujours les niveaux d'île sous [Level](../../addons/Level/index.md) 2.29.0. Seuls les commentaires ont changé.
+
+    🔺 **Dappled Forest est ajoutée à votre ordre de phase au premier démarrage** (journal : `Phase index: added new phase Dappled Forest`) et ses fichiers sont copiés dans `phases/`. Votre ordre, vos longueurs et vos drapeaux activés existants ne changent pas. Si vous ne le voulez pas, désactivez-le dans `/[admin_command] phases`.
+
+    [Release v1.28.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.28.0)

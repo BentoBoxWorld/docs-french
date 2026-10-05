@@ -90,6 +90,15 @@ Les permissions peuvent être trouvées [ici](Permissions).
 
     **Compatibilité :** BentoBox API 3.9.0+, Minecraft 1.21.10+, Java 21.
 
+??? note "Nouveautés dans v1.0.6 — Correction Paper 26.3"
+    **Publié :** 26 septembre 2026
+
+    Voir les notes complètes : [Release 1.0.6](https://github.com/BentoBoxWorld/StrangerRealms/releases/tag/1.0.6)
+
+    - 🐛 **Plus d'avertissements de capteur sculk lors de la création de l'Upside Down sur Paper 26.3.** Les creuseurs de grottes vanille s'exécutaient après que StrangerRealms place ses capteurs sculk et en remplaçait certains par de la lave, et Paper enregistrait un `ServerInternalException` (*« Trying to set block entity SculkSensorBlockEntity ... »*) pour chacun. Les capteurs sont maintenant placés par un peupleur de blocs après les creuseurs et la décoration. La densité est inchangée, et les chunks déjà générés ne sont pas modifiés.
+
+    **Compatibilité :** API BentoBox 3.9.0+, Minecraft 1.21.10+ (y compris 26.1.x, 26.2 et 26.3), Java 21.
+
 ## Traductions
 
 {{ translations("StrangerRealms") }}
