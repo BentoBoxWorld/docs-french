@@ -141,17 +141,19 @@ Cette section définit un certain nombre de paramètres généraux pour le modul
 ??? note "deathpenalty"
     Permet de spécifier la pénalité de mort.
 
-    Combien de valeurs de blocs un joueur perdra par mort.
-    La valeur par défaut de 100 signifie que pour chaque mort, le joueur perdra 1 niveau (si levelcost est 100).
+    Combien de valeurs de blocs l'île perdra par mort.
+    La valeur par défaut de 100 signifie que pour chaque mort, l'île perdra 1 niveau (si levelcost est 100).
+
+    Depuis la v2.29.0 les morts sont suivies **par île** par Level lui-même : seules les morts qui se produisent dans l'espace propre de l'île, par l'un de ses membres, comptent contre elle, et elles restent avec l'île même si ce membre la quitte plus tard. Consultez [Comment fonctionne la pénalité de mort ?](#faq) pour les règles complètes et comment cela interagit avec les paramètres `deaths` du mode de jeu.
 
     Définir à zéro pour ne pas utiliser cette fonctionnalité.
 
     Par défaut : `100`
 
 ??? note "sumteamdeaths"
-    Permet de sommer toutes les morts des membres de l'équipe pour la pénalité de mort.
+    **Dépréciée depuis la v2.29.0.** Level compte maintenant toutes les morts qui se sont produites sur l'île, indépendamment du membre qui a décédé.
 
-    Si false, seules les morts du chef comptent.
+    Ce paramètre est lu exactement une fois par île, lorsque Level migre les anciens comptages de morts par monde de BentoBox lors du premier calcul après la mise à niveau. Si `true`, le comptage migré est la somme de toutes les anciennes morts des membres ; si `false`, seul celui du propriétaire. Laissez-le à la valeur que vous aviez lors de la mise à niveau pour que les niveaux migrés correspondent, puis ignorez-le.
 
     Par défaut : `false`
 
@@ -393,6 +395,29 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 ??? question "Pouvez-vous ajouter la fonctionnalité X ?"
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/Level/issues).
 
+??? question "Comment fonctionne la pénalité de mort ?"
+    Depuis la v2.29.0, Level maintient son propre registre de morts pour chaque île, séparé du compteur de morts par joueur de BentoBox. Les règles sont :
+
+    - Une mort compte contre une île seulement si elle se produit **à l'intérieur de l'espace propre de cette île** et que le joueur décédé en est un **membre**. Mourir dans un autre monde, ou en visitant l'île de quelqu'un d'autre, ne compte pour rien.
+    - **Rejoindre une équipe n'apporte rien.** Les morts antérieures d'un nouveau membre restent avec leur propre île, donc inviter un joueur qui a beaucoup décédé ne baisse pas le niveau de l'équipe.
+    - **Quitter ou être expulsé ne rétablit pas le niveau.** Les morts du membre parti sur cette île sont conservées sous forme d'un comptage anonyme, donc le handicap ne diminue jamais simplement parce qu'un membre qui décède fréquemment a quitté. Quitter et rejoindre ne double pas le comptage.
+    - **La réinitialisation ou suppression de l'île** efface le registre des morts de l'île.
+    - Le handicap est `morts × deathpenalty` valeurs de blocs, soustraites avant que la formule `level-calc` s'exécute.
+    - Le rapport de niveau admin (`/[admin_command] level <joueur>`) ventile le handicap par membre nommé, avec une ligne séparée pour les morts des anciens membres ou migrées de l'ancien compteur par monde.
+
+    **Paramètres `deaths` du mode de jeu.** Chaque `config.yml` du mode de jeu a un bloc `deaths`. Après la v2.29.0, seuls deux de ses paramètres affectent les niveaux d'île :
+
+    | Paramètre | Effet sur Level |
+    |---|---|
+    | `counted` | Commutateur maître. Si `false`, Level n'enregistre aucune mort du tout. |
+    | `max` | Limite le nombre de morts que chaque membre peut contribuer à la pénalité d'une île. |
+    | `team-join-reset` | Aucun. Affecte uniquement le compteur propre de BentoBox et l'espace réservé `%[gamemode]_deaths%`. |
+    | `reset-on-new-island` | Aucun. Level efface le propre registre d'une île à la réinitialisation ou suppression. |
+
+    Les commandes BentoBox `/[admin_command] deaths set|add|reset` modifient le compteur de BentoBox, non le registre par île de Level, donc elles n'affectent plus les niveaux non plus.
+
+    **Mise à niveau à partir d'une version antérieure.** Les comptages de morts existants sont migrés une fois par île la première fois qu'elle est calculée, qu'un membre décède dessus, ou qu'un membre parte. La valeur migrée reproduit ce que l'ancienne formule aurait calculé à ce moment (en utilisant `sumteamdeaths`), donc les niveaux d'île ne changent pas lors de la mise à niveau.
+
 ??? question "Comment faire que le `level-cost` augmente après chaque niveau ?"
     Le paramètre `level-cost` est une valeur fixe et ne peut pas être configuré pour augmenter de manière itérative niveau par niveau, car BentoBox calcule les niveaux d'île en appliquant une seule formule au nombre total de blocs — et non en itérant niveau par niveau.
 
@@ -513,6 +538,21 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
         Le moteur expérimental de remise à zéro par chunk apparu dans les snapshots de ce cycle a été retiré avant la sortie et ne fait **pas** partie de la 2.28.0. Les utilisateurs de la version stable ne sont pas concernés.
 
     [Release v2.28.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.28.0)
+
+??? warning "Nouveautés dans v2.29.0 — changement de comportement"
+    **Publié :** septembre 2026
+
+    Compatibilité : BentoBox API 3.16.0, Minecraft 1.21.x et 26.1.x, Java 21.
+
+    - 🔺 **Les morts sont maintenant suivies par île.** Level ne lit plus le compteur de morts par joueur et par monde de BentoBox lors du calcul. Une mort ne compte que si elle se produit dans l'espace propre de l'île et que le joueur en est membre ; rejoindre une équipe n'apporte rien ; les morts des membres qui quittent plus tard restent avec l'île ; la réinitialisation de l'île efface le registre. Cela corrige l'effondrement des niveaux d'équipe lorsqu'un joueur ayant un long historique de décès était invité, et l'avance lorsqu'il était expulsé. Consultez [Comment fonctionne la pénalité de mort ?](#faq).
+    - ⚙️ **`sumteamdeaths` est dépréciée.** Elle est lue une fois par île pour migrer l'ancien comptage et autrement ignorée. Les niveaux existants ne changent pas lors de la mise à niveau.
+    - 🔺 Les paramètres `team-join-reset` et `reset-on-new-island` du mode de jeu, et les commandes `/[admin_command] deaths`, n'influencent plus les niveaux. `counted` et `max` le font toujours.
+    - Le rapport de niveau admin liste les morts par membre nommé, plus une ligne pour les morts des anciens membres et migrées.
+    - 🐛 L'ouverture du panneau de détails à partir du bouton Affichage du panneau top-ten sans île ne génère plus d'erreur.
+    - 🐛 Le panneau de valeur ne génère plus d'erreur sur une clé de bloc malformée lors de la construction d'une icône.
+    - 🆕 Locale chinois traditionnel (`zh-TW`) ajoutée. Merci @qwe664 !
+
+    [Release v2.29.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.29.0)
 
 ??? note "Nouveautés dans v2.28.1"
     **Publié :** 29 juillet 2026

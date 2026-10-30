@@ -237,4 +237,5 @@ panel_name:
     | `team_panel.yml` et `team_invite_panel.yml` | `/[player_command] team` et son écran d'invitation |
     | `settings_panel.yml` | `/[player_command] settings`, voir [Personnaliser le Panneau des Paramètres](/en/latest/BentoBox/Island-Protection,-Flags-&-Ranks/#customizing-the-settings-panel) |
     | `admin_settings_panel.yml` | `/[admin_command] settings` |
+    | `command_ranks_panel.yml` | Le panneau des Rangs des commandes ouvert depuis le panneau des paramètres (3.23.3+), voir [Personnaliser le panneau des Rangs des commandes](/en/latest/BentoBox/Island-Protection,-Flags-&-Ranks/#customizing-the-command-ranks-panel) |
     | `placeholder_panel.yml` et `placeholder_list_panel.yml` | Le navigateur de placeholders |

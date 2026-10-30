@@ -8,7 +8,7 @@ Créé et maintenu par [BONNe](https://github.com/BONNe).
 
 ## Installation
 
-1. Placez le fichier jar du addon ControlPanel dans le dossier `addons` du plugin BentoBox.
+1. Placez le fichier jar de l'addon ControlPanel dans le dossier `addons` du plugin BentoBox.
 2. Redémarrez le serveur. ControlPanel créera un `controlPanelTemplate.yml` par défaut dans `plugins/BentoBox/addons/ControlPanel/`.
 3. Modifiez `controlPanelTemplate.yml` pour construire vos panneaux (voir [Configuration](#configuration) ci-dessous).
 4. Importez les panneaux avec la commande admin :
@@ -62,17 +62,17 @@ Remplacez `[gamemode]` par le nom du mode de jeu en minuscules, par exemple `bsk
 
 ControlPanel utilise deux fichiers :
 
-- `config.yml` — paramètres généraux du addon
+- `config.yml` — paramètres généraux de l'addon
 - `controlPanelTemplate.yml` — définit les panneaux et les boutons
 
 Les deux sont situés dans `plugins/BentoBox/addons/ControlPanel/`.
 
 ### config.yml
 
-Le fichier de configuration principal a un paramètre :
+Le fichier de configuration principal a deux paramètres :
 
 ??? note "disabled-gamemodes"
-    Une liste des noms du addon GameMode où ControlPanel ne devrait pas fonctionner. ControlPanel ne se connectera pas à ces modes de jeu.
+    Une liste des noms de l'addon GameMode où ControlPanel ne devrait pas fonctionner. ControlPanel ne se connectera pas à ces modes de jeu.
 
     Défaut: `[]`
 
@@ -83,9 +83,17 @@ Le fichier de configuration principal a un paramètre :
       - AcidIsland
     ```
 
+??? note "template-file"
+    (**1.16.1+**) Le fichier modèle à partir duquel les panneaux de contrôle sont importés. Il est lu lors de la première création des panneaux et relu à chaque `/{admin} bentobox reload`, afin que l'édition et le rechargement appliquent vos modifications. Il doit exister dans le dossier de l'addon (`plugins/BentoBox/addons/ControlPanel/`). Le rechargement, la commande admin `import` et la création initiale honorent tous ce paramètre, afin que vous puissiez pointer l'addon vers votre propre fichier.
+
+    Défaut : `controlPanelTemplate.yml`
+
 ### controlPanelTemplate.yml
 
-Ce fichier définit tous les panneaux de contrôle et leurs boutons. Après l'avoir modifié, exécutez `/{admin} cp import` pour charger vos modifications.
+Ce fichier définit tous les panneaux de contrôle et leurs boutons. Après l'avoir modifié, exécutez `/{admin} bentobox reload` (**1.16.1+**) ou `/{admin} cp import` pour charger vos modifications.
+
+!!! warning "Le rechargement remplace les panneaux stockés (1.16.1+)"
+    Les panneaux vivent dans la base de données de BentoBox, et avant la version 1.16.1, le modèle était seulement une création ponctuelle : modifier le fichier et exécuter `bbox reload` ne faisait silencieusement rien, à moins que vous ne lanciez aussi `cp import`. Depuis **1.16.1**, chaque rechargement efface les panneaux stockés de chaque mode de jeu actif et les réimporte à partir du fichier modèle. Les panneaux que vous *avez supprimés* du modèle disparaissent également, et tout ce qui existait uniquement dans la base de données est perdu — gardez tous vos changements dans le fichier modèle.
 
 #### Structure du panneau
 
@@ -315,12 +323,12 @@ panel-list:
     ```
 
 ??? tip "Recharger après les modifications"
-    Après avoir modifié `controlPanelTemplate.yml`, exécutez `/{admin} cp import` pour recharger. Si vous avez apporté des modifications à `config.yml`, utilisez la commande de rechargement de BentoBox à la place : `/{admin} bentobox reload`.
+    Après avoir modifié `controlPanelTemplate.yml`, exécutez `/{admin} bentobox reload` (depuis **1.16.1**, ceci réimporte le modèle) ou `/{admin} cp import`. Les modifications à `config.yml` nécessitent également `/{admin} bentobox reload`.
 
 ## FAQ
 
 ??? question "Comment puis-je modifier le ControlPanel?"
-    ControlPanel stocke les panneaux dans la base de données, mais vous les modifiez via le fichier modèle. Après avoir apporté des modifications à `controlPanelTemplate.yml`, importez-les en exécutant `/{admin} controlpanel import`. Vous pouvez également créer des fichiers modèles supplémentaires et les importer par nom : `/{admin} controlpanel import myPanels`.
+    ControlPanel stocke les panneaux dans la base de données, mais vous les modifiez via le fichier modèle. Après avoir apporté des modifications à `controlPanelTemplate.yml`, exécutez `/{admin} bentobox reload` (**1.16.1+**) ou importez-les avec `/{admin} controlpanel import`. Vous pouvez également créer des fichiers modèles supplémentaires et les importer par nom : `/{admin} controlpanel import myPanels`, ou pointer l'option de configuration `template-file` vers votre propre fichier.
 
 ??? question "Puis-je avoir différents panneaux pour différents utilisateurs?"
     Oui. Définissez plusieurs panneaux dans le fichier modèle, chacun avec un suffixe `permission` différent. Assignez ensuite aux joueurs la permission correspondante, par exemple `bskyblock.controlpanel.panel.vip`. Les joueurs sans une permission de panneau spécifique voient le panneau marqué `defaultPanel: true`.
@@ -336,6 +344,22 @@ panel-list:
 
 ??? question "Pouvez-vous ajouter une fonctionnalité X?"
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/ControlPanel/issues).
+
+## Journal des modifications
+
+!!! warning "Nouveautés dans v1.16.1 — le rechargement remplace maintenant les panneaux stockés"
+    **Publié :** 2 septembre 2026
+
+    Compatibilité : BentoBox 2.7.1 ou version ultérieure (vérifié avec 3.7.4 sur Minecraft 1.21.4) · Minecraft 1.21.4 – 26.2 · Java 21.
+
+    - 🔺 ⚙️ **`bbox reload` réimporte le modèle.** Modifier `controlPanelTemplate.yml` et recharger ne faisait rien, car les panneaux vivent dans la base de données et le modèle était seulement une création ponctuelle. Le rechargement efface maintenant les panneaux stockés de chaque mode de jeu actif et les réimporte à partir du modèle, afin que les modifications du modèle prennent effet sans `cp import` — et les panneaux supprimés du modèle disparaissent au lieu de rester.
+    - ⚙️ **Nouvelle option de configuration `template-file`** (défaut `controlPanelTemplate.yml`). Le rechargement, la création initiale et la commande admin `import` honorent tous ce paramètre, afin que vous puissiez pointer l'addon vers votre propre fichier.
+    - 🔺 **Version minimale de BentoBox abaissée à 2.7.1.** 1.16.0 déclarait une `api-version` de 3.10.0 que rien dans le code ne nécessitait, si bien que BentoBox le refusait (`INCOMPATIBLE`) sur les serveurs qui ne peuvent pas exécuter BentoBox 3.10+ — notamment Minecraft 1.21.4, qui plafonne à BentoBox 3.7.4. Ces serveurs peuvent à nouveau utiliser le ControlPanel actuel.
+    - 🔡 Traductions Chinois traditionnel (`zh-TW`) mises à jour.
+
+    🔺 **Le rechargement remplace maintenant les panneaux stockés.** Si vous avez compté sur des modifications de panneau uniquement dans la base de données (n'importe quoi qui ne soit pas dans `controlPanelTemplate.yml`), mettez-les dans le modèle avant de mettre à jour sinon elles seront perdues au prochain rechargement. La nouvelle clé `template-file` est ajoutée automatiquement à `config.yml` ; les installations existantes continuent de fonctionner sans changements.
+
+    [Release v1.16.1](https://github.com/BentoBoxWorld/ControlPanel/releases/tag/1.16.1)
 
 ## Traductions
 

@@ -107,13 +107,24 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! note "Nouveautés dans v3.23.3 — correction de la duplication d'obsidienne & modèle Command Ranks"
+!!! note "Nouveautés dans v3.23.4 — arrivée sûre dans l'End & utilisation de l'inventaire dans les panneaux"
+    **Publié :** 17 octobre 2026
+
+    Une version de correction de bugs. Aucun changement de `config.yml`, de locale ou de modèle de panneau. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🐛 **Le portail de l'End ne fait plus tomber les joueurs dans le vide.** Avec `create-obsidian-platform: false`, le joueur était envoyé directement à la destination du portail, qu'il y ait un sol ou non. Les arrivées dangereuses dans l'End mènent désormais à l'emplacement sûr le plus proche, puis au bloc le plus haut, puis à une capsule. Les événements de portail répétés pendant que le joueur se tient dans le portail sont annulés, afin qu'il ne soit pas envoyé au spawn vanilla de l'End. Les arrivées déjà sûres téléportent toujours instantanément, et rien ne change lorsque la plateforme est activée. Les capsules de sécurité placent désormais le joueur au centre du bloc.
+    - ✨ **Utilisez votre propre inventaire pendant qu'un panneau est ouvert.** Les joueurs peuvent prendre, poser, échanger et jeter des objets (Q / Ctrl+Q) et utiliser des sacs dans leur propre inventaire pendant qu'un panneau BentoBox comme `/island settings` est ouvert. Les clics avec Maj, la collecte par double-clic et les glissements qui touchent un emplacement du panneau restent bloqués, pour que les objets ne puissent pas se retrouver dans le panneau.
+    - 🧩 **API des addons :** `PanelListener` a une nouvelle méthode par défaut, `allowsPlayerInventoryClicks()`, qui retourne `false`, donc les panneaux dotés d'un écouteur (comme les sélecteurs d'icône de Challenges et Biomes) se comportent comme avant. Retournez `true` pour l'activer. Voir [Templated Panel](../../Tutorials/api/Templated-Panel.md#listener-method). `Addon.getConfig()` retourne désormais une configuration vide au lieu de `null` lorsque l'addon n'a pas de `config.yml`, donc `saveConfig()` ne lève plus d'exception.
+
+    [Release v3.23.4](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.4)
+
+??? note "Nouveautés dans v3.23.3 — correction de la duplication d'obsidienne & modèle Command Ranks"
     **Publié :** 3 octobre 2026
 
     Une version de correction de bugs et de panneaux. Aucun changement dans `config.yml` ou les locales. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
 
     - 🐛 **La duplication par trempage d'obsidienne corrigée.** Avec OBSIDIAN_SCOOPING, la lave était distribuée une tick après le clic sans revérification, donc miner l'obsidienne dans cette tick donnait à la fois l'obsidienne et la lave, et déplacer le seau de la main pouvait donner de la lave sans utiliser de seau. Les deux sont maintenant revérifiées d'abord. **La mise à jour est recommandée pour chaque serveur avec OBSIDIAN_SCOOPING activé.**
-    - ⚙️ **Panneau Command Ranks personnalisable.** Présenté par le nouveau `panels/command_ranks_panel.yml` (écrit au premier démarrage ; la copie propre d'un mode de jeu prend précédence), avec les boutons `COMMAND`, `NEXT` et `PREVIOUS`. Il pagine maintenant à 45 commandes — l'ancien panneau laissait silencieusement tomber chaque commande après la 49e. Voir [Personnalisation du panneau Command Ranks](../Island-Protection,-Flags-&-Ranks.md).
+    - ⚙️ **Panneau Command Ranks personnalisable.** Présenté par le nouveau `panels/command_ranks_panel.yml` (écrit au premier démarrage ; la copie propre d'un mode de jeu prend précédence), avec les boutons `COMMAND`, `NEXT` et `PREVIOUS`. Il pagine maintenant à 45 commandes — l'ancien panneau laissait silencieusement tomber chaque commande après la 49e. Voir [Personnalisation du panneau Command Ranks](../Island-Protection,-Flags-&-Ranks.md#customizing-the-command-ranks-panel).
     - ✨ **Améliorations du panneau de paramètres.** `/island settings` s'ouvre dans le mode Basic/Advanced/Expert que le joueur a choisi en dernier, et les onglets Protection et Paramètres partagent un mode (le panneau admin s'ouvre toujours en Expert). Command Ranks cache les sous-commandes pour lesquelles le joueur n'a pas la permission (les ops voient tout). L'icône Break Spawners n'affiche plus l'infobulle de l'œuf de reproduction du jeu.
     - 🐛 **L'`auto-load` de Multiverse respectée.** Depuis 3.22.0, le crochet Multiverse réinitialisait `auto-load: false` sur chaque monde BentoBox à chaque démarrage. Il est maintenant défini uniquement lorsque BentoBox importe un monde pour la première fois ; les entrées Multiverse existantes sont laissées telles que configurées.
     - 🧩 **API Addon :** les commandes administrateur `deaths set|add|remove|reset` déclenchent `PlayerDeathsChangedEvent` (monde, joueur, action, montant, anciens et nouveaux décomptes), donc Level peut suivre les changements administrateur. Il n'est pas déclenché pour les morts naturelles.

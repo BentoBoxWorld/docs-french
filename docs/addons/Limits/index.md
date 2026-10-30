@@ -10,7 +10,7 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 
 ## Installation
 
-1. Placez le fichier jar du addon Limits dans le dossier des addons du plugin BentoBox
+1. Placez le fichier jar de l'addon Limits dans le dossier des addons du plugin BentoBox
 2. Redémarrez le serveur
 3. L'addon créera un dossier de données et à l'intérieur du dossier se trouvera un config.yml
 4. Modifiez le config.yml comme vous le souhaitez.
@@ -156,6 +156,47 @@ blocklimits:
 
         Par défaut : `false`
 
+### Recomptages automatiques des entités { #automatic-entity-recounts }
+
+!!! info "Depuis la 1.30.2"
+    Les comptages d'entités sont maintenus de façon incrémentale, donc tout événement manqué (œuf de renifleur qui éclos, mobs traversant des portails, incréments perdus dans un crash avant la sauvegarde par lot) peut les laisser éloignés de la réalité sans aucun moyen de récupération sauf un recomptage manuel. Ces options réconcilient les comptages automatiquement en arrière-plan. Elles sont **désactivées par défaut** car un recomptage charge tous les chunks de la zone de protection de l'île : le coût varie avec le carré de la plage de protection (64 chunks par monde à une plage de 50, 2 601 à une plage de 400). Les recomptages sont asynchrones, limités en débit à une île à la fois, dédupliqués et limités par île, et réécrivent uniquement les comptages **d'entités** — les comptages de blocs sont laissés seuls. Un recomptage *remplace* les comptages plutôt que de les fusionner, il est donc uniquement précis quand les chunks de l'île sont chargés.
+
+=== "recount-on-join"
+    !!! summary "Description"
+        Lancez un recomptage en arrière-plan des entités uniquement pour une île quand son propriétaire se connecte.
+
+        Par défaut : `false`
+
+=== "recount-on-join-cooldown"
+    !!! summary "Description"
+        Secondes minimales entre les recomptages automatiques de la même île (partagée avec le balayage périodique).
+
+        Par défaut : `300`
+
+=== "recount-periodic"
+    !!! summary "Description"
+        Balayez périodiquement les îles en ligne pour réconcilier leurs comptages d'entités, même pendant que les propriétaires restent connectés. Même coût et mises en garde que `recount-on-join`.
+
+        Par défaut : `false`
+
+=== "recount-periodic-interval"
+    !!! summary "Description"
+        Secondes entre les cycles de balayage périodique.
+
+        Par défaut : `300`
+
+=== "recount-periodic-batch"
+    !!! summary "Description"
+        Îles à réconcilier par cycle de balayage. Gardez petit sur les serveurs à forte population.
+
+        Par défaut : `2`
+
+=== "recount-max-chunks"
+    !!! summary "Description"
+        Les îles dont la zone de protection couvre plus de ce nombre de chunks par monde ne sont jamais recomptées automatiquement ; un avertissement est enregistré une fois par île. 1000 chunks correspond à une plage de protection d'environ 240. Les recomptages manuels via les commandes `recount` et `calc` ne sont pas affectés.
+
+        Par défaut : `1000`
+
 ## Permissions
 
 Les propriétaires d'îles peuvent avoir des permissions exclusives qui remplacent les paramètres par défaut ou spécifiques au monde. Deux formats sont pris en charge :
@@ -190,8 +231,93 @@ Les permissions complètes sont listées [ici](Permissions).
 
 {{ placeholders_source(source="Limits") }}
 
+!!! note "Noms des placeholders de blocs"
+    `[material]` est la clé Minecraft en minuscules sans l'espace de noms `minecraft:`, par ex. `%Limits_bskyblock_island_spawner_limit%`. Les blocs personnalisés d'ItemsAdder ou Oraxen utilisent `namespace_key` (par exemple `itemsadder_ruby_block`), car les deux-points ne sont pas valides dans un nom de placeholder. Entre les versions 1.28.0 et 1.30.0, les placeholders `_count`, `_limit` et `_base_limit` des blocs ont été enregistrés par erreur avec l'espace de noms intégré et ne se résolvaient pas ; corrigé dans la **1.30.1**.
+
+
+## Traductions
+
+{{ translations("Limits") }}
+
+## Articles qui ne peuvent pas être limités
+Certains articles ne peuvent pas être limités (pour l'instant). Les raisons sont généralement parce qu'il y a trop de façons de supprimer l'article sans qu'il soit suivi. Si vous êtes un programmeur et pouvez trouver comment corriger ceux-ci, veuillez soumettre une PR!
+
+* Primed TNT
+* Evoker Fangs
+* Llama Spit
+* Dragon Fireball
+* Area Effect Cloud
+* Ender signal
+* Small fireball
+* Fireball
+* Thrown Exp Bottle
+* Shulker Bullet
+* Wither Skull
+* Tridents
+* Arrows
+* Spectral Arrows
+* Snowballs
+* Eggs
+* Leashes
+* Ender crystals
+* Ender pearls
+* Ender dragon
+
+!!! tip "Les cadres et peintures peuvent désormais être limités (1.29.0)"
+    Les cadres, cadres lumineux et peintures figuraient auparavant sur cette liste. Depuis la **1.29.0**, le comptage des entités est persistant et piloté par événements, donc les trois peuvent maintenant être configurés sous `entitylimits` comme n'importe quelle autre entité.
+
+
+## Pour les développeurs : exemption d'entités
+
+!!! info "À partir de la version suivante après 1.30.2"
+
+Un autre plugin ou addon peut générer des entités que Limits ignore complètement. Ceci est utile pour les mobs temporaires comme les vagues d'événements ou les PNJ de minijeu qui ne doivent pas utiliser les limites d'entités de l'île. Marquez l'entité avec la clé de données persistantes `limits:exempt` (n'importe quelle valeur) **dans le consumer passé à `spawn`**, afin que le tag soit déjà présent quand `CreatureSpawnEvent` se déclenche :
+
+```java
+NamespacedKey limitsExempt = NamespacedKey.fromString("limits:exempt");
+world.spawn(location, Zombie.class, zombie ->
+        zombie.getPersistentDataContainer().set(limitsExempt, PersistentDataType.BYTE, (byte) 1));
+```
+
+Une entité marquée :
+
+- n'est jamais bloquée par une limite d'entité ou de groupe
+- n'est jamais comptée, donc elle n'utilise pas la limite de l'île
+- ne change aucun comptage quand elle meurt, est supprimée ou traverse un portail
+- est ignorée par les recomptages, à la fois la commande `calc` et [les recomptages automatiques](#automatic-entity-recounts)
+
+Les entités non marquées sur la même île sont limitées comme d'habitude. Le tag est sauvegardé avec l'entité, donc l'exemption persiste après les déchargements de chunks et les redémarrages du serveur. Vous n'avez pas besoin de Limits comme dépendance ; si vous compilez avec, `Limits.EXEMPT_KEY` est la même clé.
+
+!!! warning "Ajoutez le tag uniquement au moment du spawn"
+    Ajoutez le tag quand l'entité se génère et ne l'ajoutez ni ne l'enlevez jamais ensuite. Une entité marquée plus tard a déjà été comptée et ne sera pas décrémentée quand elle est supprimée, et retirer le tag plus tard cause le problème inverse. Dans les deux cas, le comptage de l'île est faux jusqu'au prochain recomptage.
+
 
 ## Journal des modifications
+
+??? note "Nouveautés dans v1.30.2 — recomptages automatiques d'entités"
+    **Publié :** 6 septembre 2026
+
+    Un correctif de comptage de piston plus une nouvelle fonctionnalité opt-in. Compatibilité : API BentoBox 2.7.1 · Paper Minecraft 1.21.11 – 26.2 · Java 21.
+
+    - ⚙️ **Recomptages automatiques d'entités (opt-in).** Les nouvelles options `recount-on-join` et `recount-periodic` réconcilient les comptages d'entités qui dérivent en arrière-plan — voir [Recomptages automatiques des entités](#automatic-entity-recounts) ci-dessus. Six nouvelles clés (`recount-on-join`, `recount-on-join-cooldown`, `recount-periodic`, `recount-periodic-interval`, `recount-periodic-batch`, `recount-max-chunks`) sont ajoutées automatiquement à `config.yml` avec des valeurs par défaut sûres, donc rien ne change sauf si vous les activez. Lisez les commentaires de configuration avant de les activer. Merci @daniel-skopek.
+    - 🐛 **Les pistons étendus ne sont plus comptés deux fois.** Le recomptage admin (`calc`) comptait à la fois la base et la tête de chaque piston étendu, donc une construction redstone avec tous ses pistons étendus doublait le comptage (16 pistons collants affichant 32/30) et chaque recalc remettait le mauvais chiffre. Le recomptage ne compte maintenant que la base, et les explosions qui détruisent les deux parties décrémentent une fois.
+    - 🐛 **Les entités franchissant les portails hors-île décrémentent correctement.** Une entité franchissant un portail alors qu'elle était hors de la plage de protection de son île n'avait jamais eu son comptage de dimension source décrémenté.
+
+    **Note sur les pistons :** les îles dont le comptage de piston est gonflé affichent le bon chiffre après un recomptage de plus (`/[admin_command] limits calc <joueur>`) dans cette version.
+
+    [Release v1.30.2](https://github.com/BentoBoxWorld/Limits/releases/tag/1.30.2)
+
+??? warning "Nouveautés dans v1.30.1 — recomptage si vous utilisez Greenhouses"
+    **Publié :** 4 septembre 2026
+
+    Deux corrections de précision. Compatibilité : API BentoBox 2.7.1 · Paper Minecraft 1.21.11 – 26.2 · Java 21. Aucune modification de configuration ou locale.
+
+    - 🐛 **Les placeholders de comptage et limite de blocs fonctionnent à nouveau.** Depuis 1.28.0, chaque placeholder de bloc était enregistré avec l'espace de noms `minecraft:` intégré dans son nom, donc `%Limits_bskyblock_island_spawner_limit%` était vraiment `%Limits_bskyblock_island_minecraft:spawner_limit%` et PlaceholderAPI le renvoyait non analysé. Tous les placeholders `_count`, `_limit` et `_base_limit` des blocs, y compris les variantes `_overworld`, `_nether` et `_end`, sont maintenant enregistrés sous les noms documentés. Les placeholders d'entités n'ont jamais été affectés.
+    - 🔺 🐛 **Les comptages d'entités ne dérivent plus quand un spawn annulé est supprimé.** Quand Limits annulait un spawn à la limite et que le plugin de génération appelait ensuite `remove()` sur cette entité jamais ajoutée (Greenhouses faisait ceci), Paper déclenchait toujours `EntityRemoveEvent` et Limits décrémentait le comptage d'un mob qui n'a jamais été compté, donc le prochain spawn glissait (par ex. 4/3 ghasts). Les suppressions d'entités qui n'ont jamais entré le monde sont maintenant ignorées.
+
+    🔺 **Note sur le recomptage :** si vous utilisez Greenhouses (ou tout plugin qui supprime les entités dont il n'a pas pu générer), les comptages d'entités sur les îles affectées peuvent avoir dérivé bas sous les versions précédentes. Lancez `/[admin_command] limits calc <joueur>` sur les îles affectées, ou laissez les joueurs exécuter `/[player_command] limits recount`, pour que les comptages correspondent à la réalité.
+
+    [Release v1.30.1](https://github.com/BentoBoxWorld/Limits/releases/tag/1.30.1)
 
 ??? warning "Nouveautés dans v1.30.0 — recomptage de varech recommandé"
     **Publié :** 15 août 2026
@@ -246,7 +372,7 @@ Les permissions complètes sont listées [ici](Permissions).
     Version de maintenance axée sur la précision et la persistance fiable des comptages d'entités. Aucune modification de configuration ou locale n'est requise.
 
     - 🐛 **Les comptages d'entités ne dérivent plus au-dessus de la réalité.** Dans certaines séquences d'apparition/suppression, le comptage d'entités suivi pouvait dépasser le nombre d'entités réellement présentes sur l'île, bloquant finalement les apparitions qui auraient dû être autorisées. Les comptages restent maintenant synchronisés avec la population réelle de l'île. [[#273](https://github.com/BentoBoxWorld/Limits/pull/273)]
-    - 🐛 **Persistance du comptage d'entités centralisée.** Toutes les mutations de comptage d'entités passent maintenant par `BlockLimitsListener`, afin que les modifications soient intégrées dans le cycle de sauvegarde par lot normal au lieu d'être écrites uniquement à la désactivation du addon. Cela prévient la perte de comptages lors d'un arrêt anormal ou d'un crash. [[#274](https://github.com/BentoBoxWorld/Limits/pull/274)]
+    - 🐛 **Persistance du comptage d'entités centralisée.** Toutes les mutations de comptage d'entités passent maintenant par `BlockLimitsListener`, afin que les modifications soient intégrées dans le cycle de sauvegarde par lot normal au lieu d'être écrites uniquement à la désactivation de l'addon. Cela prévient la perte de comptages lors d'un arrêt anormal ou d'un crash. [[#274](https://github.com/BentoBoxWorld/Limits/pull/274)]
 
     [Release v1.28.4](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.4)
 
@@ -294,34 +420,3 @@ Les permissions complètes sont listées [ici](Permissions).
     Compatibilité : BentoBox API 2.7.1 · Minecraft 1.21.5 – 26.1.2 · Java 21.
 
     [Release v1.28.2](https://github.com/BentoBoxWorld/Limits/releases/tag/1.28.2)
-
-## Traductions
-
-{{ translations("Limits") }}
-
-## Articles qui ne peuvent pas être limités
-Certains articles ne peuvent pas être limités (pour l'instant). Les raisons sont généralement parce qu'il y a trop de façons de supprimer l'article sans qu'il soit suivi. Si vous êtes un programmeur et pouvez trouver comment corriger ceux-ci, veuillez soumettre une PR!
-
-* Primed TNT
-* Evoker Fangs
-* Llama Spit
-* Dragon Fireball
-* Area Effect Cloud
-* Ender signal
-* Small fireball
-* Fireball
-* Thrown Exp Bottle
-* Shulker Bullet
-* Wither Skull
-* Tridents
-* Arrows
-* Spectral Arrows
-* Snowballs
-* Eggs
-* Leashes
-* Ender crystals
-* Ender pearls
-* Ender dragon
-
-!!! tip "Les cadres et peintures peuvent désormais être limités (1.29.0)"
-    Les cadres, cadres lumineux et peintures figuraient auparavant sur cette liste. Depuis la **1.29.0**, le comptage des entités est persistant et piloté par événements, donc les trois peuvent maintenant être configurés sous `entitylimits` comme n'importe quelle autre entité.

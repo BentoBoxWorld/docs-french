@@ -52,6 +52,7 @@ Cet exemple s'applique quand vous êtes dans le monde BSkyBlock. Pour AcidIsland
 * Puis-je construire une serre du Nether? Essayez et voyez... (En fait, vous avez peut-être besoin d'une permission)
 * Puis-je construire des serres dans le Nether? Oui. Vous pouvez coloniser le Nether avec elles.
 * Quel type de mobs spawner dans les biomes? C'est ce que vous attendriez, des loups dans Taiga froid, des chevaux dans les plaines, etc.
+* Comment un administrateur peut-il mettre à jour la serre du Nether pour avoir une chance de générer des Wither Skeletons ? Ajoutez le mob à la recette `NETHER` dans `biomes.yml` — consultez [Personnaliser les spawns de mobs](#personnaliser-les-spawns-de-mobs-exemple-wither-skeletons) ci-dessous.
 
 ## Plugin requis
 
@@ -113,6 +114,37 @@ Enregistrées sous la commande admin de votre mode de jeu, par exemple `/bsbadmi
 !!! tip "Serres qui se chevauchent"
     Si deux serres enregistrées se chevauchent, l'une est ignorée au démarrage et nommée dans le journal, avec l'enregistrement qu'elle chevauche. Utilisez `/bsbadmin greenhouses list` pour voir les enregistrements ignorés et pourquoi, puis `/bsbadmin greenhouses delete <id>` pour retirer celui que vous ne voulez pas. Aucune modification de base de données et aucun redémarrage nécessaires.
 
+## Personnaliser les spawns de mobs (exemple : Wither Skeletons) { #personnaliser-les-spawns-de-mobs-exemple-wither-skeletons }
+
+Chaque mob qu'une serre peut générer est défini par recette dans `plugins/BentoBox/addons/Greenhouses/biomes.yml`, donc ajouter un nouveau mob c'est juste éditer la configuration. Chaque entrée de la section `mobs:` d'une recette a le format :
+
+```
+ENTITY_TYPE: chance:BLOCK_TO_SPAWN_ON
+```
+
+Par exemple, pour donner à la serre du Nether une chance de générer des Wither Skeletons, trouvez la recette `NETHER:` et ajoutez une ligne à sa section `mobs:` :
+
+```yaml
+NETHER:
+  # ...
+  mobs:
+    ZOMBIFIED_PIGLIN: 10:NETHERRACK
+    PIGLIN: 10:NETHERRACK
+    STRIDER: 10:LAVA
+    ENDERMAN: 5:NETHERRACK
+    WITHER_SKELETON: 5:NETHERRACK
+```
+
+Cela donne 5% de chance par tentative de génération pour un Wither Skeleton d'apparaître sur un bloc de netherrack à l'intérieur de la serre. Le bloc sur lequel générer peut être n'importe quel bloc de la serre — pour une atmosphère plus de forteresse, vous pourriez utiliser `WITHER_SKELETON: 10:NETHER_BRICKS` à la place, mais alors les joueurs ont besoin de briques du Nether à l'intérieur de la serre pour que cela se déclenche.
+
+Appliquez le changement avec **/bsbadmin greenhouses reload** (ou l'équivalent de votre mode de jeu, par ex. **/acid greenhouses reload**), ou redémarrez le serveur. Les serres existantes reprennent le nouveau mob sans être reconstruites.
+
+Choses à garder à l'esprit :
+
+* **Toutes les chances dans une recette doivent ajouter jusqu'à 100 ou moins.** Si une nouvelle entrée pousse le total au-delà de 100, ce mob est ignoré et une erreur est enregistrée au chargement (`Mob chances add up to > 100% in NETHER biome recipe! Skipping ...`).
+* La génération est également limitée par les valeurs `moblimit` et `maxmobs` de la recette, et par l'intervalle de tick de mob dans `config.yml` — donc un pourcentage bas peut sembler rare en pratique.
+* Le `ENTITY_TYPE` doit être un nom [Bukkit EntityType](https://jd.papermc.io/paper/1.21.5/org/bukkit/entity/EntityType.html) valide ; les noms inconnus sont ignorés avec un avertissement.
+
 ## Permissions
 
 Une liste complète des permissions est [ici](Permissions).
@@ -145,7 +177,29 @@ Depuis la 1.10.0, chaque sous-commande admin possède également son propre nœu
 
 {{ translations("Greenhouses") }}
 
-!!! note "Nouveautés de la v1.10.0 — commandes admin"
+!!! warning "Nouveautés dans v1.10.2 — correction d'un plantage sur Paper 26.2"
+    **Publié :** 2026-09-06
+
+    Compatibilité : API BentoBox 2.7.1 · Minecraft 1.21.5+ · Java 21. Aucun changement de config ou de locale.
+
+    - 🐛 **La croissance des plantes ne plante plus lorsqu'un entonnoir manque de farine d'os.** Lorsque l'entonnoir du toit contenait une seule farine d'os et qu'au moins une plante a grandi, Greenhouses a écrit le reste sous la forme d'un objet avec zéro quantité. Les anciens serveurs toléraient cela silencieusement ; Paper 26.2 lance `IllegalArgumentException: amount must be greater than 0` depuis `EcoSystemManager.setBoneMeal` à chaque tick de plante et interrompt la passe de croissance pour cette serre. La dernière farine d'os est maintenant simplement retirée de l'entonnoir.
+
+    🔺 **Si vous êtes sur Paper 26.2 ou plus récent, cette mise à jour est fortement recommandée.** Chaque serre dont l'entonnoir se vide enregistrera sinon cette erreur à chaque tick et arrêtera la croissance des plantes jusqu'à ce que de la farine d'os soit ajoutée à nouveau.
+
+    [Release v1.10.2](https://github.com/BentoBoxWorld/Greenhouses/releases/tag/1.10.2)
+
+??? warning "Nouveautés dans v1.10.1 — recompter si vous exécutez Limits"
+    **Publié :** 2026-09-01
+
+    Compatibilité : API BentoBox 2.7.1 · Minecraft 1.21.5+ · Java 21. Aucun changement de config ou de locale.
+
+    - 🐛 **Greenhouses ne laisse plus les mobs contourner l'addon Limits.** Lorsque Limits a annulé une génération à la limite d'une entité, Greenhouses a continué avec l'entité jamais générée, a exécuté son contrôle « ce mob s'adapte-t-il à l'intérieur du verre ? » et, lorsqu'il ne s'adaptait pas (les ghasts sont 4×4×4, donc souvent), a appelé `remove()` sur lui. Paper déclenche un `EntityRemoveEvent` pour cela même si le mob n'a jamais entré le monde, et Limits l'a comptabilisé comme une vraie suppression, donc son compteur a diminué lentement et la prochaine génération a été autorisée — le cas signalé était des ghasts à 4/3. Les générations annulées sont maintenant complètement ignorées.
+
+    🔺 **Si vous avez vu cela,** le compteur de Limits pour l'île affectée est toujours faux jusqu'à sa reconstruction. Faites que le joueur exécute `/[player_command] limits recount` (ou exécutez l'admin `/[admin_command] limits calc <joueur>`) une fois après la mise à jour.
+
+    [Release v1.10.1](https://github.com/BentoBoxWorld/Greenhouses/releases/tag/1.10.1)
+
+??? note "Nouveautés de la v1.10.0 — commandes admin"
     **Publié le :** 2026-07-26
 
     Greenhouses dispose enfin d'une arborescence de commandes admin. Compatibilité : API BentoBox 2.7.1 · Minecraft 1.21.5+ · Java 21.
