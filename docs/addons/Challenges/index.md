@@ -322,7 +322,17 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 ## Journal des modifications
 
-!!! warning "Nouveautés dans v1.8.0 — les défis non déployés à bascule nécessitent une mise à jour du panneau"
+!!! note "Nouveautés dans v1.8.1"
+    **Publié :** 5 septembre 2026
+
+    Une version de correction de bugs et de traduction. Compatibilité : BentoBox 3.14.0 · Minecraft 1.21.x · Java 21. Aucune clé de configuration n'a été ajoutée ou renommée.
+
+    - 🐛 **Les livres enchantés faits à l'enclume comptent désormais pour les défis d'inventaire.** Les objets qui passent par une enclume (par exemple deux livres enchantés combinés à un niveau plus élevé) portent un composant `repair_cost`, et la comparaison stricte des objets les traitait comme un objet différent, donc de tels défis ne pouvaient être complétés qu'avec « ignorer les métadonnées » — ce qui acceptait alors *n'importe quel* livre enchanté. Le coût de réparation est maintenant ignoré lors de la correspondance des objets requis ; les enchantements, les niveaux, les noms, le lore et toutes les autres données d'objet sont toujours comparés.
+    - 🔡 **Traduction Chinois traditionnel (`zh-TW`)** améliorée et portée à une couverture complète pour les chaînes de 1.8.0. Si vous exécutez un `zh-TW.yml` personnalisé, supprimez-le (ou fusionnez-le à la main) pour profiter des améliorations. D'autres langues ne sont pas affectées.
+
+    [Release v1.8.1](https://github.com/BentoBoxWorld/Challenges/releases/tag/1.8.1)
+
+??? warning "Nouveautés dans v1.8.0 — les défis non déployés à bascule nécessitent une mise à jour du panneau"
     **Publié :** 26 juillet 2026
 
     Compatibilité : BentoBox 3.14.0 · Minecraft 1.21.x · Java 21.

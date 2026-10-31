@@ -59,6 +59,9 @@ Le mode d'affichage peut être changé en cliquant sur le lingot dans le coin su
 
 ![Drapeaux de Protection Expert](https://user-images.githubusercontent.com/20014332/80592793-4df96d00-8a20-11ea-891e-8833578642e4.png)
 
+!!! new "Modifié dans BentoBox 3.23.3"
+    Le Panneau des Paramètres mémorise le mode d'affichage choisi en dernier par chaque joueur et s'ouvre dans ce mode la fois suivante. Un même mode est partagé par les onglets Protection et Paramètres. Si un onglet n'a aucun Drapeau à afficher dans le mode choisi, il affiche le mode supérieur suivant sans modifier le choix du joueur. Le panneau des paramètres administrateur s'ouvre toujours en `EXPERT`.
+
 ### Masquer les Drapeaux
 
 À partir de [BentoBox 1.4.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/1.4.0), les administrateurs peuvent masquer les Drapeaux dans l'interface graphique en ouvrant le Panneau des Paramètres et ++shift+left-button++ sur l'icône du Drapeau qu'ils veulent masquer.
@@ -68,6 +71,14 @@ Les administrateurs peuvent plus tard afficher le Drapeau en réitérant la mêm
 ![Drapeaux par défaut](https://user-images.githubusercontent.com/20014332/80591609-45a03280-8a1e-11ea-9e37-4725d62cdb3c.png)
 
 *Vue du joueur de tous les Drapeaux de Base autorisés à être affichés.*
+
+![Malédiction de Disparition](https://user-images.githubusercontent.com/20014332/80591692-6799b500-8a1e-11ea-9ab8-e076f47d2220.png)
+
+*La « Malédiction de Disparition » appliquée à l'un des Drapeaux.*
+
+![Un tas de drapeaux masqués](https://user-images.githubusercontent.com/20014332/80591757-839d5680-8a1e-11ea-8864-83b09252a7b9.png)
+
+*Vue du joueur des Drapeaux de Base, avec le Drapeau « trapdoor » masqué.*
 
 ### Personnaliser le Panneau des Paramètres { #customizing-the-settings-panel }
 
@@ -90,13 +101,53 @@ Chaque bouton est placé avec un `data.type` :
 
 **Mise en page de la description (lore).** La description d'un Drapeau est construite à partir de `protection.panel.flag-item.description-layout` (Drapeaux de protection), `setting-layout` (paramètres) ou `menu-layout` (Drapeaux qui ouvrent un sous-panneau) dans le fichier de langue. Depuis la 3.23.0, ces mises en page peuvent contenir `[ranks]`, où la liste des rangs d'un Drapeau de protection est insérée, et `[tooltips]`, où sont insérées les infobulles des `actions` du bouton de Drapeau dans le modèle. Sans `[ranks]`, la liste des rangs est ajoutée après la mise en page, comme auparavant ; sans `[tooltips]`, les infobulles éventuelles sont ajoutées après une ligne vide. Pour déplacer les indications de clic sous la liste des rangs, retirez-les de la mise en page, placez `[ranks]` et `[tooltips]` où vous le souhaitez, et déclarez les indications comme infobulles sur le `flag_button` dans le modèle. Le `title` et la `description` propres à un bouton de Drapeau dans le modèle peuvent désigner une autre entrée de langue à utiliser comme nom et mise en page de description pour ce panneau uniquement.
 
-![Malédiction de Disparition](https://user-images.githubusercontent.com/20014332/80591692-6799b500-8a1e-11ea-9ab8-e076f47d2220.png)
+### Rangs des commandes { #command-ranks }
 
-*La « Malédiction de Disparition » appliquée à l'un des Drapeaux.*
+L'icône **Rangs des commandes** de l'onglet Paramètres ouvre un panneau dans lequel le propriétaire de l'île choisit le [rang](#rangs) minimal autorisé à utiliser chaque commande d'équipe, par exemple qui peut inviter, expulser ou définir le nom de l'île. Un **clic gauche** ou un **clic droit** sur une commande fait défiler les rangs, comme pour un Drapeau de Protection. Les opérateurs peuvent masquer une commande aux joueurs avec ++shift+left-button++, de la même façon que pour [masquer un Drapeau](#masquer-les-drapeaux).
 
-![Un tas de drapeaux masqués](https://user-images.githubusercontent.com/20014332/80591757-839d5680-8a1e-11ea-8864-83b09252a7b9.png)
+Depuis BentoBox 3.23.3, un joueur ne voit que les commandes qu'il a la permission d'utiliser. Si vous refusez la permission d'une commande sur votre serveur, par exemple `[gamemode].island.border`, elle n'apparaît plus non plus dans ce panneau. Auparavant, seule la commande de premier niveau était vérifiée, si bien que les sous-commandes que le joueur ne pouvait pas exécuter restaient affichées.
 
-*Vue du joueur des Drapeaux de Base, avec le Drapeau « trapdoor » masqué.*
+#### Personnaliser le panneau des Rangs des commandes { #customizing-the-command-ranks-panel }
+
+!!! new "Ajouté dans BentoBox 3.23.3"
+    Le panneau des Rangs des commandes est mis en page par un fichier modèle, comme le [Panneau des Paramètres](#customizing-the-settings-panel).
+
+La mise en page provient de `plugins/BentoBox/panels/command_ranks_panel.yml`, que BentoBox écrit au premier démarrage. Un addon de mode de jeu peut fournir sa propre copie dans son dossier `panels`, qui est alors utilisée pour ce mode de jeu. Le fichier par défaut conserve l'apparence d'origine du panneau : une carte pour chaque commande, aucun remplissage et seulement autant de lignes que nécessaire pour les commandes. Si le fichier ne peut pas être lu, BentoBox affiche le panneau intégré.
+
+Chaque bouton est placé avec un `data.type` :
+
+| Type | Ce qu'il affiche |
+| --- | --- |
+| `COMMAND` | Un emplacement de la liste paginée des commandes. Placez-en autant que vous voulez de commandes par page ; le fichier par défaut en a 45. |
+| `NEXT`, `PREVIOUS` | Pagination. Affichés uniquement lorsqu'il existe une page vers laquelle aller. |
+
+Le panneau intégré s'arrêtait à 49 commandes, si bien que les suivantes n'étaient jamais affichées. Le modèle utilise des pages à la place.
+
+L'affichage d'une commande peut être modifié sur le `command_button` dans la section `reusable` du modèle :
+
+- `icon` remplace le `MAP` par défaut.
+- `title` est une entrée de langue (ou un texte) utilisée comme mise en page du nom à la place de `protection.panel.flag-item.name-layout`. `[name]` est la commande, par exemple `/island sethome`.
+- `description` est une entrée de langue (ou un texte) utilisée comme mise en page de la description à la place de `protection.panel.flag-item.description-layout`. `[description]` est le texte de la commande provenant de `protection.panel.flag-item.command-instructions`. La liste des rangs est ajoutée après.
+- `actions` ajoute uniquement des infobulles, placées après la liste des rangs. Les clics eux-mêmes fonctionnent toujours comme décrit ci-dessus. La mise en page par défaut inclut déjà les indications de clic.
+
+Par exemple, pour afficher chaque commande sous forme de papier et remplir les emplacements vides :
+
+```yaml
+command_ranks_panel:
+  title: protection.flags.COMMAND_RANKS.name
+  type: INVENTORY
+  background:
+    icon: LIGHT_BLUE_STAINED_GLASS_PANE
+    title: "&b&r"
+  force-shown: 6
+  content:
+    # ... lignes de command_button et boutons de pagination, comme dans le fichier par défaut
+  reusable:
+    command_button:
+      icon: PAPER
+      data:
+        type: COMMAND
+```
 
 ## Rangs
 

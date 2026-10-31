@@ -22,6 +22,44 @@ Ce qui suit est commuté par monde :
 2. Redémarrez le serveur
 3. Fait!
 
+## Compatibilité avec d'autres plugins d'inventaire
+
+!!! warning "Ne pas exécuter deux gestionnaires d'inventaire"
+    InvSwitcher doit être le seul plugin gérant les inventaires par monde. L'exécuter aux côtés de Multiverse-Inventories, PerWorldInventory, MultiInv ou similaire fait que les deux plugins enregistrent et restaurent le joueur à chaque changement de monde, et ils écrasent les données de l'autre.
+
+Le symptôme habituel est la disparition d'objets : ramassez un objet sur votre île, allez au hall d'entrée, revenez, et l'inventaire de l'île est vide. Rien n'apparaît dans la console, car aucun plugin n'échoue — chacun enregistre fidèlement un état de joueur que l'autre a déjà réécrit. En test, l'inventaire de l'île s'est avéré être archivé sous la clé de stockage du *hall d'entrée*, et un inventaire vide sous celui de l'île.
+
+La version d'InvSwitcher ne fait aucune différence. Si vous voyez cela, cherchez un second plugin d'inventaire avant toute autre chose.
+
+### Multiverse-Inventories
+
+Deux choses trompent couramment les administrateurs ici :
+
+- **Laisser les mondes BentoBox en dehors de tous les groupes d'inventaire n'aide pas.** Les groupes contrôlent les mondes *partagent* un inventaire, non les mondes que Multiverse-Inventories gère. Il écrit toujours un profil par monde pour un monde qui n'est dans aucun groupe.
+- **`/mv remove <world>` n'aide pas non plus.** Multiverse-Core réenregistre les mondes BentoBox à mesure qu'ils sont créés, donc la suppression est silencieusement annulée au redémarrage suivant. La définition de `auto-import-3rd-party-worlds: false` ne l'aide pas — cela supprime uniquement le balayage d'importation qui s'exécute au démarrage de Multiverse-Core, qui se produit avant que BentoBox ait créé ses mondes.
+
+Multiverse-Inventories n'a pas d'option de configuration pour ignorer un monde, mais il a une permission de contournement. Activez-le d'abord dans le `config.yml` de Multiverse-Inventories (il est fourni avec `false`) :
+
+```yml
+share-handling:
+  enable-bypass-permissions: true
+```
+
+Puis accordez `mvinv.bypass.world.<world>` pour chaque monde BentoBox — y compris son nether et son end — à chaque joueur. Avec [LuckPerms](https://luckperms.net/) :
+
+```
+lp group default permission set mvinv.bypass.world.bskyblock_world true
+lp group default permission set mvinv.bypass.world.bskyblock_world_nether true
+lp group default permission set mvinv.bypass.world.bskyblock_world_the_end true
+```
+
+Définir les nœuds sur un groupe que chaque joueur hérite (comme `default`) couvre automatiquement les nouveaux joueurs. Répétez pour chaque monde de mode de jeu que vous exécutez.
+
+!!! tip "Les opérateurs n'obtiennent pas cette permission automatiquement"
+    Donner l'accès op n'est pas suffisant — le nœud doit être accordé explicitement. Tester en tant qu'op sans l'accès semble exactement comme si le correctif ne fonctionnait pas.
+
+Utilisez un nœud par monde. Évitez `mvinv.bypass.world.*`, qui désactive Multiverse-Inventories pour tous les mondes, y compris ceux pour lesquels vous voulez toujours l'utiliser.
+
 ## Config.yml
 
 InvSwitcher possède un `config.yml` avec deux sections principales.

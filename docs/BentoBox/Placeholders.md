@@ -78,7 +78,7 @@ Tous les compléments de mode de jeu obtiennent automatiquement certains placeho
 | %[gamemode]_rank% | Rang que le joueur a sur son île | 1.5.0 |
 | %[gamemode]_resets% | Nombre de fois que le joueur a réinitialisé son île | 1.5.0 |
 | %[gamemode]_resets_left% | Nombre de fois que le joueur peut réinitialiser son île | 1.5.0 |
-| %[gamemode]_deaths% | Nombre de fois que le joueur est mort | 1.12.0 |
+| %[gamemode]_deaths% | Nombre de fois que le joueur est mort dans ce mode de jeu, tel que compté par BentoBox (plafonné par le `deaths.max` du mode de jeu). Ce n'est pas le nombre de morts par île utilisé par l'addon Level depuis Level 2.29.0. | 1.12.0 |
 | %[gamemode]_on_island% | Si le joueur est sur une île dont il fait partie ou non | 1.13.0 |
 
 ### Placeholders de flags
@@ -112,6 +112,7 @@ Les Gamemodes et les Compléments peuvent également apporter leurs propres plac
 - Compléments
     - [Bank](../../addons/Bank/#placeholders)
     - [Challenges](../../addons/Challenges/#placeholders)
+    - [IslandStats](../../addons/IslandStats/#placeholders)
     - [Level](../../addons/Level/#placeholders)
     - [Likes](../../addons/Likes/#placeholders)
     - [Limits](../../addons/Limits/#placeholders)

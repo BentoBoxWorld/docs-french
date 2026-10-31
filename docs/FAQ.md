@@ -119,6 +119,8 @@ Pour activer la liaison des portails du Nether, vous devez trouver l'option dans
 
 Pour activer la création d'une plateforme d'obsidienne d'End correcte (comme dans le End vanilla), vous devez trouver l'option `create-obsidian-platform` et la définir sur `true`.
 
+Si `create-obsidian-platform` est à `false`, BentoBox (3.23.4 et versions ultérieures) vérifie l'endroit où un joueur arrive dans l'End. S'il n'y a pas de sol, il l'envoie vers l'emplacement sûr le plus proche, puis vers le bloc le plus haut, et construit une petite capsule s'il n'y a ni l'un ni l'autre, afin que les joueurs ne puissent pas tomber dans le vide.
+
 Soyez conscient que l'activation de ces options ouvre les mêmes exploits avec une génération illimitée d'obsidienne que ceux du Minecraft original.
 
 ### Comment désactiver la génération de structures dans Boxed ?
@@ -128,6 +130,25 @@ Dans le `config.yml` de Boxed, il y a une liste `structures`. Supprimer des entr
 ### Puis-je utiliser Multiverse avec BentoBox ?
 
 Multiverse fonctionne généralement avec la plupart des modes de jeu, **sauf Boxed et Poseidon**, qui nécessitent que leur propre générateur de monde soit défini dans `bukkit.yml`. Si vous utilisez Multiverse avec l'un d'eux, le monde ne se générera pas correctement. MyWorlds est une alternative populaire.
+
+### Pourquoi les autres plugins ne trouvent-ils pas mes mondes BentoBox au démarrage ?
+
+BentoBox crée et charge ses propres mondes de mode de jeu. Lorsqu'il les enregistre auprès de Multiverse, il définit `auto-load: false` pour que Multiverse ne les charge pas en premier. Le problème est une question de timing : BentoBox charge ses mondes au premier tick du serveur, **après** que tous les plugins ont fini de s'activer. Un plugin qui s'attend à ce que tous les mondes existent une fois Multiverse activé (hologrammes, PNJ, warps, tout ce qui charge des positions enregistrées au démarrage) ne trouvera pas les mondes BentoBox et risque de ne pas charger ses données dans ces mondes.
+
+Si vous rencontrez ce problème, laissez Multiverse charger les mondes plus tôt en activant l'auto-load pour chaque monde BentoBox, y compris le Nether et l'End :
+
+```
+/mv modify bskyblock_world set auto-load true
+/mv modify bskyblock_world_nether set auto-load true
+/mv modify bskyblock_world_the_end set auto-load true
+```
+
+Utilisez vos propres noms de mondes. Ils sont listés dans `plugins/Multiverse-Core/worlds.yml`.
+
+BentoBox ne définit `auto-load: false` que la première fois qu'il enregistre un monde, votre réglage est donc conservé entre les redémarrages. Cela nécessite BentoBox 3.23.3 ou une version ultérieure. Les versions 3.22.0 à 3.23.1 le remettent à `false` à chaque démarrage.
+
+!!! warning "Pas pour Boxed"
+    Ne le faites que pour les modes de jeu dont le générateur de monde est prêt avant l'activation de Multiverse, comme BSkyBlock, AcidIsland, CaveBlock et AOneBlock. Ne le faites **pas** pour Boxed : son générateur dépend de mondes de graines que BentoBox doit créer en premier, donc un monde Boxed chargé tôt par Multiverse ne se générera pas correctement.
 
 ## Mobs, apparition et entités
 

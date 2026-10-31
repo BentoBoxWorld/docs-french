@@ -91,11 +91,12 @@ La classe `TemplatedPanelBuilder` fait partie de l'API BentoBox, conçue pour fa
 - `parameters(@NonNull String... parameters)` : Définit les paramètres du titre du panneau. Retourne l'instance `TemplatedPanelBuilder` pour le chaînage. Disponible à partir de la version 1.20.0.
 - Exemple : `panelBuilder.parameters("[name]", this.user.getName());` place le nom de l'utilisateur dans le titre du panneau
 
-### Méthode d'écouteur
+### Méthode d'écouteur { #listener-method }
 
 - `listener(PanelListener listener)` : Ajoute un `PanelListener` au panneau pour gérer les interactions utilisateur. Retourne l'instance `TemplatedPanelBuilder` pour le chaînage.
 - Les écouteurs ne sont pas obligatoires car la fonctionnalité de passage à un autre onglet, ou la réaction à un clic est gérée dans l'API.
 - Vous n'aurez peut-être besoin d'un écouteur que si vous avez besoin d'une fonctionnalité personnalisée.
+- Par défaut, un panneau doté d'un écouteur annule chaque clic dans l'inventaire du joueur et le transmet à `onInventoryClick`, ce qui permet au panneau de réagir à ces clics, par exemple pour choisir une icône. Depuis BentoBox 3.23.4, redéfinissez `allowsPlayerInventoryClicks()` pour qu'elle retourne `true` afin de permettre aux joueurs de prendre, poser, échanger et jeter des objets et d'utiliser des sacs dans leur propre inventaire pendant que le panneau est ouvert. Ces clics sont alors laissés au comportement vanilla et ne sont pas transmis à `onInventoryClick`. Les clics avec Maj, la collecte par double-clic et les glissements sur les emplacements du panneau sont toujours bloqués. Les panneaux sans écouteur autorisent toujours l'utilisation de l'inventaire.
 
 ### Enregistrement du générateur de type
 
