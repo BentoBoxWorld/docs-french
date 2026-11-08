@@ -107,7 +107,37 @@ Cela recharge BentoBox et tous les compléments, y compris les locales. Notez qu
 
 ## Journal des modifications
 
-!!! note "Nouveautés dans v3.23.4 — arrivée sûre dans l'End & utilisation de l'inventaire dans les panneaux"
+!!! note "Nouveautés dans v3.23.6 — types d'entités toujours autorisés & correctif du chargement des blueprints"
+    **Publié :** 7 novembre 2026
+
+    Aucun changement de `config.yml`. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🔡 **Types d'entités toujours autorisés (`ALLOW_MOBS`).** Un nouveau paramètre de monde dans le panneau des paramètres d'administration de chaque mode de jeu (icône lingot de fer) liste les types d'entités qui apparaissent même lorsque l'apparition des animaux ou des monstres est désactivée, au niveau du monde et de l'île. Le Golem de fer figure sur la liste par défaut, afin que les fermes à fer des villages continuent de fonctionner. La liste de blocage **Génération de Mobs Global** reste prioritaire si un type figure sur les deux. Permission : `[gamemode].admin.settings.ALLOW_MOBS`. Voir [Priorité d'apparition des mobs](Protections.md#mob-spawning-precedence).
+    - 🔺 **« All blueprints loaded » pouvait ne jamais se déclencher.** Lorsque plusieurs modes de jeu chargeaient leurs blueprints en même temps, BentoBox pouvait manquer une fin de chargement et ne jamais atteindre son état prêt : les hooks `allLoaded()` des addons, les commandes qui attendent cet état et `BentoBoxReadyEvent` ne s'exécutaient jamais. Corrigé, ainsi que quatre conflits similaires entre le thread principal et les tâches asynchrones.
+    - 📊 **bStats :** les commandes échouées indiquent désormais comme raison la clé de locale vue par le joueur et sont comptées par serveur ; un nouveau graphique `worldSize` indique la taille sur disque des mondes d'îles par tranche.
+    - Correction d'un faux message `File not found` au premier démarrage, provenant du nouveau stockage des paramètres de monde du cœur.
+
+    🔺 **Fermes à fer :** là où l'apparition des animaux avait été désactivée pour arrêter les golems, les golems apparaîtront de nouveau. Retirez le Golem de fer des « Types d'entités toujours autorisés » pour retrouver l'ancien comportement.
+
+    🔺 **Nouveau stockage de données :** la liste d'autorisation est enregistrée par BentoBox pour chaque mode de jeu, et non dans le `config.yml` du mode de jeu — `plugins/BentoBox/database/CoreWorldSettings/<GameMode>.json` en fichier plat, la table `WorldSettings` en SQL/Mongo.
+
+    🔡 **Note sur les locales :** nouvelles clés sous `protection.flags.ALLOW_MOBS` (`name`, `description`, `always`, `flags`). Les fichiers de locale personnalisés qui ne les contiennent pas affichent le nom des clés.
+
+    [Release v3.23.6](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.6)
+
+??? note "Nouveautés dans v3.23.5 — protection TNT du Sulfur Cube & tirets bas dans `/island go`"
+    **Publié :** 31 octobre 2026
+
+    Une version de correction de bugs. Aucun changement de `config.yml`, de locale ou de modèle de panneau. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🔺 **Les explosions du Sulfur Cube suivent désormais les flags TNT.** Un Sulfur Cube ayant absorbé de la TNT explosait en tant que lui-même et non en tant que TNT amorcée : il n'était donc pas vérifié par `TNT_DAMAGE` et pouvait détruire des constructions sur des îles où les dégâts de TNT sont désactivés. Ses explosions suivent désormais `TNT_DAMAGE` sur les îles et `WORLD_TNT_DAMAGE` en dehors, pour les dégâts aux blocs comme aux entités. Un joueur qui allume un Sulfur Cube avec un briquet ou une boule de feu est vérifié par `TNT_PRIMING`, comme pour un bloc de TNT. L'allumage par la redstone, les distributeurs ou d'autres explosions n'a pas de joueur, donc `TNT_PRIMING` ne peut pas s'appliquer, mais l'explosion suit toujours `TNT_DAMAGE`. Les serveurs antérieurs à Minecraft 26.2 n'ont pas de Sulfur Cube, donc rien ne change pour eux.
+    - 🐛 **`/island go` traite les tirets bas comme des espaces.** `/island go happy_place` trouve désormais un foyer nommé `Happy Place`. Une correspondance exacte reste prioritaire, et un nom qui correspond à plusieurs destinations est refusé plutôt que deviné. Voir [Trouver le bon foyer](IslandManagement.md#finding-the-right-home).
+
+    **Note AOneBlock :** AOneBlock est livré avec `TNT_DAMAGE: true` par défaut, donc les explosions de Sulfur Cube y font toujours des dégâts, sauf si vous le réglez sur `false`.
+
+    [Release v3.23.5](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.5)
+
+??? note "Nouveautés dans v3.23.4 — arrivée sûre dans l'End & utilisation de l'inventaire dans les panneaux"
     **Publié :** 17 octobre 2026
 
     Une version de correction de bugs. Aucun changement de `config.yml`, de locale ou de modèle de panneau. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.

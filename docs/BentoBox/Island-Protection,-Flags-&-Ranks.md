@@ -230,6 +230,9 @@ Le **Panneau des Paramètres d'Administration** est accessible via `/[admin_comm
 
 Bascule les flags de paramètres au niveau du monde qui s'appliquent à l'ensemble du monde de jeu.
 
+!!! new "Ajouté dans BentoBox 3.23.6"
+    L'élément **Types d'entités toujours autorisés** (lingot de fer) ouvre la liste de tous les types d'entités vivantes. Les types en vert apparaissent même lorsque l'apparition des animaux ou des monstres est désactivée, sur n'importe quelle île ou dans le monde ; le Golem de fer est en vert par défaut afin que les fermes à fer des villages continuent de fonctionner. La liste de blocage **Génération de Mobs Global** reste prioritaire. La liste est enregistrée par BentoBox, et non dans le `config.yml` du mode de jeu ; voir [Priorité d'apparition des mobs](About/Protections.md#mob-spawning-precedence). Nécessite `[gamemode].admin.settings.ALLOW_MOBS`.
+
 ### Protection Par Défaut du Monde
 
 Contrôle quels flags de protection sont actifs en dehors des limites de toute île (c'est-à-dire pour les visiteurs dans la nature).

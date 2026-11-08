@@ -414,7 +414,13 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     | `team-join-reset` | Aucun. Affecte uniquement le compteur propre de BentoBox et l'espace réservé `%[gamemode]_deaths%`. |
     | `reset-on-new-island` | Aucun. Level efface le propre registre d'une île à la réinitialisation ou suppression. |
 
-    Les commandes BentoBox `/[admin_command] deaths set|add|reset` modifient le compteur de BentoBox, non le registre par île de Level, donc elles n'affectent plus les niveaux non plus.
+    **Commandes de morts admin.** Depuis la v2.30.0 (avec BentoBox 3.23.3 ou ultérieur), les commandes `/[admin_command] deaths set|add|remove|reset <player>` du mode de jeu modifient aussi les morts du joueur sur **chaque île dont il est membre** dans ce mode de jeu. Les îles où il est seulement trusted ou coop ne sont pas modifiées.
+
+    - **add** ajoute au compteur du joueur sur l'île, jusqu'à `deaths.max`.
+    - **remove** retire d'abord du compteur propre du joueur, puis des morts anonymes de l'île (anciens membres ou migrées). Le total ne descend jamais sous 0.
+    - **set** et **reset** définissent le compteur du joueur et **effacent aussi les morts anonymes de l'île**. Les compteurs des autres membres actuels ne sont pas modifiés. Utilisez `add` ou `remove` pour ne modifier que le compteur d'un seul joueur.
+
+    Avec la v2.29.0, ou avec un BentoBox antérieur à 3.23.3, ces commandes ne modifient que le compteur propre de BentoBox et n'affectent pas les niveaux.
 
     **Mise à niveau à partir d'une version antérieure.** Les comptages de morts existants sont migrés une fois par île la première fois qu'elle est calculée, qu'un membre décède dessus, ou qu'un membre parte. La valeur migrée reproduit ce que l'ancienne formule aurait calculé à ce moment (en utilisant `sumteamdeaths`), donc les niveaux d'île ne changent pas lors de la mise à niveau.
 
@@ -553,6 +559,19 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - 🆕 Locale chinois traditionnel (`zh-TW`) ajoutée. Merci @qwe664 !
 
     [Release v2.29.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.29.0)
+
+??? warning "Nouveautés dans v2.30.0 — les commandes de morts admin modifient les morts de l'île"
+    **Publié :** 31 octobre 2026
+
+    Compatibilité : BentoBox API 3.16.0 (3.23.3+ requis pour les commandes de morts), Minecraft 1.21.x et 26.1.x – 26.3, Java 21.
+
+    - 🔺 **Les commandes `/[admin_command] deaths` agissent de nouveau sur les niveaux d'île.** En 2.29.0, elles ne modifiaient que le compteur de BentoBox : un administrateur pouvait remettre un joueur à 0 mort et `/[player_command] level` affichait toujours l'ancien nombre. `set`, `add`, `remove` et `reset` s'appliquent désormais à chaque île dont le joueur est membre. Consultez [Comment fonctionne la pénalité de mort ?](#faq).
+    - 🔺 **`set` et `reset` effacent les morts des anciens membres.** Exécuter l'une ou l'autre sur n'importe quel membre d'une île d'équipe efface aussi les morts laissées par d'anciens membres et les morts migrées d'avant la 2.29.0.
+    - 🔺 **Nécessite BentoBox 3.23.3 ou ultérieur.** Avec un BentoBox plus ancien, Level affiche une note au démarrage et se comporte comme en 2.29.0.
+    - ⚙️ Le commentaire de `deathpenalty` dans `config.yml` décrit ce fonctionnement. Le paramètre lui-même n'a pas changé.
+    - Compilé et testé avec Paper 26.3 ; Minecraft 26.2 et 26.3 sont indiqués comme pris en charge.
+
+    [Release v2.30.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.30.0)
 
 ??? note "Nouveautés dans v2.28.1"
     **Publié :** 29 juillet 2026
