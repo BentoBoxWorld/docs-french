@@ -16,8 +16,23 @@ Créé et maintenu par [tastybento](https://github.com/tastybento).
 4. Modifiez le config.yml comme vous le souhaitez.
 5. Redémarrez le serveur si vous apportez une modification
 
-## Commandes
+## Commandes { #commands }
 Il existe une commande d'utilisateur et une commande admin appelées « limits ». Les administrateurs peuvent vérifier les limites d'un propriétaire d'île spécifique. Les deux affichent un panneau GUI avec les limites et le nombre actuel.
+
+Les comptages peuvent être reconstruits à partir de ce qui se trouve réellement sur l'île :
+
+| Commande | Description |
+|---|---|
+| `/[player_command] limits recount` | Recompter la propre île du joueur. |
+| `/[admin_command] limits calc <player>` | Recompter l'île d'un joueur (blocs et entités). |
+| `/[admin_command] limits calc <player> entities` | (**1.32.0+**) Recompter uniquement les entités de l'île d'un joueur ; les comptages de blocs ne sont pas modifiés. |
+| `/[admin_command] limits calc all` | (**1.32.0+**) Mettre en file d'attente toutes les îles possédées du monde pour un recomptage. |
+| `/[admin_command] limits calc all entities` | (**1.32.0+**) Recompter uniquement les entités sur toutes les îles possédées. Beaucoup moins coûteux, et le moyen le plus rapide de corriger des comptages de mobs effacés. |
+
+Les recomptages s'exécutent strictement une île à la fois en arrière-plan, et la commande joueur `recount` et la commande admin `calc` partagent une même file d'attente. Demander le recomptage d'une île déjà en file d'attente indique que le recomptage est en cours. Avec `calc all`, l'administrateur est informé du nombre d'îles mises en file d'attente, puis du nombre d'îles terminées et du nombre ayant expiré.
+
+!!! tip "Corriger des comptages d'entités effacés"
+    Exécutez une fois `/[admin_command] limits calc all entities` (par ex. `/bsbadmin limits calc all entities`) pour reconstruire les comptages d'entités de toutes les îles d'un mode de jeu. Pour qu'ils restent corrects ensuite, activez les [recomptages automatiques](#automatic-entity-recounts).
 
 ## Setup - Config.yml
 
@@ -34,12 +49,30 @@ Le config.yml a les sections suivantes :
 * entitylimits-end
 * entitygrouplimits
 
-Il possède également ces commutateurs de premier niveau (tous ajoutés en **1.29.0** sauf mention contraire) : `apply-member-limit-perms`, `show-limit-messages`, `stacked-plants-count-as-one` et `log-limits-on-join`.
+Il possède également ces commutateurs de premier niveau (tous ajoutés en **1.29.0** sauf mention contraire) : `shared-dimension-limits` (**1.33.0**), `apply-member-limit-perms`, `show-limit-messages`, `stacked-plants-count-as-one` et `log-limits-on-join`.
 
 !!! info "Limites par dimension (1.28.2+)"
-    Depuis la version **1.28.2**, les comptages de blocs, les comptages d'entités, les limites et les offsets sont suivis **indépendamment pour l'Overworld, le Nether et l'End**. Une limite unique définie dans `blocklimits` ou `entitylimits` s'applique séparément à chaque dimension — par exemple `HOPPER: 10` autorise 10 entonnoirs dans l'Overworld, 10 dans le Nether et 10 dans l'End (30 au total sur l'île). Utilisez les sections optionnelles `-nether` / `-end` pour remplacer une seule dimension.
+    Depuis la version **1.28.2**, les comptages de blocs, les comptages d'entités, les limites et les offsets sont suivis **indépendamment pour l'Overworld, le Nether et l'End**. Sauf si [`shared-dimension-limits`](#shared-dimension-limits) est activé, une limite unique définie dans `blocklimits` ou `entitylimits` s'applique séparément à chaque dimension — par exemple `HOPPER: 10` autorise 10 entonnoirs dans l'Overworld, 10 dans le Nether et 10 dans l'End (30 au total sur l'île). Utilisez les sections optionnelles `-nether` / `-end` pour remplacer une seule dimension.
 
     Au premier chargement après la mise à jour, vos données existantes à dimension unique sont automatiquement migrées vers l'emplacement **Overworld**. Le format sur disque change, alors faites une sauvegarde avant la mise à jour ; notez que le retour à une version antérieure n'est pas pris en charge.
+
+### shared-dimension-limits
+
+!!! info "Depuis la 1.33.0"
+    Lorsque `true`, chaque limite de bloc, d'entité et de groupe couvre **l'île entière** — Overworld, Nether et End ensemble — au lieu de s'appliquer séparément dans chaque dimension. `HOPPER: 10` signifie alors 10 entonnoirs au total, où qu'ils se trouvent. Le panneau des limites affiche un seul onglet « Toutes les dimensions » avec les totaux de toute l'île.
+
+Les comptages restent conservés par dimension en coulisses, de sorte que le paramètre peut être activé ou désactivé à tout moment, sans recomptage ni modification des données.
+
+Lorsque les limites sont partagées, les limites de l'Overworld de l'île s'appliquent à l'île entière :
+
+- **S'appliquent :** `blocklimits`, `entitylimits`, les limites de groupes d'entités et de blocs, l'entrée de l'Overworld sous `worlds:`, les permissions pour toutes les dimensions et pour l'Overworld (`<gamemode>.island.limit.<KEY>.<NUMBER>` et `<gamemode>.island.limit.overworld.<KEY>.<NUMBER>`), ainsi que les offsets.
+- **Sont ignorés :** les sections de configuration `-nether` et `-end`, les entrées du Nether et de l'End sous `worlds:`, et les permissions propres au Nether ou à l'End. Un avertissement est consigné au démarrage pour chaque section de configuration ignorée.
+- **Placeholders :** les placeholders `_limit`, `_base_limit` et `reached_limits` indiquent la limite partagée et le total de toute l'île. Les placeholders `_count` suffixés par dimension affichent toujours le comptage propre à chaque dimension.
+
+Défaut : `true` pour les nouvelles installations. Un `config.yml` antérieur à la 1.33.0 ne contient pas cette ligne, il conserve donc des limites séparées par dimension jusqu'à ce que vous ajoutiez `shared-dimension-limits: true`.
+
+!!! warning "Vérifiez vos limites avant l'activation"
+    Une limite partagée vaut en pratique un tiers de ce que le même nombre permettait auparavant, si les joueurs utilisaient les trois dimensions. Une île qui dépasse déjà une limite partagée conserve tout ce qu'elle a, mais ne peut plus rien placer ni faire apparaître tant qu'elle n'est pas repassée sous la limite. Vous voudrez peut-être augmenter certaines limites lors de l'activation. Notez aussi que supprimer `config.yml` pour le régénérer **active** les limites partagées ; réglez-le sur `false` pour conserver des limites séparées.
 
 ### blocklimits
 
@@ -58,6 +91,9 @@ Cette section répertorie les limites de blocs pour des mondes spécifiques. Vou
 ### entitylimits
 
 Cette section répertorie les limites d'entité par défaut dans l'espace d'île d'un joueur (zone protégée et limite de l'île). Une limite de 5 permettra jusqu'à 5 entités. Affecte tous les types de génération de créatures. Inclut également les entités comme MINECARTS. Depuis la version **1.28.2**, les limites d'entité s'appliquent indépendamment par dimension, de sorte que le Nether et l'End sont désormais comptés et limités correctement (cela corrige le bug de longue date où les comptages du Nether/End étaient remis à zéro au déchargement des chunks).
+
+!!! tip "Coussins (1.31.0, Minecraft 26.3+)"
+    Les coussins peuvent être limités comme n'importe quelle autre entité, par exemple `CUSHION: 10`. Ils peuvent aussi être limités par permissions (`<gamemode>.island.limit.CUSHION.<number>`) et utilisés dans des groupes d'entités. Les coussins placés avant la 1.31.0 n'ont jamais été comptés : exécutez donc `/[admin_command] limits calc <player>` sur les îles qui en ont déjà.
 
 ### entitylimits-nether / entitylimits-end
 
@@ -267,9 +303,9 @@ Certains articles ne peuvent pas être limités (pour l'instant). Les raisons so
     Les cadres, cadres lumineux et peintures figuraient auparavant sur cette liste. Depuis la **1.29.0**, le comptage des entités est persistant et piloté par événements, donc les trois peuvent maintenant être configurés sous `entitylimits` comme n'importe quelle autre entité.
 
 
-## Pour les développeurs : exemption d'entités
+## Pour les développeurs : exemption d'entités { #for-developers-exempting-entities }
 
-!!! info "À partir de la version suivante après 1.30.2"
+!!! info "Depuis la 1.31.0"
 
 Un autre plugin ou addon peut générer des entités que Limits ignore complètement. Ceci est utile pour les mobs temporaires comme les vagues d'événements ou les PNJ de minijeu qui ne doivent pas utiliser les limites d'entités de l'île. Marquez l'entité avec la clé de données persistantes `limits:exempt` (n'importe quelle valeur) **dans le consumer passé à `spawn`**, afin que le tag soit déjà présent quand `CreatureSpawnEvent` se déclenche :
 
@@ -293,6 +329,45 @@ Les entités non marquées sur la même île sont limitées comme d'habitude. Le
 
 
 ## Journal des modifications
+
+??? note "Nouveautés dans v1.33.0 — limites partagées entre dimensions"
+    **Publié :** 7 novembre 2026
+
+    Compatibilité : BentoBox API 2.7.1 · Paper Minecraft 1.21.11 – 26.3 · Java 21.
+
+    - ⚙️🔡 **Partager les limites entre les dimensions de l'île.** Le nouveau paramètre [`shared-dimension-limits`](#shared-dimension-limits) fait couvrir à chaque limite de bloc, d'entité et de groupe l'Overworld, le Nether et l'End ensemble. Il est activé sur les nouvelles installations ; les serveurs existants conservent des limites séparées jusqu'à ce que l'administrateur ajoute `shared-dimension-limits: true` à `config.yml`. Corrige [#310](https://github.com/BentoBoxWorld/Limits/issues/310).
+    - 🔡 **Titre du panneau corrigé dans les autres langues.** Toutes les langues sauf l'anglais affichaient un `[sort]` littéral dans le titre du panneau des limites. Il affiche maintenant le nom de la dimension. Aucune régénération des locales n'est nécessaire.
+    - 🔡 **Messages de `calc all` traduits** dans toutes les langues ; pris en compte automatiquement au redémarrage.
+
+    🔺 Une limite partagée vaut en pratique un tiers de ce que le même nombre permettait auparavant si les joueurs utilisent les trois dimensions — vérifiez vos limites avant de l'activer. Régénérer `config.yml` l'active.
+
+    [Release v1.33.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.33.0)
+
+??? note "Nouveautés dans v1.32.0 — recomptages précis & calc all"
+    **Publié :** 2 novembre 2026
+
+    Compatibilité : BentoBox API 2.7.1 · Paper Minecraft 1.21.11 – 26.3 · Java 21. Aucun changement de configuration.
+
+    - 🐛 **Les recomptages ne manquent plus les mobs des chunks déchargés.** Les chunks chargés pour un recomptage pouvaient se décharger avant la fin du comptage : leurs mobs étaient alors comptés comme zéro et les comptages de l'île baissaient. Cela touchait surtout `calc` sur les îles de joueurs hors ligne et `recount-on-join` lorsque le propriétaire se connectait loin de son île. Les recomptages gardent désormais chaque chunk chargé (sans tick) jusqu'à ce que ses entités soient comptées, 100 chunks à la fois par monde.
+    - 🔡 **`calc all` et `entities`.** `/[admin_command] limits calc all` met toutes les îles possédées en file d'attente pour un recomptage ; ajoutez `entities` pour ne reconstruire que les comptages d'entités. `entities` fonctionne aussi pour un seul joueur : `calc <player> entities`. Voir [Commandes](#commands).
+    - **Corrections des commandes de recomptage :** `recount` et `calc` ne laissent plus de tâche d'arrière-plan tourner indéfiniment et partagent désormais une même file d'attente ; demander le recomptage d'une île déjà en file indique qu'il est en cours ; un recomptage partiel interrompu par un arrêt du serveur est abandonné au lieu d'être enregistré ; le message d'expiration s'affiche désormais ; le message de joueur inconnu affiche le nom saisi.
+
+    🔡 Le texte d'aide de `calc` et deux nouveaux messages (`admin.limits.calc.all-queued`, `admin.limits.calc.all-finished`) ont été ajoutés aux fichiers de locale. Les messages manquants se replient sur l'anglais.
+
+    [Release v1.32.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.32.0)
+
+??? note "Nouveautés dans v1.31.0 — limites des coussins & entités exemptées"
+    **Publié :** 31 octobre 2026
+
+    Compatibilité : BentoBox API 2.7.1 · Paper Minecraft 1.21.11 – 26.3 · Java 21. Aucun changement de configuration ni de locale.
+
+    - 🐛 **Les limites des coussins sont appliquées.** Une entrée `CUSHION` dans `entitylimits` était chargée mais jamais appliquée. La pose d'un coussin est désormais vérifiée par rapport à la limite (avec le message habituel et la gestion de `mod.bypass`) et comptée, et le comptage reste correct lors des chargements de chunks et des recomptages `calc`. Le panneau des limites affiche une icône de coussin. Corrige [#307](https://github.com/BentoBoxWorld/Limits/issues/307).
+    - ✨ **Les plugins peuvent exempter leurs propres entités.** Une entité marquée avec la clé de données persistantes `limits:exempt` n'est jamais bloquée ni comptée. Voir [Pour les développeurs : exemption d'entités](#for-developers-exempting-entities). Corrige [#304](https://github.com/BentoBoxWorld/Limits/issues/304).
+    - Compilé avec Paper 26.3 et BentoBox 3.23.1. Le jar cible toujours Java 21 et se charge sur les serveurs antérieurs à 26.3.
+
+    **Coussins existants :** les coussins posés avant cette mise à jour n'ont jamais été comptés. Exécutez `/[admin_command] limits calc <player>` sur les îles qui en ont déjà, sinon elles peuvent dépasser la limite d'autant.
+
+    [Release v1.31.0](https://github.com/BentoBoxWorld/Limits/releases/tag/1.31.0)
 
 ??? note "Nouveautés dans v1.30.2 — recomptages automatiques d'entités"
     **Publié :** 6 septembre 2026

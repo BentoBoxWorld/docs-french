@@ -25,12 +25,12 @@ Les joueurs peuvent définir plusieurs emplacements du foyer sur leur île avec 
 [gamemode].island.home.maxhomes.<number>
 ```
 
-### Trouver le bon foyer
+### Trouver le bon foyer { #finding-the-right-home }
 
 Depuis BentoBox 3.21.0, `/island go <name>` n'exige plus une correspondance exacte et sensible à la casse. Le nom saisi est résolu par ordre décroissant de certitude :
 
 1. Une correspondance exacte avec un nom d'île ou de foyer.
-2. Une correspondance en ignorant la casse, les codes de couleur et les espaces superflus — ainsi `myisland` trouve `MyIsland`, et une double espace parasite est pardonnée.
+2. Une correspondance en ignorant la casse, les codes de couleur et les espaces superflus — ainsi `myisland` trouve `MyIsland`, et une double espace parasite est pardonnée. Depuis la 3.23.5, les tirets bas comptent aussi comme des espaces, donc `happy_place` trouve `Happy Place`.
 3. Un préfixe unique insensible à la casse — `hom` trouve `Home`.
 
 Tout ce qui reste ambigu retombe sur la liste habituelle des destinations plutôt que de deviner, et le nom canonique résolu est utilisé pour la téléportation, afin que les foyers nommés restent exacts.

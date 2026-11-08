@@ -161,6 +161,23 @@ L'addon introduit 1 drapeau de paramètres BentoBox :
 
 ## Journal des modifications
 
+??? note "Nouveautés dans v1.23.2"
+    **Publié :** 19 octobre 2026
+
+    Une version de maintenance. Compatibilité : BentoBox API 3.14+, Minecraft 1.21.x, Java 21.
+
+    - 🐛 **`/[admin_command] reload` confirme désormais son succès.** Le rechargement rechargeait toujours `config.yml`, mais en silence. Il envoie maintenant un message, qui explique aussi que les modifications ne s'appliquent qu'aux chunks nouvellement générés et que le nom du monde, les dimensions et les alias de commandes nécessitent un redémarrage du serveur.
+    - 🐛 **Les modifications de `world.world-depth` s'appliquent au rechargement.** Les joueurs ne sont plus bloqués à l'ancien plafond de la grotte jusqu'au redémarrage ; la limite de hauteur suit immédiatement le paramètre rechargé.
+    - 🔡 **Fichiers de locale allégés.** `en-US.yml` utilise désormais une section `prefixes` (island → cave, etc.) que BentoBox substitue dans ses chaînes par défaut, remplaçant environ 125 surcharges copiées. CaveBlock affiche maintenant la formulation actuelle de BentoBox. L'indonésien (`id`) et le roumain (`ro`) sont désormais entièrement traduits, et `cave-limit-reached` a été ajouté à plusieurs autres locales.
+    - **Grotte de départ `lush` plus facile.** Le blueprint `lush` a été retravaillé car il était trop difficile d'y survivre.
+    - ⚙️ **Commentaires `deaths` plus clairs** dans `config.yml`, expliquant comment chaque paramètre interagit avec [le suivi des morts par grotte de Level 2.29.0](../../addons/Level/index.md#faq). Aucune clé ni valeur n'a changé.
+
+    🔡 **Note sur les locales :** pour passer aux fichiers allégés, sauvegardez vos personnalisations, supprimez `plugins/BentoBox/locales/CaveBlock/` et redémarrez.
+
+    🔺 **Note sur le blueprint lush :** les blueprints ne sont copiés depuis le jar que lorsque le dossier des blueprints n'existe pas, donc les serveurs existants conservent l'ancienne grotte `lush`. Pour utiliser la nouvelle, copiez `blueprints/lush.blueprint` depuis le jar dans `plugins/BentoBox/addons/CaveBlock/blueprints/` et redémarrez. Les grottes existantes ne sont pas modifiées.
+
+    [Release v1.23.2](https://github.com/BentoBoxWorld/CaveBlock/releases/tag/1.23.2)
+
 ??? note "Nouveautés dans v1.23.1"
     **Publié :** 9 juillet 2026
 

@@ -92,6 +92,7 @@ Ces paramètres s'appliquent à tout le monde du mode de jeu. Seuls les administ
 
 | Paramètre | Qu'est-ce qu'il fait | Défaut |
 |---|---|---|
+| **Types d'entités toujours autorisés** | Entités qui apparaissent quoi que disent les flags d'apparition des animaux et des monstres, sur les îles et dans le monde. Utilisez-le pour faire fonctionner les fermes à fer des villages sur un serveur, ou une île, où l'apparition des animaux est désactivée. Le Golem de fer est autorisé par défaut. La liste de blocage (*Génération de Mobs Global*) reste prioritaire. Voir [Priorité d'apparition des mobs](#mob-spawning-precedence). | Golem de fer |
 | **Dégâts d'explosion du coffre** | Protège les coffres d'être détruits par les explosions (Creepers, TNT, Withers, Ghasts). Prévient le griefing mais signifie que les coffres peuvent être utilisés pour faire des salles à l'épreuve des explosions. | On |
 | **Clean Super Flat** | Si le générateur de monde cesse de fonctionner, les nouveaux chunks se génèrent en tant qu'herbe plate. Ce paramètre détecte et répare ces chunks. Laissez-le désactivé sauf si vous avez ce problème — c'est intensif en ressources. | Off |
 | **Tilling de Terre Grossière** | Empêche les joueurs de convertir la terre grossière en terre normale en utilisant une houe. La terre est rare et précieuse dans la plupart des modes de jeu ; le labourage de terre grossière peut être exploité pour le générer à bas prix si le gravier est facile à obtenir. | Off (prévention on) |
@@ -113,3 +114,16 @@ Ces paramètres s'appliquent à tout le monde du mode de jeu. Seuls les administ
 | **Protection du Type de Générateur** | Empêcher les joueurs de modifier le type de mob des blocs générateurs en utilisant des œufs de spawn. Utile quand les générateurs sont donnés en récompenses. | On |
 | **Limite de Croissance des Arbres** | Empêcher les arbres de grandir au-delà de la limite de protection de l'île. Sans cela, les arbres peuvent empiéter sur d'autres îles ou créer des blocs inaccessibles. | On |
 | **Dégâts Wither** | Limiter la destruction que le Wither peut causer sur et entre les îles. | On |
+
+### Priorité d'apparition des mobs { #mob-spawning-precedence }
+
+L'apparition naturelle et par générateur des mobs est décidée dans cet ordre. La première règle qui correspond l'emporte.
+
+1. La liste de blocage **Génération de Mobs Global** (`protection.block-mobs` dans la configuration du mode de jeu). Un type bloqué n'apparaît jamais.
+2. La liste d'autorisation **Types d'entités toujours autorisés**. Un type autorisé apparaît quels que soient les flags ci-dessous.
+3. Les paramètres **Apparition naturelle des animaux**, **Apparition naturelle des monstres**, **Apparition des animaux par générateur** et **Apparition des monstres par générateur** de l'île, ou les valeurs par défaut du monde pour ces flags lorsqu'il n'y a pas d'île.
+
+Les apparitions provoquées directement par un joueur, comme la reproduction, les œufs d'apparition ou la construction d'un golem, ne sont jamais soumises à ces règles.
+
+!!! note "Où la liste d'autorisation est enregistrée"
+    Contrairement aux autres paramètres de monde, la liste d'autorisation ne se trouve pas dans le `config.yml` du mode de jeu. BentoBox l'enregistre lui-même, un enregistrement par mode de jeu, dans sa base de données : avec la base de données à fichier plat par défaut, il s'agit de `plugins/BentoBox/database/CoreWorldSettings/<GameMode>.json`. Elle est initialisée avec `IRON_GOLEM` la première fois que le mode de jeu est vu ; ensuite, seules les modifications de l'administrateur dans le panneau s'appliquent. Effacer l'enregistrement restaure la valeur initiale.
