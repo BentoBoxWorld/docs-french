@@ -1,112 +1,125 @@
-# Blueprints
-Les **Blueprints** sont un moyen simple et rapide de faire vos propres îles de démarrage personnalisées dans le jeu.
+# Îles de Démarrage (Blueprints)
 
-Les Blueprints *ressemblent à* les schematics WorldEdit mais ne sont **pas** compatibles. Les Blueprints sont optimisés pour les compléments BentoBox et ne nécessitent aucun autre plugin ou bibliothèque à utiliser.
+Quand un joueur crée une île, BentoBox colle une île de démarrage pour lui. Ces îles de démarrage sont des **blueprints**, que vous construisez et sauvegardez en jeu. Un **bundle** groupe un blueprint Overworld, Nether et End en un seul choix dans le menu Créer une Île, avec sa propre icône, nom et description.
 
-Les Blueprints sont gérés avec le **Gestionnaire de Blueprint** et peuvent être regroupés dans un **Bundle de Blueprint** pour contenir un ensemble de jusqu'à 3 îles pour chaque dimension - monde normal, monde nether et monde end. Les Bundles de Blueprint ont leur propre icône, description et peuvent contenir d'autres paramètres, comme exiger la permission d'utilisation.
+Chaque mode de jeu est livré avec quelques bundles. Vous pouvez les modifier, ajouter les vôtres, offrir des îles VIP uniquement, les facturer, et exécuter des commandes quand l'une est choisie.
 
-### FAQ : J'ai beaucoup de schematics - comment les convertir en Blueprints ?
+!!! info "Commandes sur cette page"
+    Les commandes sont affichées pour BSkyBlock (`/bsbadmin`). Utilisez la commande d'administration de votre mode de jeu à la place, par exemple `/oba` pour AOneBlock ou `/acid` pour AcidIsland. `blueprint` peut être raccourci à `bp`.
 
-C'est assez facile, mais vous devez le faire en jeu car vous devrez ajouter des panneaux.
+## Créer une île de démarrage
 
-Étapes :
+1. **Construisez-la.** Construisez l'île quelque part dans le monde du mode de jeu, loin des autres îles. Mettez au moins un bloc de **bedrock** dedans : le bloc de bedrock le plus élevé devient le centre de l'île, et BentoBox n'enregistrera pas un blueprint sans un.
+2. **Ajouter les panneaux (optionnel).** Placez une pancarte avec `[spawn_here]` sur la première ligne où les joueurs doivent apparaître, face à la direction qu'ils doivent regarder. Ajoutez une pancarte avec `[start]` sur la première ligne pour un message de bienvenue. Voir [Panneaux](#signs).
+3. **Sélectionnez-la.** Tenez-vous à un coin et exécutez `/bsbadmin bp pos1`, puis au coin opposé `/bsbadmin bp pos2`. Utilisez ceux-ci, pas la sélection de WorldEdit.
+4. **Copiez-la.** `/bsbadmin bp copy`. Ajoutez `air` si l'île sera collée dans l'eau ou la pierre (AcidIsland, CaveBlock, Poseidon), ainsi l'air autour est aussi collé. Ajoutez `biome` pour garder les biomes, ou `nowater` pour laisser de côté les blocs d'eau.
+5. **Vérifiez-la.** Allez quelque part vide et exécutez `/bsbadmin bp paste` pour voir ce que vous avez copié.
+6. **Enregistrez-la.** `/bsbadmin bp save <name>`, par exemple `/bsbadmin bp save vip_island`.
+7. **Offrez-la aux joueurs.** Ouvrez `/bsbadmin bp` et mettez le blueprint dans un bundle (section suivante).
 
-1. Chargez le schematic en utilisant WorldEdit
-2. Collez-le quelque part, je recommande un espace dans le monde BSKyBlock loin de tout
-3. Trouvez où vous voulez que le joueur apparaisse et placez un panneau là-bas avec le texte [spawn_here] dessus.
-4. (Optionnel) Placez un panneau de bienvenue faisant face à l'endroit qui a le texte [start] dessus. Pour les détails sur ces panneaux, regardez ci-dessous
-5. Sélectionnez l'île en utilisant les commandes de positionnement administrateur blueprint pos1 et pos2 (Souvenez-vous d'utiliser la commande blueprint et pas WE !)
-6. Copiez l'île en utilisant la commande de copie administrative blueprint
-7. Enregistrez l'île en utilisant la commande de sauvegarde administrative blueprint
-8. Répétez pour toutes vos îles y compris les îles Nether et End.
+Pour remplacer l'île par défaut du mode de jeu au lieu d'en ajouter une nouvelle, enregistrez-la sur son blueprint (généralement `island`, `nether-island` et `end-island`). On vous demandera de confirmer.
 
-Conseils : Assurez-vous d'avoir un bloc de bedrock au centre de l'île. C'est où l'île sera centrée.
+!!! tip "Gardez-la petite"
+    Le plaisir des modes de jeu d'îles est de grandir à partir de très peu. Commencez les joueurs avec juste assez de blocs et d'objets pour commencer.
 
-## Asynchrone
-Tous les copies et collages de Blueprint sont faits async et ne devraient **jamais** décaler le serveur peu importe la taille du Blueprint. Cela peut prendre plusieurs secondes pour coller de très grands Blueprints. Vous pouvez définir combien de blocs seront copiés ou collés en éditant la vitesse de collage dans le config.yml BentoBox. La valeur par défaut devrait être acceptable pour la plupart des systèmes. Si vous exécutez les timings, vous pouvez voir le processus de collage prendre longtemps, mais il ne fait que des blocs d'environ 1000 par tick et ne devrait pas décaler votre système.
+**Conversion de schematics WorldEdit :** les blueprints ne sont pas des schematics, mais vous pouvez coller un schematic avec WorldEdit, ajouter le bedrock et les panneaux, puis sélectionner, copier et enregistrer avec les commandes blueprint comme ci-dessus. Faites ceci pour chaque île Nether et End aussi.
 
-## Opération
-Le flux de base pour faire une île personnalisée :
+## Bundles : les choix du menu Créer une Île
 
-1. Créez une boîte de délimitation en définissant deux positions aux coins opposés de la boîte - définissez pos1 et pos2
-2. Copiez le contenu de la boîte dans le presse-papiers
-3. Enregistrez le contenu. Si vous voulez juste remplacer les îles par défaut, enregistrez comme « island », « nether-island » ou « end-island » - on vous demandera de confirmer le remplacement.
-4. Ouvrez le Gestionnaire de Blueprint, par ex., /bsb blueprint pour faire un nouveau Bundle, définir les icônes, regrouper les Blueprints, etc.
+Ouvrez le Gestionnaire de Blueprint avec **`/bsbadmin bp`**. Il liste les bundles ; cliquez sur un pour le modifier.
 
-### Vidéo
-*Cliquez sur la vignette !*
-[![vignette](https://user-images.githubusercontent.com/20014332/62939503-be4c5980-bdd1-11e9-8814-2253845cecd0.png)](https://youtu.be/4gvaG89uxAs)
+| Pour… | Faites ceci |
+|---|---|
+| Créer un bundle | Cliquez sur la bannière verte, puis tapez un nom dans le chat |
+| Mettez un blueprint dans un bundle | Cliquez sur un blueprint en bas pour qu'il brille, puis cliquez sur l'emplacement vert (Overworld), rouge (Nether) ou jaune (End) |
+| Videz un emplacement | Clic droit dessus |
+| Changez l'icône du bundle | Cliquez sur un objet de votre propre inventaire |
+| Renommez-le | Clic droit sur le bundle dans la liste principale, puis tapez le nom dans le chat |
+| Changez la description | À l'intérieur du bundle, cliquez sur son icône (en haut à gauche), puis tapez dans le chat. Les codes de couleur comme `&c` fonctionnent |
+| Choisissez où il apparaît dans le menu | Clic gauche sur l'icône d'emplacement pour le déplacer plus tard, clic droit pour le déplacer plus tôt |
+| Rendez-le VIP uniquement | Cliquez sur la peinture pour exiger une permission. La permission est affichée sur l'icône, par exemple `bskyblock.island.create.vip_island` |
+| Facturez-le | Cliquez sur l'lingot d'or : clic gauche/droit ajoute/supprime 1, clic maj 100. Nécessite Vault et un plugin économique |
+| Exécutez des commandes quand c'est choisi | Cliquez sur le bloc de commande et tapez des commandes dans le chat |
+| Limitez le nombre de fois qu'un joueur peut le choisir | Cliquez sur l'horloge. Uniquement affiché quand les joueurs peuvent posséder plus d'une île |
+| Supprimez-le | Clic droit sur le TNT |
 
-## Commandes
-Les commandes sont presque les mêmes que les commandes de schematic WorldEdit. Vous devez être Op ou un administrateur avec des permissions pour utiliser les blueprints. Utilisez la commande administrative et **blueprint** ou son alias **bp** :
+Chaque mode de jeu a un bundle appelé `default`, qui ne peut pas être supprimé. Il est utilisé quand un joueur ne choisit pas (par exemple quand les îles sont créées automatiquement à la première connexion).
 
-* /bsb bp pos1 - définissez un coin de la boîte de délimitation à la position de votre joueur
-* /bsb bp pos2 - définissez l'autre coin
-* /bsb bp copy - copiez les blocs et les entités à l'intérieur de la boîte dans le presse-papiers
-* /bsb bp copy air - copiez les blocs, les entités et l'air à l'intérieur de la boîte dans le presse-papiers. C'est important si vous prévoyez de coller l'île dans l'eau (AcidIsland) ou la roche (CaveBlock).
-* /bsb bp paste - collez le presse-papiers à votre emplacement
-* /bsb bp save <name> - enregistre le presse-papiers dans un fichier (sauvegardé en tant que fichier `.blueprint` JSON brut)
-* /bsb bp load <name> - chargez un fichier blueprint (n'ajoutez pas le suffixe `.blueprint` ou `.blu`)
-* /bsb bp - ouvrez l'Interface Graphique du Gestionnaire de Blueprint
+Un bundle **doit** avoir un blueprint Overworld ; s'il n'en a pas, l'île par défaut est utilisée et une erreur est enregistrée. Les blueprints Nether et End sont optionnels ; sans eux, rien n'est collé dans ces mondes.
 
-Pour AcidIsland, utilisez /acid à la place de /bsb.
+**Renommez les bundles et blueprints dans le gestionnaire ou avec `/bsbadmin bp rename`**, pas en renommant des fichiers.
 
-## Interface Graphique du Gestionnaire de Blueprint
-L'Interface Graphique du Gestionnaire de Blueprint vous permet de créer, éditer et configurer les ensembles d'îles que les joueurs peuvent sélectionner quand ils commencent une nouvelle île ou réinitialisent. Les ensembles d'îles (monde normal, monde nether et monde end) s'appellent « bundles ». Il y a un bundle par défaut qui peut être personnalisé, mais ne peut pas être supprimé.
+### Commandes quand un bundle est choisi
 
-Pour créer un nouveau bundle, cliquez sur la bannière verte dans le coin inférieur gauche de l'Interface Graphique. L'entrée de texte se fait via l'interface de discussion. Entrez un nom pour le nouveau bundle. Vous pouvez le changer plus tard.
+Les commandes s'exécutent chaque fois qu'une île est créée avec le bundle, par exemple pour donner un kit de démarrage ou définir un rang. `[player]` et `[owner]` sont remplacés par le nom du joueur. Les commandes s'exécutent depuis la console sauf si elles commencent par `[SUDO]`, qui les exécute en tant que joueur :
 
-Le nouveau bundle aura une icône de laine rouge par défaut et un nom. Il a trois emplacements à droite qui représentent les endroits où vous pouvez mettre 3 blueprints :
+```
+lp user [player] parent add skyblock-starter
+[SUDO] kit starter
+```
 
-* Panneau de verre vert - c'est l'emplacement du blueprint du monde normal
-* Panneau de verre rouge - c'est l'emplacement du blueprint du monde nether
-* Panneau de verre jaune - c'est l'emplacement du blueprint du monde end
+### Facturer un bundle
 
-Cliquez avec le bouton droit sur ces emplacements pour les effacer.
-
-Sous la ligne de panneaux de verre gris foncé, vous verrez un certain nombre de blueprints à choisir. Cliquez sur celui que vous voulez et il brillera. Ensuite, cliquez sur l'emplacement où vous voulez le mettre. Vous pouvez mettre le même blueprint dans les trois emplacements ou avoir des blueprints différents pour chacun, c'est à vous de décider.
-
-Pour ajouter une description au bundle, cliquez avec le bouton droit sur l'icône du bundle et entrez une description dans le chat. Gardez chaque ligne courte pour que l'Interface Graphique ne devienne pas trop grande. Vous pouvez définir la couleur du texte en utilisant les codes de couleur Bukkit, comme &c pour rouge.
-
-Pour changer l'icône d'un bundle, cliquez sur un objet dans votre inventaire et il remplacera l'icône du bundle. Pour changer l'icône d'un blueprint, sélectionnez le blueprint, puis cliquez sur l'objet d'inventaire.
-
-Pour limiter un bundle aux joueurs avec la permission appropriée, cliquez sur l'objet image pour basculer si la permission est requise ou non. L'icône affichera quelle permission est requise dans son texte (elle est basée sur le nom du bundle). La permission est `GameModeAddonName.island.create.uniqueId` du bundle de blueprint. par exemple `bskyblock.island.create.vip`.
-
-Pour supprimer un bundle, cliquez avec le bouton droit sur le TNT.
-
-Les Bundles et les Blueprints doivent être renommés dans l'Interface Graphique. N'essayez pas de les renommer en utilisant le système de fichiers.
-
-## Fichiers et Édition
-Quand vous utilisez des blueprints dans le jeu, utilisez toujours juste le nom du blueprint. Sur le système de fichiers, les blueprints sont désormais enregistrés en tant que **fichiers texte JSON brut** avec le suffixe `.blueprint`. Les bundles de blueprint sont également enregistrés en tant que fichiers texte `.json`. Les fichiers `.blueprint` et les bundles `.json` peuvent être édités avec n'importe quel éditeur de texte.
-
-!!! note "Anciens fichiers `.blu`"
-    Les fichiers Blueprint utilisaient auparavant un format binaire compressé `.blu`. BentoBox chargera automatiquement les anciens fichiers `.blu` pour la compatibilité ascendante, mais tous les nouveaux blueprints sont sauvegardés au format `.blueprint` (JSON brut). Vous pouvez versionner et comparer les fichiers `.blueprint` normalement. N'essayez pas de créer ou d'éditer des fichiers `.blu` à la main.
-
-Si vous modifiez ou générez ces fichiers directement, la référence complète au niveau des champs se trouve sur la page [Format de Fichier Blueprint](Blueprint-Format.md), et BentoBox publie des [JSON Schemas](https://github.com/BentoBoxWorld/BentoBox/tree/develop/schemas) contre lesquels vous pouvez valider.
-
-## Bundles Incomplets
-Les Bundles doivent toujours avoir un blueprint du monde Overworld/Normal. S'ils ne l'ont pas, le blueprint d'île par défaut sera utilisé et une erreur sera enregistrée dans la console.
-Les Bundles ne doivent pas avoir de blueprints du monde Nether ou End, mais s'ils ne l'ont pas, aucune île ne sera collée dans ces mondes (évidemment).
-
-## Entités
-
-!!! new "À venir dans BentoBox 1.14.0"
-    Dans cette prochaine version, vous pourrez également utiliser `[name]`, qui sera remplacé par le nom du propriétaire de l'île lors de la création de l'île.
-
-Vous pouvez utiliser des placeholders dans les noms des entités.
-Renommez une étiquette de nom avec le placeholder dans une enclume, puis appliquez l'étiquette de nom à l'entité.
+Définissez un coût sur le bundle avec l'lingot d'or. Le joueur paie quand il crée ou réinitialise une île avec, et ne peut pas le choisir s'il n'a pas les moyens. Cela nécessite `use-economy: true` dans le `config.yml` de BentoBox et Vault avec un plugin économique ; sans eux l'lingot d'or n'est pas affiché.
 
 ## Panneaux
-Les Blueprints peuvent avoir deux panneaux spéciaux pour vous aider à placer où un joueur apparaîtra et pour leur donner un message de bienvenue.
 
-### Panneau Apparaître Ici
-Placez un panneau avec la première ligne comme [spawn_here] (en anglais) où vous voulez que le joueur apparaisse. Il apparaîtra à cette position et le panneau ne sera pas collé. Cela s'applique à toutes les îles mondes, pour que vous puissiez spécifier où les joueurs apparaîtront dans le Nether quand ils passent par un portail, par exemple.
+| Première ligne de la pancarte | Ce qui se passe |
+|---|---|
+| `[spawn_here]` | Les joueurs apparaissent à cet endroit, face à la direction que la pancarte regarde. La pancarte est supprimée. Fonctionne dans les blueprints Nether et End aussi |
+| `[start]` | Remplacé par le texte de bienvenue du fichier de locale du mode de jeu (`bskyblock.sign.line0` à `line3`), dans la langue du propriétaire. `[name]` dans ce texte devient le nom du propriétaire |
+| N'importe quoi d'autre | Collé tel que écrit |
 
-### Panneau de Bienvenue
-Le panneau de bienvenue offre un moyen convivial de donner aux joueurs un conseil sur le jeu et ce qu'ils peuvent faire, ou ne pas faire ! Placez un panneau avec [start] (en anglais) sur la première ligne. Le texte du panneau sera remplacé par le texte du panneau dans le fichier de localisation du GameModeAddon.
+**Mobs nommés :** renommez une balise de nom pour inclure `[name]` dans une enclume et mettez-la sur un mob dans votre île avant de copier. Le mob est nommé d'après le propriétaire de l'île quand l'île est collée.
 
-## Conseils et Recommandations
-* Nous recommandons de garder les îles de démarrage petites pour rendre le jeu un défi. Mettez juste assez d'objets et de blocs sur une île pour que les joueurs puissent développer leur île.
-* Essayez de faire des îles divisées (pensez haut et bas, côté à côté) pour donner aux joueurs une cible à construire quand ils ont les ressources.
-* Si vous copiez avec l'air, essayez de faire votre boîte de délimitation aussi petite que possible pour garder la taille du fichier petite.
-* Après avoir copié un blueprint, essayez de le coller pour vérifier qu'il a été copié correctement. Puis enregistrez-le.
+## Toutes les commandes blueprint
+
+| Commande | Ce qu'elle fait |
+|---|---|
+| `/bsbadmin bp` | Ouvrir le Gestionnaire de Blueprint |
+| `/bsbadmin bp pos1`, `pos2` | Définissez les coins de la zone à copier |
+| `/bsbadmin bp copy [air] [biome] [nowater]` | Copiez la zone dans votre presse-papiers |
+| `/bsbadmin bp origin` | Définissez l'origine du collage sur le bloc auquel vous regardez |
+| `/bsbadmin bp paste` | Collez votre presse-papiers où vous vous tenez |
+| `/bsbadmin bp save <name>` | Enregistrez votre presse-papiers comme un blueprint |
+| `/bsbadmin bp load <name>` | Chargez un blueprint dans votre presse-papiers pour le modifier |
+| `/bsbadmin bp list` | Listez les blueprints |
+| `/bsbadmin bp rename <name> <new name>` | Renommez un blueprint |
+| `/bsbadmin bp delete <name>` | Supprimez un blueprint |
+| `/bsbadmin bp sink` | Basculez si ce blueprint s'enfonce au fond de la mer quand collé |
+
+## Les fichiers
+
+Les blueprints et bundles sont stockés par mode de jeu dans `plugins/BentoBox/addons/<GameMode>/blueprints/` :
+
+- `<name>.blueprint` : un blueprint, en JSON simple. Les anciens fichiers `.blu` (compressés) se chargent toujours.
+- `<bundle>.json` : un bundle, en JSON simple.
+
+Vous pouvez copier ces fichiers entre serveurs, les garder sous contrôle de version, ou les modifier. Pour chaque champ, voir [Format de Fichier Blueprint](Blueprint-Format.md).
+
+## Vitesse de collage
+
+La copie et le collage se produisent un peu à la fois, donc les grandes îles ne gèlent pas le serveur ; une grande île peut prendre quelques secondes. Si la création d'îles cause du lag, baissez `paste-speed` (blocs par tick) dans le `config.yml` de BentoBox.
+
+## Dépannage
+
+**« Au moins un bloc de bedrock doit être dans un blueprint ! »**
+Ajoutez un bloc de bedrock à l'île, copiez à nouveau, puis enregistrez.
+
+**Les joueurs apparaissent au mauvais endroit, ou tombent.**
+Ajoutez une pancarte `[spawn_here]`, avec de l'air au-dessus pour le joueur.
+
+**L'île est entourée de lacunes d'eau (ou de pierre) qui ne devraient pas être là**, ou l'eau du monde s'écoule dedans.
+Copiez avec `air` afin que l'espace autour de l'île fasse partie du blueprint. Gardez la sélection serrée, car l'air rend le fichier plus grand.
+
+**Mon nouveau bundle ne s'affiche pas dans le menu Créer une Île.**
+Vérifiez qu'il a un blueprint Overworld, qu'il n'exige pas une permission que le joueur n'a pas, et, s'il a une limite d'utilisation, que le joueur ne l'a pas épuisée. Avec `hide-used-blueprints: true` dans le `config.yml` de BentoBox, les bundles utilisés sont masqués.
+
+**La pancarte de bienvenue affiche `[start]`.**
+Le texte `[start]` vient du fichier de locale du mode de jeu. Vérifiez que `<gamemode>.sign.line0` à `line3` existent dedans.
+
+## Voir aussi
+
+- [Îles](About/IslandManagement.md) : création, réinitialisation et dimensionnement des îles
+- [Agrandir le menu de création d'île](../Tutorials/generic/Bigger-Create-Island-Menu.md) et [Personnalisation des Menus](../Tutorials/generic/Customizable-GUI.md) : le menu que les joueurs choisissent
+- [Format de Fichier Blueprint](Blueprint-Format.md) : pour éditer les fichiers
