@@ -12,7 +12,7 @@ Il existe trois types de drapeau :
 
 | Type | Ce qu'il contrôle | Qui le modifie |
 | --- | --- | --- |
-| **Protection** | Quel [rang](#rangs) peut faire une action, par exemple *Casser des blocs*. Sur une île, c'est un rang. En dehors d'une île, c'est activé ou désactivé pour tout le monde. | Le propriétaire de l'île sur son île. Les administrateurs pour le monde et les nouvelles îles. |
+| **Protection** | Quel [rang](#ranks) peut faire une action, par exemple *Casser des blocs*. Sur une île, c'est un rang. En dehors d'une île, c'est activé ou désactivé pour tout le monde. | Le propriétaire de l'île sur son île. Les administrateurs pour le monde et les nouvelles îles. |
 | **Paramètre** | Un interrupteur activé/désactivé au niveau de l'île, par exemple *PVP* ou *Génération d'animaux*. | Le propriétaire de l'île. |
 | **Paramètre mondial** | Un interrupteur pour tout le monde du jeu, par exemple *Dégâts des Creepers*. | Administrateurs uniquement. |
 
@@ -158,7 +158,7 @@ Chaque bouton est placé avec un `data.type` :
 
 ### Rangs de Commande { #command-ranks }
 
-L'icône **Rangs de Commande** sur l'onglet Paramètres ouvre un panneau où le propriétaire de l'île choisit le [rang](#rangs) minimum qui peut utiliser chaque commande d'équipe, par exemple qui peut inviter, expulser ou définir le nom de l'île. **Clic gauche** et **clic droit** sur une commande parcourt les rangs, comme pour un Drapeau de Protection. Les opérateurs peuvent masquer une commande aux joueurs avec ++shift+left-button++, de la même manière que [masquer un Drapeau](#hide-flags).
+L'icône **Rangs de Commande** sur l'onglet Paramètres ouvre un panneau où le propriétaire de l'île choisit le [rang](#ranks) minimum qui peut utiliser chaque commande d'équipe, par exemple qui peut inviter, expulser ou définir le nom de l'île. **Clic gauche** et **clic droit** sur une commande parcourt les rangs, comme pour un Drapeau de Protection. Les opérateurs peuvent masquer une commande aux joueurs avec ++shift+left-button++, de la même manière que [masquer un Drapeau](#hide-flags).
 
 À partir de BentoBox 3.23.3, un joueur ne voit que les commandes qu'il a la permission d'utiliser. Si vous refusez la permission d'une commande sur votre serveur, par exemple `[gamemode].island.border`, elle n'apparaît plus dans ce panneau non plus. Auparavant, seule la commande de niveau supérieur était vérifiée, donc les sous-commandes que le joueur ne pouvait pas exécuter étaient toujours répertoriées.
 
