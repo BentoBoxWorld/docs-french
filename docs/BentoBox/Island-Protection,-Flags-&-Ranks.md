@@ -34,7 +34,7 @@ La protection d'une île ne couvre pas toute sa case de grille. Les îles sont p
 
 N'importe où en dehors d'une plage de protection compte comme **en dehors de l'île**, même si c'est à l'intérieur de la case de grille d'une île. Cela inclut le vide entre les îles, la zone autour du spawn du monde s'il n'y a pas d'île, et la nature sauvage dans les modes de jeu comme Boxed. En dehors de l'île, les [Protections Mondiales](#world-protections) s'appliquent.
 
-## Rangs
+## Rangs { #ranks }
 
 Chaque joueur a un rang sur chaque île : propriétaire, membre, visiteur, etc. Un drapeau de protection définit le **rang minimum autorisé** pour faire l'action. N'importe qui à ce rang ou plus élevé est autorisé. Les rangs sont des nombres, donc plus élevé signifie plus de confiance :
 
@@ -90,7 +90,7 @@ Chaque paramètre a également besoin de la permission `[gamemode].settings.<FLA
 
 Cet onglet a également l'icône [Rangs de Commande](#command-ranks).
 
-### Vue des Protections Mondiales
+### Vue des Protections Mondiales { #world-protection-view }
 
 !!! new "Ajouté dans BentoBox 3.22.0"
 
@@ -117,7 +117,7 @@ Selon le **mode d'affichage**, le Panneau des Paramètres affiche plus ou moins 
 !!! new "Modifié dans BentoBox 3.23.3"
     Le Panneau des Paramètres se souvient du mode d'affichage que chaque joueur a choisi en dernier et s'ouvre dedans la prochaine fois. Un mode est partagé par les onglets Protection et Paramètres. Si un onglet n'a aucun drapeau à afficher dans le mode choisi, il affiche le mode suivant sans modifier le choix du joueur. Le panneau des paramètres administrateur s'ouvre toujours en `EXPERT`.
 
-### Masquer les Drapeaux
+### Masquer les Drapeaux { #hide-flags }
 
 Les opérateurs peuvent masquer un drapeau aux joueurs : ouvrez le Panneau des Paramètres et ++shift+left-button++ l'icône du drapeau. L'icône reçoit une lueur "Malédiction de Disparition", et les joueurs ne voient plus le drapeau. Faites la même chose à nouveau pour le montrer. Les drapeaux masqués sont stockés dans `world.hidden-flags` dans le `config.yml` du mode de jeu.
 
@@ -135,7 +135,7 @@ Masquer un drapeau ne le supprime que du panneau. Le drapeau garde sa valeur act
 
 *Vue du joueur des Drapeaux de Base, avec le Drapeau "trappe" masqué.*
 
-### Personnaliser le Panneau des Paramètres
+### Personnaliser le Panneau des Paramètres { #customizing-the-settings-panel }
 
 !!! new "Ajouté dans BentoBox 3.23.0"
     Le Panneau des Paramètres est disposé par un fichier modèle, comme les autres [GUIs personnalisables](/en/latest/Tutorials/generic/Customizable-GUI/).
@@ -156,13 +156,13 @@ Chaque bouton est placé avec un `data.type` :
 
 **Disposition du lore.** Le lore d'un drapeau est construit à partir de `protection.panel.flag-item.description-layout` (drapeaux de protection), `setting-layout` (paramètres) ou `menu-layout` (drapeaux qui ouvrent un sous-panneau) dans la locale. À partir de 3.23.0, ces dispositions peuvent contenir `[ranks]`, où la liste des rangs d'un drapeau de protection est insérée, et `[tooltips]`, où les bulles d'aide des actions du bouton drapeau dans le modèle sont insérées. Sans `[ranks]`, la liste des rangs est ajoutée après la disposition, comme avant ; sans `[tooltips]`, les bulles d'aide sont ajoutées après une ligne vide. Pour déplacer les conseils de clic sous la liste des rangs, supprimez-les de la disposition, mettez `[ranks]` et `[tooltips]` où vous les voulez, et déclarez les conseils comme des bulles d'aide sur `flag_button` dans le modèle. Le propre `title` et `description` d'un bouton drapeau dans le modèle peuvent nommer une autre entrée de locale à utiliser comme nom et disposition du lore pour ce panneau uniquement.
 
-### Rangs de Commande
+### Rangs de Commande { #command-ranks }
 
 L'icône **Rangs de Commande** sur l'onglet Paramètres ouvre un panneau où le propriétaire de l'île choisit le [rang](#rangs) minimum qui peut utiliser chaque commande d'équipe, par exemple qui peut inviter, expulser ou définir le nom de l'île. **Clic gauche** et **clic droit** sur une commande parcourt les rangs, comme pour un Drapeau de Protection. Les opérateurs peuvent masquer une commande aux joueurs avec ++shift+left-button++, de la même manière que [masquer un Drapeau](#hide-flags).
 
 À partir de BentoBox 3.23.3, un joueur ne voit que les commandes qu'il a la permission d'utiliser. Si vous refusez la permission d'une commande sur votre serveur, par exemple `[gamemode].island.border`, elle n'apparaît plus dans ce panneau non plus. Auparavant, seule la commande de niveau supérieur était vérifiée, donc les sous-commandes que le joueur ne pouvait pas exécuter étaient toujours répertoriées.
 
-#### Personnaliser le panneau Rangs de Commande
+#### Personnaliser le panneau Rangs de Commande { #customizing-the-command-ranks-panel }
 
 !!! new "Ajouté dans BentoBox 3.23.3"
     Le panneau Rangs de Commande est disposé par un fichier modèle, comme le [Panneau des Paramètres](#customizing-the-settings-panel).
@@ -204,7 +204,7 @@ command_ranks_panel:
         type: COMMAND
 ```
 
-## Panneau des Paramètres Administrateur
+## Panneau des Paramètres Administrateur { #admin-settings-panel }
 
 Exécutez `/[admin_command] settings` **sans arguments** tout en jouant dans le monde du jeu pour ouvrir le **Panneau des Paramètres Administrateur** (permission `[gamemode].admin.settings`). Il a trois onglets. Ils contrôlent le monde et les nouvelles îles, pas une île existante.
 
@@ -229,7 +229,7 @@ Les paramètres mondiaux peuvent également être définis à partir de la conso
 !!! new "Ajouté dans BentoBox 3.23.6"
     L'élément **Types d'entité toujours autorisés** (lingot de fer) ouvre une liste de chaque type d'entité vivante. Les types verts apparaissent même lorsque la génération d'animaux ou de monstres est désactivée, sur n'importe quelle île ou dans le monde ; Golem de Fer est vert par défaut pour que les fermes de fer du village continuent à fonctionner. La liste de blocage **Génération de créatures mondiale** a toujours priorité. La liste est stockée par BentoBox, pas dans le `config.yml` du mode de jeu ; voir [Précédence de la génération de créatures](#mob-spawning-precedence). Nécessite `[gamemode].admin.settings.ALLOW_MOBS`.
 
-#### Ce que chaque paramètre mondial fait
+#### Ce que chaque paramètre mondial fait { #what-each-world-setting-does }
 
 Ce sont les paramètres mondiaux que la plupart des serveurs voudront examiner. Les valeurs par défaut sont pour BSkyBlock ; les autres modes de jeu peuvent différer. Chaque drapeau est répertorié dans [Drapeaux](Flags.md).
 
@@ -271,7 +271,7 @@ Les générations causées directement par un joueur, comme l'élevage, les œuf
 !!! note "Où la liste d'autorisation est stockée"
     Contrairement aux autres paramètres mondiaux, la liste d'autorisation n'est pas dans le `config.yml` du mode de jeu. BentoBox la stocke elle-même, un enregistrement par mode de jeu, dans sa base de données : avec la base de données par fichier plat par défaut, c'est `plugins/BentoBox/database/CoreWorldSettings/<GameMode>.json`. Elle est ensemencée avec `IRON_GOLEM` la première fois que le mode de jeu est vu ; après cela, seules les modifications de l'administrateur dans le panneau s'appliquent. Supprimer l'enregistrement restaure l'ensemencement.
 
-### Protections Mondiales
+### Protections Mondiales { #world-protections }
 
 Le deuxième onglet, **Protections Mondiales**, décide ce que les joueurs peuvent faire **en dehors de la plage de protection de toute île**. Cela inclut le vide entre les îles, la zone de spawn si ce n'est pas une île, et la nature sauvage. Voir [Où une île finit](#where-an-island-ends).
 
@@ -320,7 +320,7 @@ On peut aussi le faire à partir de la ligne de commande :
 /[admin_command] settings <player_name> <FLAG_ID> <Active|Disabled>   # drapeau de paramètre
 ```
 
-## Contourner la protection
+## Contourner la protection { #bypass-the-protection }
 
 Les drapeaux de protection ne sont appliqués que dans les mondes de jeu BentoBox et seulement contre les joueurs qui n'ont pas de moyen légitime de passer. Il existe plusieurs façons de contourner la protection — certaines sont intentionnelles (rangs d'île), certaines sont pour le personnel (statut d'opérateur et permissions de modérateur), et certaines sont structurelles (le monde ou le type de drapeau).
 
