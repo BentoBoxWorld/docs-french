@@ -216,7 +216,7 @@ Pour agir plus rapidement :
 - **Région partagée, besoin qu'elle disparaisse immédiatement :** retirez les blocs à la main avec **WorldEdit** (`//pos1`/`//pos2`/`//set air`) ou en régénérant les chunks. L'île est déjà supprimée de la base de données ; c'est un simple retrait cosmétique de blocs.
 - **Redémarrez après la purge** afin que le cache des chunks de Paper soit vidé et la zone vide cesse de s'afficher.
 
-Voir [Suppression d'île (Admin)](BentoBox/About/IslandManagement.md#island-deletion-admin) pour le cycle de vie complet.
+Voir [Suppression d'île (Admin)](BentoBox/About/IslandManagement.md#deleting-islands) pour le cycle de vie complet.
 
 ## Équipes, coop et visiteurs
 

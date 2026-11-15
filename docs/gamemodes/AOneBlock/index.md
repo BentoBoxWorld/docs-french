@@ -440,7 +440,7 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec l'ensemble de 
 
 === "Permissions du joueur"
     - `aoneblock.count` - Permettre au joueur d'utiliser la commande '/[player_command] count'. Activé par défaut.
-    - `aoneblock.phases` - Permettre au joueur d'utiliser la commande '/[player_command] phases'. Désactivé par défaut.
+    - `aoneblock.phases` - Permettre au joueur d'utiliser la commande '/[player_command] phases'. Default OP.
     - `aoneblock.island.setcount` - Permettre au joueur d'utiliser la commande '/[player_command] setcount'. Désactivé par défaut.
     - `aoneblock.respawn-block` - Permettre au joueur d'utiliser la commande '/[player_command] check'. Activé par défaut.
     - `aoneblock.island.bossbar` - Permettre au joueur d'utiliser la commande '/[player_command] bossbar'. Activé par défaut. (Nécessite `bossbar: true` dans config)
