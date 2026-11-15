@@ -82,7 +82,7 @@ Une nouvelle île commence avec les rangs définis sur l'onglet [Défauts de l'�
 
 *Exemple d'un Drapeau de Protection qui, par défaut, permet aux visiteurs de faire l'interaction.*
 
-### Onglet Paramètres
+### Onglet Paramètres { #settings-tab }
 
 L'onglet **Paramètres** répertorie les **drapeaux de paramètres** de l'île : des interrupteurs activés/désactivés pour l'île dans son ensemble, comme PVP, propagation du feu, décadence des feuilles et génération de créatures. Cliquez sur un paramètre pour le basculer.
 
