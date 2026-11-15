@@ -7,30 +7,56 @@ repo_name: BentoBoxWorld/BentoBox
 edit_uri: ""
 nav:
     - Accueil: index.md
-    - "Que fait BentoBox ?":
-        - Gestion des îles: BentoBox/About/IslandManagement.md
-        - Modes de jeu: BentoBox/About/GameModes.md
-        - Extensions: BentoBox/About/Addons.md
-        - Gestion des équipes: BentoBox/About/Teams.md
-        - Protection: BentoBox/About/Protections.md
-        - Blueprints: BentoBox/About/BlueprintsSummary.md
-        - Support multilingue: BentoBox/About/Multilingual.md
-        - Outils d'administration: BentoBox/About/AdminTools.md
-    - Glossaire: Glossary.md
-    - FAQ: FAQ.md
-    - Confidentialité: BentoBox/Privacy.md
-    - Politique IA: BentoBox/AI-Policy.md
-    - Code de conduite: BentoBox/CodeOfConduct.md
-    - Contribuer: BentoBox/Contributing.md
+    - "Démarrage rapide":
+        - "Comment installer": BentoBox/Install-Bentobox.md
+        - "Vos 30 premières minutes": BentoBox/First-Steps.md
+        - "Choisir un mode de jeu": gamemodes/Comparison.md
+        - "Définir un monde BentoBox comme monde par défaut": BentoBox/Set-a-BentoBox-world-as-the-server-default-world.md
+        - Glossaire: Glossary.md
+    - "Guide du Joueur": BentoBox/Player-Guide.md
+    - "Guides d'Administration":
+        - "Protection, Drapeaux et Rangs": "BentoBox/Island-Protection,-Flags-&-Ranks.md"
+        - "Équipes et Rangs": BentoBox/About/Teams.md
+        - Îles: BentoBox/About/IslandManagement.md
+        - "Îles multiples": BentoBox/ConcurrentIslands.md
+        - "Autorisations et Avantages VIP": BentoBox/Permissions-Guide.md
+        - "Îles de Démarrage (Blueprints)": BentoBox/Blueprints.md
+        - "Personnalisation des Menus": Tutorials/generic/Customizable-GUI.md
+        - "Agrandir le menu de création d'île": Tutorials/generic/Bigger-Create-Island-Menu.md
+        - "Langues et Messages": BentoBox/About/Multilingual.md
+        - "Traduire BentoBox": BentoBox/Translate-BentoBox-and-addons.md
+        - "Outils d'Administration": BentoBox/About/AdminTools.md
+        - "Changement de Base de Données": BentoBox/Database-transition.md
+        - "Conversion d'ASkyBlock": Converter/index.md
     - Modes de jeu:
+        - "Qu'est-ce qu'un mode de jeu ?": BentoBox/About/GameModes.md
         - Choisir un mode de jeu: gamemodes/Comparison.md
-        - AcidIsland: gamemodes/AcidIsland/index.md
+        - AcidIsland:
+            - Aperçu: gamemodes/AcidIsland/index.md
+            - Commandes: gamemodes/AcidIsland/Commands.md
+            - Permissions: gamemodes/AcidIsland/Permissions.md
+            - Placeholders: gamemodes/AcidIsland/Placeholders.md
         - AOneBlock:
             - Aperçu: gamemodes/AOneBlock/index.md
             - Personnaliser les phases: gamemodes/AOneBlock/Phases.md
-        - BSkyBlock: gamemodes/BSkyBlock/index.md
-        - Boxed: gamemodes/Boxed/index.md
-        - CaveBlock: gamemodes/CaveBlock/index.md
+            - Commandes: gamemodes/AOneBlock/Commands.md
+            - Permissions: gamemodes/AOneBlock/Permissions.md
+            - Placeholders: gamemodes/AOneBlock/Placeholders.md
+        - BSkyBlock:
+            - Aperçu: gamemodes/BSkyBlock/index.md
+            - Commandes: gamemodes/BSkyBlock/Commands.md
+            - Permissions: gamemodes/BSkyBlock/Permissions.md
+            - Placeholders: gamemodes/BSkyBlock/Placeholders.md
+        - Boxed:
+            - Aperçu: gamemodes/Boxed/index.md
+            - Commandes: gamemodes/Boxed/Commands.md
+            - Permissions: gamemodes/Boxed/Permissions.md
+            - Placeholders: gamemodes/Boxed/Placeholders.md
+        - CaveBlock:
+            - Aperçu: gamemodes/CaveBlock/index.md
+            - Commandes: gamemodes/CaveBlock/Commands.md
+            - Permissions: gamemodes/CaveBlock/Permissions.md
+            - Placeholders: gamemodes/CaveBlock/Placeholders.md
         - ChunkBlock:
             - Aperçu: gamemodes/ChunkBlock/index.md
             - Revendiquer des chunks: gamemodes/ChunkBlock/Chunks.md
@@ -38,17 +64,28 @@ nav:
             - Commandes: gamemodes/ChunkBlock/Commands.md
             - Permissions: gamemodes/ChunkBlock/Permissions.md
             - Placeholders: gamemodes/ChunkBlock/Placeholders.md
-        - Poseidon: gamemodes/Poseidon/index.md
-        - SkyGrid: gamemodes/SkyGrid/index.md
-        - Stranger Realms: gamemodes/StrangerRealms/index.md
+        - Poseidon:
+            - Aperçu: gamemodes/Poseidon/index.md
+            - Commandes: gamemodes/Poseidon/Commands.md
+            - Permissions: gamemodes/Poseidon/Permissions.md
+            - Placeholders: gamemodes/Poseidon/Placeholders.md
+        - SkyGrid:
+            - Aperçu: gamemodes/SkyGrid/index.md
+            - Commandes: gamemodes/SkyGrid/Commands.md
+            - Permissions: gamemodes/SkyGrid/Permissions.md
+            - Placeholders: gamemodes/SkyGrid/Placeholders.md
+        - Stranger Realms:
+            - Aperçu: gamemodes/StrangerRealms/index.md
+            - Commandes: gamemodes/StrangerRealms/Commands.md
+            - Permissions: gamemodes/StrangerRealms/Permissions.md
         - TradeWinds:
             - Aperçu: gamemodes/TradeWinds/index.md
             - Le manuel du marin: gamemodes/TradeWinds/Gameplay.md
             - Commandes: gamemodes/TradeWinds/Commands.md
             - Permissions: gamemodes/TradeWinds/Permissions.md
             - Placeholders: gamemodes/TradeWinds/Placeholders.md
-
     - Extensions:
+        - "Qu'est-ce que c'est ?": BentoBox/About/Addons.md
         - Bank: addons/Bank/index.md
         - Biomes: addons/Biomes/index.md
         - Border: addons/Border/index.md
@@ -75,21 +112,29 @@ nav:
         - Visit: addons/Visit/index.md
         - VoidPortals: addons/VoidPortals/index.md
         - Warps: addons/Warps/index.md
-    - "Tutoriels – Général":
-        - "Vos 30 premières minutes": BentoBox/First-Steps.md
-        - "Comment installer": BentoBox/Install-Bentobox.md
-        - "Définir un monde BentoBox comme monde par défaut": BentoBox/Set-a-BentoBox-world-as-the-server-default-world.md
-        - "Transition de base de données": BentoBox/Database-transition.md
-        - "Interfaces graphiques personnalisées": Tutorials/generic/Customizable-GUI.md
-        - "Agrandir le menu de création d'île": Tutorials/generic/Bigger-Create-Island-Menu.md
-    - "Tutoriels – API":
+    - Référence:
+        - Commandes: BentoBox/Commands.md
+        - Autorisations: BentoBox/Permissions.md
+        - Drapeaux: BentoBox/Flags.md
+        - Placeholders: BentoBox/Placeholders.md
+        - "Format d'objets": BentoBox/ItemParser.md
+        - "Répertoires BentoBox": BentoBox/List-of-BentoBox-directories.md
+    - Développeurs:
+        - "Vue d'ensemble des développeurs": BentoBox/Developer-Documentation.md
         - "Créer une Extension": Tutorials/api/Create-an-addon.md
+        - "Fichier addon.yml": BentoBox/How-to-fill-in-the-addon_yml-file.md
+        - "Créer un Mode de Jeu": BentoBox/Creating-a-Game-Mode.md
         - "API de configuration": BentoBox/Config-API.md
         - "API de base de données": BentoBox/Database-API.md
         - "API de métadonnées": BentoBox/MetadataAPI.md
         - "API Panneau de modèle": Tutorials/api/Templated-Panel.md
         - "Format de fichier Blueprint": BentoBox/Blueprint-Format.md
         - "Obtenir des données depuis les Extensions": BentoBox/Request-Handler-API---How-plugins-can-get-data-from-addons.md
+    - "À propos du projet":
+        - Contribuer: BentoBox/Contributing.md
+        - "Code de conduite": BentoBox/CodeOfConduct.md
+        - Politique IA: BentoBox/AI-Policy.md
+        - Confidentialité: BentoBox/Privacy.md
 theme:
   name: material
   custom_dir: overrides
