@@ -86,7 +86,7 @@ Le joueur doit **se déconnecter et se reconnecter** pour que la taille de l'éq
 
 Pour vendre des améliorations étape par étape (îles plus grandes, plus d'emplacements d'équipe, plus de maisons) avec de l'argent en jeu, voir l'addon [Upgrades](../addons/Upgrades/index.md).
 
-## Autorisations du personnel
+## Autorisations du personnel { #staff-permissions }
 
 | Rôle | Donner |
 |---|---|
