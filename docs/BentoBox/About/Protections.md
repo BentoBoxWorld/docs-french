@@ -1,4 +1,4 @@
-# Protection
+# Protection { #protection }
 
 Cette page a été déplacée. La protection, les drapeaux, les rangs, les paramètres mondiaux et le panneau des paramètres administrateur sont tous couverts dans **[Protection, Drapeaux et Rangs](../Island-Protection,-Flags-&-Ranks.md)**.
 

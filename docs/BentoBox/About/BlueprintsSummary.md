@@ -1,3 +1,3 @@
-# Blueprints (Îles de Démarrage Personnalisées)
+# Blueprints (Îles de Démarrage Personnalisées) { #blueprints-custom-starter-islands }
 
 Cette page a été déplacée. Les îles de démarrage, blueprints et bundles sont maintenant couverts sur une seule page : **[Îles de Démarrage (Blueprints)](../Blueprints.md)**.

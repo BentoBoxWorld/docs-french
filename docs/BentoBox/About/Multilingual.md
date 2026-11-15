@@ -1,8 +1,8 @@
-# Langues et Messages
+# Langues et Messages { #languages-messages }
 
 Chaque message, menu et nom d'objets dans BentoBox et ses add-ons provient de **fichiers de locale** : un fichier YAML par langue. Les joueurs choisissent leur propre langue, et vous pouvez changer n'importe quel texte, couleur ou comment un message est affiché (chat, barre d'action, titre, son).
 
-## Langues
+## Langues { #languages }
 
 BentoBox est livré avec 25 langues :
 
@@ -24,7 +24,7 @@ BentoBox est livré avec 25 langues :
 
 Les add-ons peuvent en avoir moins. Chaque page de [mode de jeu](../../gamemodes/Comparison.md) et d'[add-on](Addons.md) a un tableau montrant combien chaque langue est complète.
 
-### La langue par défaut du serveur
+### La langue par défaut du serveur { #the-servers-default-language }
 
 Les nouveaux joueurs voient la langue par défaut jusqu'à ce qu'ils en choisissent une. Définissez-le dans le `config.yml` de BentoBox, en utilisant un nom de fichier du tableau :
 
@@ -35,13 +35,13 @@ general:
 
 Puis redémarrez ou exécutez `/bentobox reload`. BentoBox ne détecte pas automatiquement la langue Minecraft d'un joueur.
 
-### Joueurs choisissant une langue
+### Joueurs choisissant une langue { #players-choosing-a-language }
 
 Les joueurs changent de langue avec **`/island language`** (ou la propre commande du mode de jeu), qui ouvre un menu des langues installées. Leur choix s'applique à BentoBox et tous les add-ons, dans chaque mode de jeu.
 
 Si un message manque dans la langue du joueur, BentoBox utilise la langue par défaut du serveur, puis l'anglais.
 
-## Changer les messages
+## Changer les messages { #changing-messages }
 
 Les fichiers de locale sont dans :
 
@@ -83,7 +83,7 @@ example: "<gradient:gold:yellow>Nom de l'Île</gradient>"
 
 Les anciens codes de couleur (`&a`, `&l`, `§c`) fonctionnent toujours.
 
-## Comment un message est affiché
+## Comment un message est affiché { #how-a-message-is-shown }
 
 Par défaut, un message va au chat. Commencez-le par une balise pour l'afficher ailleurs :
 
@@ -101,7 +101,7 @@ example: "[sound:entity_experience_orb_pickup:1:1][title]Téléportation...[subt
 
 Les messages à la console vont toujours au journal de la console.
 
-### Messages cliquables
+### Messages cliquables { #clickable-messages }
 
 Ajouter ces éléments n'importe où dans un message pour rendre le message entier cliquable ou afficher du texte au survol :
 
@@ -117,15 +117,15 @@ Ajouter ces éléments n'importe où dans un message pour rendre le message enti
 example: "Vous n'êtes pas sur votre île. Cliquez pour aller à la maison ![run_command: /island go][hover: Retour à la maison]"
 ```
 
-## Texte du menu
+## Texte du menu { #menu-text }
 
 Les titres du menu et le texte des boutons sont également dans les fichiers de locale, référencés à partir des modèles de menu. Voir [Personnalisation des Menus](../../Tutorials/generic/Customizable-GUI.md#change-the-title-or-button-text).
 
-## Corriger ou ajouter des traductions
+## Corriger ou ajouter des traductions { #fixing-or-adding-translations }
 
 Les traductions sont faites avec l'aide de l'IA et corrigées par la communauté. Si vous repérez une erreur, corrigez-la dans le fichier de locale dans le référentiel GitHub du projet et ouvrez une demande de fusion, ou dites-le nous sur [Discord](https://discord.bentobox.world). Voir [Traduire BentoBox](../Translate-BentoBox-and-addons.md) pour les directives et l'état de traduction de chaque projet.
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **Mon changement n'a pas été affiché.**
 Exécutez `/bentobox reload locales`. Vérifiez que vous avez modifié la langue du joueur (il n'utilise peut-être pas l'anglais) et le bon dossier (les messages propres de BentoBox sont dans `locales/BentoBox/`, les messages du mode de jeu dans `locales/<GameMode>/`).

@@ -1,4 +1,4 @@
-# Équipes et Rangs
+# Équipes et Rangs { #teams-ranks }
 
 Les équipes permettent à plusieurs joueurs de partager une île. Chaque île a un **propriétaire**, et le propriétaire peut inviter d'autres joueurs à rejoindre en tant que **membres**. Les joueurs qui ont seulement besoin d'aider pendant un moment peuvent être de **confiance** ou en **coopération** au lieu de rejoindre.
 
@@ -7,14 +7,14 @@ Cette page explique comment fonctionnent les équipes, ce que vous pouvez config
 !!! info "Commandes sur cette page"
     Les commandes sont affichées pour BSkyBlock (`/island`, `/bsbadmin`). Les autres modes de jeu utilisent leurs propres noms de commandes, par exemple `/ob` dans AOneBlock ou `/acid` dans AcidIsland. Les autorisations commencent par le préfixe du mode de jeu, par exemple `bskyblock.` ou `aoneblock.`.
 
-## Comment fonctionnent les équipes
+## Comment fonctionnent les équipes { #how-teams-work }
 
 - Un joueur crée une équipe en invitant quelqu'un avec `/island team invite <player>`. Le joueur invité accepte, abandonne sa propre île (par défaut) et est téléporté à l'île d'équipe.
 - Tous les joueurs de l'île ont un **rang**. Le rang détermine ce qu'ils peuvent faire : casser des blocs, ouvrir des coffres, inviter des joueurs, expulser des joueurs, etc.
 - Le propriétaire décide ce que chaque rang peut faire dans le menu des paramètres de l'île (`/island settings`). Voir [Protection, Drapeaux et Rangs](../Island-Protection,-Flags-&-Ranks.md).
 - Il n'y a qu'un propriétaire. Le propriétaire peut donner l'île à un autre membre, mais doit le faire avant de partir.
 
-### Les rangs
+### Les rangs { #the-ranks }
 
 | Rang | Valeur | Qui l'a | Compte vers la taille de l'équipe ? |
 |---|---|---|---|
@@ -28,7 +28,7 @@ Cette page explique comment fonctionnent les équipes, ce que vous pouvez config
 
 Les rangs supérieurs peuvent faire tout ce que les rangs inférieurs peuvent faire. Vous pouvez ajouter vos propres rangs entre ceux-ci avec `/bentobox rank add` (voir [Rangs personnalisés](#custom-ranks)).
 
-### Confiance et Coopération : aider sans rejoindre
+### Confiance et Coopération : aider sans rejoindre { #trusted-and-coop-helping-without-joining }
 
 Les joueurs de confiance et en coopération peuvent travailler sur une île sans devenir des membres d'équipe. Ils gardent leur propre île.
 
@@ -37,7 +37,7 @@ Les joueurs de confiance et en coopération peuvent travailler sur une île sans
 
 La confiance et la coopération fonctionnent de la même manière que les invitations d'équipe : l'autre joueur reçoit une invitation et doit l'accepter.
 
-## Ce que les joueurs peuvent faire
+## Ce que les joueurs peuvent faire { #what-players-can-do }
 
 Les joueurs ouvrent le menu d'équipe avec `/island team`. À partir du menu, ils peuvent voir leur équipe, inviter des joueurs et changer les rangs sans taper de commandes. Toutes les mêmes actions sont également disponibles sous forme de commandes :
 
@@ -69,9 +69,9 @@ La même page contrôle également les commandes de l'île telles que `ban`, `un
 
 Les joueurs ne peuvent jamais expulser, promouvoir ou rétrograder quelqu'un du même rang ou plus élevé qu'eux-mêmes.
 
-## Configuration des équipes (admins)
+## Configuration des équipes (admins) { #setting-up-teams-admins }
 
-### Taille de l'équipe
+### Taille de l'équipe { #team-size }
 
 La taille de l'équipe est définie dans le `config.yml` du mode de jeu. **La limite inclut le propriétaire**, donc `max-team-size: 4` signifie le propriétaire plus trois membres.
 
@@ -84,7 +84,7 @@ island:
   max-trusted-size: 4
 ```
 
-### Équipes plus grandes pour les VIP ou les rangs
+### Équipes plus grandes pour les VIP ou les rangs { #bigger-teams-for-vips-or-ranks }
 
 Donnez au **propriétaire de l'île** une permission avec la taille à la fin :
 
@@ -146,7 +146,7 @@ island:
 
 Celles-ci s'exécutent depuis la console sauf si la commande commence par `[SUDO]`, qui l'exécute en tant que joueur.
 
-### Refroidissements d'invitation et confirmations
+### Refroidissements d'invitation et confirmations { #invite-cooldowns-and-confirmations }
 
 Ceux-ci sont dans le `config.yml` **de BentoBox** (dans `plugins/BentoBox/`), et s'appliquent à tous les modes de jeu :
 
@@ -167,11 +167,11 @@ island:
 
 Le refroidissement d'invitation empêche les joueurs de rejoindre, terminer les défis, partir et de rejoindre à plusieurs reprises.
 
-### Désactiver les équipes
+### Désactiver les équipes { #turning-teams-off }
 
 Certains modes de jeu sont conçus pour le jeu en solo. Un mode de jeu peut désactiver les équipes pour son monde. Ensuite, les commandes invite, kick, leave, promote, demote et setowner refusent de s'exécuter, mais la confiance et la coopération fonctionnent toujours pour que les joueurs puissent s'aider mutuellement. Si vous activez cela pour un monde qui a déjà des équipes, exécutez `/bsbadmin team disbandall` une fois pour casser les équipes existantes.
 
-### Joueurs avec plus d'une île
+### Joueurs avec plus d'une île { #players-with-more-than-one-island }
 
 Si vous permettez plusieurs îles par joueur (`concurrent-islands` au-dessus de 1), `disallow-team-member-islands: true` empêche les membres d'équipe de créer aussi leurs propres îles. Voir [Îles Multiples](../ConcurrentIslands.md).
 
@@ -202,7 +202,7 @@ Vous pouvez ajouter des rangs entre les rangs intégrés avec la commande `/bent
 
 La valeur décide où le rang s'assied. `700` est entre Membre (500) et Sous-propriétaire (900), donc promouvoir un Membre le rend Vétéran, et promouvoir à nouveau le rend Sous-propriétaire. Ajoutez le nom d'affichage du rang à vos fichiers de locale sous la référence que vous avez utilisée (ici `ranks.veteran`).
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **« L'île est pleine » mais l'équipe semble petite.**
 La limite inclut le propriétaire. Vérifiez `max-team-size` et si le propriétaire a une permission `team.maxsize`. Le propriétaire doit se connecter une fois pour qu'une nouvelle autorisation s'applique.
@@ -219,7 +219,7 @@ Les propriétaires ne peuvent pas partir. Ils doivent d'abord donner l'île à q
 **Les joueurs exploitent la participation/départ d'équipe pour dupliquer des objets ou des récompenses.**
 Activez les réinitialisations `on-join` et `on-leave`, définissez `leavers-lose-reset: true`, et conservez le refroidissement d'invitation.
 
-## Voir aussi
+## Voir aussi { #see-also }
 
 - [Protection, Drapeaux et Rangs](../Island-Protection,-Flags-&-Ranks.md) : ce que chaque rang peut faire sur une île
 - [Îles](IslandManagement.md) : création, réinitialisation et suppression d'îles

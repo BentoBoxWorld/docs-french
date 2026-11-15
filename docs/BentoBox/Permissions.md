@@ -1,4 +1,4 @@
-# Permissions
+# Permissions { #permissions }
 
 Chaque permission BentoBox, générée à partir de la source BentoBox. Pour savoir comment les utiliser (rangs VIP, rôles du personnel, erreurs courantes), voir [Permissions & Avantages VIP](Permissions-Guide.md).
 
@@ -7,7 +7,7 @@ Les permissions du mode de jeu commencent par le préfixe du mode de jeu, écrit
 !!! tip "Voir les valeurs par défaut sur votre serveur"
     Les valeurs par défaut (tout le monde, opérateurs uniquement, ou personne) sont définies par chaque mode de jeu et diffèrent entre eux. Exécutez `/bentobox perms` dans la console pour imprimer chaque permission de commande avec sa valeur par défaut sur votre serveur.
 
-## BentoBox
+## BentoBox { #bentobox }
 
 | Permission | Défaut | Permet |
 |---|---|---|
@@ -58,7 +58,7 @@ La plupart de celles-ci sont accordées à tout le monde par le mode de jeu. Vé
 | `[gamemode].island.team.setowner` | `team setowner` |
 | `[gamemode].island.team.trust` | `team trust`, `team untrust` |
 
-## Mode de jeu : commandes administrateur et modérateur
+## Mode de jeu : commandes administrateur et modérateur { #game-mode-admin-and-moderator-commands }
 
 Opérateurs uniquement par défaut.
 
@@ -129,7 +129,7 @@ Opérateurs uniquement par défaut.
 | `[gamemode].mod.team.maxsize` | `team maxsize` |
 | `[gamemode].mod.team.setowner` | `team setowner` |
 
-## Mode de jeu : limites et avantages
+## Mode de jeu : limites et avantages { #game-mode-limits-and-perks }
 
 Ceux-ci se terminent par un nombre, qui remplace la valeur de configuration pour ce joueur. Le nombre le plus élevé qu'un joueur a gagne. Voir [Permissions & Avantages VIP](Permissions-Guide.md#perks-with-a-number) pour les règles.
 
@@ -148,7 +148,7 @@ Ceux-ci se terminent par un nombre, qui remplace la valeur de configuration pour
 | `[gamemode].island.create.<bundle>` | Choisir une île de démarrage (paquet de plan) qui nécessite une permission |
 | `[gamemode].island.name.format` | Codes couleur dans les noms d'île |
 
-## Mode de jeu : paramètres de l'île
+## Mode de jeu : paramètres de l'île { #game-mode-island-settings }
 
 | Permission | Permet |
 |---|---|
@@ -160,7 +160,7 @@ Ceux-ci se terminent par un nombre, qui remplace la valeur de configuration pour
 
 Voir [Protection, Drapeaux et Rangs](Island-Protection,-Flags-&-Ranks.md) pour les ID des drapeaux.
 
-## Mode de jeu : contournements de modérateur
+## Mode de jeu : contournements de modérateur { #game-mode-moderator-bypasses }
 
 | Permission | Effet |
 |---|---|

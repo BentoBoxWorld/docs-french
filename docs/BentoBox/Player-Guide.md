@@ -1,11 +1,11 @@
-# Guide du Joueur
+# Guide du Joueur { #player-guide }
 
 Nouveau sur un serveur BentoBox ? Cette page couvre les bases : obtenir votre île, inviter des amis, sécuriser votre île et vous déplacer.
 
 !!! info "La commande de votre serveur"
     Cette page utilise `/island`, la commande pour SkyBlock (BSkyBlock). Les autres modes de jeu ont les leurs : par exemple `/ob` pour OneBlock, `/ai` pour AcidIsland, `/cave` pour CaveBlock. Remplacez-la partout où vous voyez `/island`. Votre serveur a peut-être aussi désactivé certaines fonctionnalités ou modifié les valeurs par défaut.
 
-## Commencer
+## Commencer { #get-started }
 
 Tapez **`/island`**.
 
@@ -14,7 +14,7 @@ Tapez **`/island`**.
 
 C'est tout. Tout le reste est optionnel.
 
-## Se déplacer
+## Se déplacer { #getting-around }
 
 | Commande | Ce qu'elle fait |
 |---|---|
@@ -27,7 +27,7 @@ C'est tout. Tout le reste est optionnel.
 | `/island info` | Affiche les détails de l'île sur laquelle vous vous trouvez |
 | `/island near` | Affiche les noms des îles à proximité |
 
-## Jouer avec des amis
+## Jouer avec des amis { #playing-with-friends }
 
 Vous avez deux façons de laisser les amis vous aider.
 
@@ -54,7 +54,7 @@ Ouvrez **`/island team`** pour voir votre équipe, inviter des joueurs et gérer
 | `/island team demote <name>` | Retirer les droits |
 | `/island team setowner <name>` | Donner votre île à un autre membre |
 
-## Sécuriser votre île
+## Sécuriser votre île { #keeping-your-island-safe }
 
 Votre île est protégée. Les visiteurs peuvent regarder autour d'eux mais ne peuvent pas casser des blocs, ouvrir des coffres ni faire du mal à vos animaux sauf si vous le permettez.
 
@@ -71,7 +71,7 @@ Ouvrez **`/island settings`** pour choisir ce que les visiteurs, les joueurs en 
 
 Quelque chose est bloqué et vous ne savez pas pourquoi ? Le message le dit généralement. Demandez au propriétaire de votre île, ou vérifiez `/island settings`.
 
-## Votre île
+## Votre île { #your-island }
 
 | Commande | Ce qu'elle fait |
 |---|---|
@@ -80,7 +80,7 @@ Quelque chose est bloqué et vous ne savez pas pourquoi ? Le message le dit gén
 | `/island language` | Changer la langue des messages de BentoBox |
 | `/island reset` | Recommencer avec une nouvelle île. **Votre ancienne île est supprimée.** Votre serveur peut limiter le nombre de réinitialisations |
 
-## Extras que votre serveur peut avoir
+## Extras que votre serveur peut avoir { #extras-your-server-may-have }
 
 Les serveurs ajoutent des fonctionnalités avec des add-ons. Voici quelques-uns courants :
 

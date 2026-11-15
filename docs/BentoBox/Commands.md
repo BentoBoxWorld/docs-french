@@ -1,8 +1,8 @@
-# Commandes
+# Commandes { #commands }
 
 Toutes les commandes de BentoBox et ses modes de jeu, générées depuis la source de BentoBox. Pour savoir comment les utiliser, consultez les [Guides Administrateur](About/Teams.md) et le [Guide du Joueur](Player-Guide.md).
 
-## Comment les commandes des modes de jeu sont nommées
+## Comment les commandes des modes de jeu sont nommées { #how-game-mode-commands-are-named }
 
 Chaque mode de jeu a sa propre commande joueur et administrateur. Les tableaux ci-dessous les écrivent comme `/[player_command]` et `/[admin_command]`. Les permissions commencent par le préfixe du mode de jeu, écrit `[gamemode].` :
 
@@ -19,7 +19,7 @@ Taper une commande sans sous-commande exécute une commande par défaut : pour l
 
 Les addons ajoutent leurs propres sous-commandes à celles-ci, par exemple `/island level` ou `/island challenges`. Voir la page de chaque [addon](../addons/Bank/index.md).
 
-## Commandes BentoBox
+## Commandes BentoBox { #bentobox-commands }
 
 La commande `/bentobox` (alias `/bbox`) gère BentoBox lui-même.
 
@@ -38,7 +38,7 @@ La commande `/bentobox` (alias `/bbox`) gère BentoBox lui-même.
 | `/bentobox placeholders` | Ouvrir le navigateur de placeholders | `bentobox.admin.placeholders` |
 | `/bentobox dump-placeholders` | Écrire chaque placeholder enregistré dans un fichier markdown | `bentobox.admin.dump-placeholders` |
 
-## Commandes du Joueur
+## Commandes du Joueur { #player-commands }
 
 | Commande | Description | Permission |
 |---|---|---|

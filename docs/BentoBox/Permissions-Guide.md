@@ -1,11 +1,11 @@
-# Autorisations et Avantages VIP
+# Autorisations et Avantages VIP { #permissions-vip-perks }
 
 BentoBox fonctionne avec n'importe quel plugin d'autorisations (LuckPerms est le plus courant). Cette page explique comment les autorisations de BentoBox sont nommées, lesquelles les joueurs ont déjà et comment donner aux rangs ou VIP des équipes plus grandes, des îles plus grandes, plus de maisons et d'autres avantages.
 
 !!! info "Exemples sur cette page"
     Les exemples utilisent BSkyBlock, dont les autorisations commencent par `bskyblock.`, et les commandes LuckPerms. Chaque mode de jeu a son propre préfixe, par exemple `aoneblock.`, `acidisland.` ou `caveblock.`, donc un avantage doit être donné une fois pour chaque mode de jeu.
 
-## Comment les autorisations sont nommées
+## Comment les autorisations sont nommées { #how-the-permissions-are-named }
 
 | L'autorisation commence par | Utilisée pour | Qui l'a par défaut |
 |---|---|---|
@@ -18,7 +18,7 @@ BentoBox fonctionne avec n'importe quel plugin d'autorisations (LuckPerms est le
 
 Les add-ons ajoutent leurs propres autorisations. Elles sont listées sur la page de chaque [add-on](../addons/Bank/index.md).
 
-### Vérifier ce que les joueurs ont par défaut
+### Vérifier ce que les joueurs ont par défaut { #check-what-players-have-by-default }
 
 Exécutez **`/bentobox perms`** dans la console. Elle imprime chaque autorisation de commande BentoBox et mode de jeu avec sa valeur par défaut (`TRUE` pour tout le monde, `OP` pour les opérateurs, `FALSE` pour personne), dans un format que vous pouvez coller dans un plugin d'autorisations.
 
@@ -31,7 +31,7 @@ Exécutez **`/bentobox perms`** dans la console. Elle imprime chaque autorisatio
     /lp group default permission set bskyblock.island.renamehome true
     ```
 
-## Avantages avec un nombre
+## Avantages avec un nombre { #perks-with-a-number }
 
 Ces autorisations se terminent par un nombre. Le nombre remplace la valeur dans le `config.yml` du mode de jeu pour ce joueur.
 
@@ -53,7 +53,7 @@ Comment le nombre est déterminé :
 - **Les avantages de l'île suivent le propriétaire.** La taille de l'équipe, la portée et les maisons viennent des autorisations du **propriétaire** de l'île, pas de chaque membre. Ils sont mis à jour quand le propriétaire se connecte, et la portée est aussi fixée quand l'île est créée.
 - **La taille de l'île est limitée** à `distance-between-islands` ; demander plus n'a aucun effet. Voir [Îles](About/IslandManagement.md#island-size-protection-range).
 
-## Autres avantages
+## Autres avantages { #other-perks }
 
 | Avantage | Autorisation |
 |---|---|
@@ -66,7 +66,7 @@ Comment le nombre est déterminé :
 
 Les choses qui ne sont **pas** des autorisations : les réinitialisations d'îles supplémentaires (utilisez `/bsbadmin resets`, voir [Îles](About/IslandManagement.md#resetting-islands)), et le droit d'inviter, d'expulser ou de bannir sur l'île de quelqu'un d'autre (les propriétaires d'îles contrôlent cela avec les rangs, voir [Équipes et Rangs](About/Teams.md#letting-members-manage-the-team)).
 
-## Exemple : un rang VIP
+## Exemple : un rang VIP { #example-a-vip-rank }
 
 Un groupe VIP dans BSkyBlock avec une équipe de 8, une île plus grande, trois maisons et une île de démarrage VIP :
 
@@ -97,7 +97,7 @@ Pour vendre des améliorations étape par étape (îles plus grandes, plus d'emp
 
 Toutes les autorisations de contournement de protection sont expliquées dans [Protection, Drapeaux et Rangs](Island-Protection,-Flags-&-Ranks.md#bypass-the-protection).
 
-## Résolution des problèmes
+## Résolution des problèmes { #troubleshooting }
 
 **Un avantage ne s'applique pas.**
 Les avantages de l'île proviennent du propriétaire de l'île et sont mis à jour quand il se connecte. Faites se déconnecter et reconnecter le propriétaire. Pour la portée, vérifiez que `distance-between-islands` n'est pas inférieur au nombre.
@@ -111,7 +111,7 @@ Exécutez `/bentobox perms` et vérifiez la valeur par défaut pour cette comman
 **L'avantage fonctionne dans un mode de jeu mais pas dans un autre.**
 Chaque mode de jeu a son propre préfixe. Donnez l'autorisation à nouveau pour `aoneblock.`, `acidisland.` et ainsi de suite.
 
-## Voir aussi
+## Voir aussi { #see-also }
 
 - [Référence des autorisations](Permissions.md) : chaque autorisation BentoBox et mode de jeu
 - [Référence des commandes](Commands.md)

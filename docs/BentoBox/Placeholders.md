@@ -1,8 +1,8 @@
-# Placeholders
+# Placeholders { #placeholders }
 
 Les placeholders permettent à d'autres plugins d'afficher les informations de BentoBox : le nom de l'île d'un joueur ou son niveau sur un tableau de bord, son rang dans le chat, le nombre d'îles dans un hologramme, etc.
 
-## Configuration
+## Configuration { #setting-up }
 
 1. Installez [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/).
 2. Redémarrez le serveur.
@@ -11,7 +11,7 @@ C'est tout. BentoBox enregistre ses placeholders auprès de PlaceholderAPI lui-m
 
 Utilisez ensuite les placeholders dans n'importe quel plugin qui supporte PlaceholderAPI (tableaux de bord, listes de tab, chat, hologrammes…).
 
-## Comment les placeholders sont nommés
+## Comment les placeholders sont nommés { #how-placeholders-are-named }
 
 Chaque mode de jeu enregistre sa propre copie de chaque placeholder, commençant par le nom du mode de jeu en minuscules :
 
@@ -28,7 +28,7 @@ Il y a deux sortes :
 - `[gamemode]_island_...` concerne **l'île propre du joueur** dans ce mode de jeu.
 - `[gamemode]_visited_island_...` concerne **l'île sur laquelle le joueur se tient**, qui pourrait être celle de quelqu'un d'autre.
 
-## Trouver un placeholder en jeu
+## Trouver un placeholder en jeu { #finding-a-placeholder-in-game }
 
 | Commande | Ce qu'elle fait |
 |---|---|
@@ -36,20 +36,20 @@ Il y a deux sortes :
 | `/bentobox dump-placeholders` | Écrit chaque placeholder enregistré dans `plugins/BentoBox/placeholder-dump.md` |
 | `/papi parse me %bskyblock_island_name%` | Montre ce qu'un placeholder retourne pour vous (une commande de PlaceholderAPI) |
 
-## Placeholders BentoBox
+## Placeholders BentoBox { #bentobox-placeholders }
 
 Ceux-ci sont enregistrés pour chaque mode de jeu.
 
 {{ placeholders_source("BentoBox") }}
 
-### Placeholders numérotés
+### Placeholders numérotés { #numbered-placeholders }
 
 Les placeholders se terminant par `_<n>` sont enregistrés une fois pour chaque nombre :
 
 - `island_member_name_<n>`, `island_member_rank_<n>` et `island_banned_name_<n>` (et leurs versions `visited_island_`) vont de 1 à 50, pour lister une équipe ou une liste de bannissement une ligne à la fois, par exemple `%bskyblock_island_member_name_1%`.
 - `island_name_<n>` et `island_memberlist_<n>` vont de 1 au nombre d'îles qu'un joueur peut posséder (`concurrent-islands`). Voir [Îles Multiples](ConcurrentIslands.md).
 
-### Placeholders de drapeaux
+### Placeholders de drapeaux { #flag-placeholders }
 
 Chaque drapeau de protection, paramètre d'île et paramètre mondial a un placeholder : `flag_` suivi de l'ID du drapeau en minuscules.
 
@@ -66,13 +66,13 @@ Chaque drapeau de protection, paramètre d'île et paramètre mondial a un place
 
 Les ID des drapeaux sont répertoriés dans [Drapeaux](Flags.md). Les drapeaux ajoutés par les addons obtiennent des placeholders automatiquement.
 
-## Pages des modes de jeu
+## Pages des modes de jeu { #game-mode-pages }
 
 La page de chaque mode de jeu répertorie ces placeholders avec son propre préfixe rempli, avec les propres placeholders du mode de jeu :
 
 [AcidIsland](../gamemodes/AcidIsland/Placeholders.md) · [AOneBlock](../gamemodes/AOneBlock/Placeholders.md) · [Boxed](../gamemodes/Boxed/Placeholders.md) · [BSkyBlock](../gamemodes/BSkyBlock/Placeholders.md) · [CaveBlock](../gamemodes/CaveBlock/Placeholders.md) · [ChunkBlock](../gamemodes/ChunkBlock/Placeholders.md) · [Poseidon](../gamemodes/Poseidon/Placeholders.md) · [SkyGrid](../gamemodes/SkyGrid/Placeholders.md) · [TradeWinds](../gamemodes/TradeWinds/Placeholders.md)
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **Un placeholder s'affiche comme du texte (`%bskyblock_island_name%`) au lieu d'une valeur.**
 Vérifiez que PlaceholderAPI est installé, que le plugin qui l'affiche supporte PlaceholderAPI, et que le placeholder n'est pas désactivé dans `/bentobox placeholders`. Certains plugins de chat ont besoin d'un paramètre supplémentaire ou d'un plugin pour analyser les placeholders dans les messages de chat. Testez avec `/papi parse me <placeholder>`.

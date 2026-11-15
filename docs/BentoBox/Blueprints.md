@@ -1,4 +1,4 @@
-# Îles de Démarrage (Blueprints)
+# Îles de Démarrage (Blueprints) { #starter-islands-blueprints }
 
 Quand un joueur crée une île, BentoBox colle une île de démarrage pour lui. Ces îles de démarrage sont des **blueprints**, que vous construisez et sauvegardez en jeu. Un **bundle** groupe un blueprint Overworld, Nether et End en un seul choix dans le menu Créer une Île, avec sa propre icône, nom et description.
 
@@ -7,7 +7,7 @@ Chaque mode de jeu est livré avec quelques bundles. Vous pouvez les modifier, a
 !!! info "Commandes sur cette page"
     Les commandes sont affichées pour BSkyBlock (`/bsbadmin`). Utilisez la commande d'administration de votre mode de jeu à la place, par exemple `/oba` pour AOneBlock ou `/acid` pour AcidIsland. `blueprint` peut être raccourci à `bp`.
 
-## Créer une île de démarrage
+## Créer une île de démarrage { #make-a-starter-island }
 
 1. **Construisez-la.** Construisez l'île quelque part dans le monde du mode de jeu, loin des autres îles. Mettez au moins un bloc de **bedrock** dedans : le bloc de bedrock le plus élevé devient le centre de l'île, et BentoBox n'enregistrera pas un blueprint sans un.
 2. **Ajouter les panneaux (optionnel).** Placez une pancarte avec `[spawn_here]` sur la première ligne où les joueurs doivent apparaître, face à la direction qu'ils doivent regarder. Ajoutez une pancarte avec `[start]` sur la première ligne pour un message de bienvenue. Voir [Panneaux](#signs).
@@ -24,7 +24,7 @@ Pour remplacer l'île par défaut du mode de jeu au lieu d'en ajouter une nouvel
 
 **Conversion de schematics WorldEdit :** les blueprints ne sont pas des schematics, mais vous pouvez coller un schematic avec WorldEdit, ajouter le bedrock et les panneaux, puis sélectionner, copier et enregistrer avec les commandes blueprint comme ci-dessus. Faites ceci pour chaque île Nether et End aussi.
 
-## Bundles : les choix du menu Créer une Île
+## Bundles : les choix du menu Créer une Île { #bundles-the-choices-in-the-create-island-menu }
 
 Ouvrez le Gestionnaire de Blueprint avec **`/bsbadmin bp`**. Il liste les bundles ; cliquez sur un pour le modifier.
 
@@ -49,7 +49,7 @@ Un bundle **doit** avoir un blueprint Overworld ; s'il n'en a pas, l'île par d�
 
 **Renommez les bundles et blueprints dans le gestionnaire ou avec `/bsbadmin bp rename`**, pas en renommant des fichiers.
 
-### Commandes quand un bundle est choisi
+### Commandes quand un bundle est choisi { #commands-when-a-bundle-is-chosen }
 
 Les commandes s'exécutent chaque fois qu'une île est créée avec le bundle, par exemple pour donner un kit de démarrage ou définir un rang. `[player]` et `[owner]` sont remplacés par le nom du joueur. Les commandes s'exécutent depuis la console sauf si elles commencent par `[SUDO]`, qui les exécute en tant que joueur :
 
@@ -58,11 +58,11 @@ lp user [player] parent add skyblock-starter
 [SUDO] kit starter
 ```
 
-### Facturer un bundle
+### Facturer un bundle { #charging-for-a-bundle }
 
 Définissez un coût sur le bundle avec l'lingot d'or. Le joueur paie quand il crée ou réinitialise une île avec, et ne peut pas le choisir s'il n'a pas les moyens. Cela nécessite `use-economy: true` dans le `config.yml` de BentoBox et Vault avec un plugin économique ; sans eux l'lingot d'or n'est pas affiché.
 
-## Panneaux
+## Panneaux { #signs }
 
 | Première ligne de la pancarte | Ce qui se passe |
 |---|---|
@@ -72,7 +72,7 @@ Définissez un coût sur le bundle avec l'lingot d'or. Le joueur paie quand il c
 
 **Mobs nommés :** renommez une balise de nom pour inclure `[name]` dans une enclume et mettez-la sur un mob dans votre île avant de copier. Le mob est nommé d'après le propriétaire de l'île quand l'île est collée.
 
-## Toutes les commandes blueprint
+## Toutes les commandes blueprint { #all-blueprint-commands }
 
 | Commande | Ce qu'elle fait |
 |---|---|
@@ -88,7 +88,7 @@ Définissez un coût sur le bundle avec l'lingot d'or. Le joueur paie quand il c
 | `/bsbadmin bp delete <name>` | Supprimez un blueprint |
 | `/bsbadmin bp sink` | Basculez si ce blueprint s'enfonce au fond de la mer quand collé |
 
-## Les fichiers
+## Les fichiers { #the-files }
 
 Les blueprints et bundles sont stockés par mode de jeu dans `plugins/BentoBox/addons/<GameMode>/blueprints/` :
 
@@ -97,11 +97,11 @@ Les blueprints et bundles sont stockés par mode de jeu dans `plugins/BentoBox/a
 
 Vous pouvez copier ces fichiers entre serveurs, les garder sous contrôle de version, ou les modifier. Pour chaque champ, voir [Format de Fichier Blueprint](Blueprint-Format.md).
 
-## Vitesse de collage
+## Vitesse de collage { #pasting-speed }
 
 La copie et le collage se produisent un peu à la fois, donc les grandes îles ne gèlent pas le serveur ; une grande île peut prendre quelques secondes. Si la création d'îles cause du lag, baissez `paste-speed` (blocs par tick) dans le `config.yml` de BentoBox.
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **« Au moins un bloc de bedrock doit être dans un blueprint ! »**
 Ajoutez un bloc de bedrock à l'île, copiez à nouveau, puis enregistrez.
@@ -118,7 +118,7 @@ Vérifiez qu'il a un blueprint Overworld, qu'il n'exige pas une permission que l
 **La pancarte de bienvenue affiche `[start]`.**
 Le texte `[start]` vient du fichier de locale du mode de jeu. Vérifiez que `<gamemode>.sign.line0` à `line3` existent dedans.
 
-## Voir aussi
+## Voir aussi { #see-also }
 
 - [Îles](About/IslandManagement.md) : création, réinitialisation et dimensionnement des îles
 - [Agrandir le menu de création d'île](../Tutorials/generic/Bigger-Create-Island-Menu.md) et [Personnalisation des Menus](../Tutorials/generic/Customizable-GUI.md) : le menu que les joueurs choisissent

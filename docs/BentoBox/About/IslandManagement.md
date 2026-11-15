@@ -1,11 +1,11 @@
-# Îles
+# Îles { #islands }
 
 Chaque mode de jeu BentoBox est construit sur les **îles** : une zone protégée du monde qui appartient à un joueur ou à une équipe. (Dans des modes de jeu comme CaveBlock ou Boxed, l'« île » est une grotte ou une boîte, mais cela fonctionne de la même manière.) Cette page couvre comment les îles sont créées, dimensionnées, réinitialisées et supprimées, comment les foyers fonctionnent, et comment nettoyer les anciennes îles.
 
 !!! info "Commandes sur cette page"
     Les commandes sont affichées pour BSkyBlock (`/island`, `/bsbadmin`). Les autres modes de jeu utilisent leurs propres noms de commandes, par exemple `/ob` dans AOneBlock. Les autorisations commencent par le préfixe du mode de jeu, par exemple `bskyblock.` ou `aoneblock.`. Pour ce que voient les joueurs, envoyez-les au [Guide du Joueur](../Player-Guide.md).
 
-## Avant d'ouvrir : planifiez le monde
+## Avant d'ouvrir : planifiez le monde { #before-you-open-plan-the-world }
 
 Deux paramètres du `config.yml` du mode de jeu **ne peuvent pas être modifiés après que les îles existent**. Les modifier ultérieurement signifie effacer le monde et la base de données, donc décidez avant que les joueurs ne rejoignent :
 
@@ -144,7 +144,7 @@ Il n'y a pas de permission pour des réinitialisations supplémentaires ; utilis
 
 Supprimer une île supprime le propriétaire immédiatement, ainsi le joueur peut en créer une nouvelle. Les **blocs** sont supprimés plus tard, quand les fichiers de région sont nettoyés (voir ci-dessous). Jusque-là, `undelete` ou `register` peuvent ramener l'île.
 
-## Nettoyage des anciennes îles
+## Nettoyage des anciennes îles { #cleaning-up-old-islands }
 
 Les îles supprimées et réinitialisées, et les îles des joueurs qui n'ont jamais revenir, occupent de l'espace disque. BentoBox les supprime en supprimant les **fichiers de région** du monde (chacun couvre une zone de 512×512 blocs) une fois qu'aucune île active n'y est.
 
@@ -180,7 +180,7 @@ Les purgages ignorent les îles avec des joueurs en ligne, les îles de spawn, l
 !!! warning "Faites une sauvegarde en premier"
     La purge supprime les fichiers de région du disque et ne peut pas être annulée. Sauvegardez le dossier du monde avant votre premier purge. Les îles qui partagent un fichier de région avec une île active restent jusqu'à ce que la région soit claire.
 
-## Îles multiples par joueur
+## Îles multiples par joueur { #multiple-islands-per-player }
 
 Les joueurs peuvent posséder plus d'une île dans un mode de jeu si vous le permettez :
 
@@ -195,7 +195,7 @@ world:
 
 Ou donnez aux joueurs `bskyblock.island.number.<number>`. Voir [Îles Multiples](../ConcurrentIslands.md) pour comment les joueurs créent et passent entre les îles.
 
-## Découvrir une île
+## Découvrir une île { #finding-out-about-an-island }
 
 | Commande | Affiche |
 |---|---|
@@ -203,7 +203,7 @@ Ou donnez aux joueurs `bskyblock.island.number.<number>`. Voir [Îles Multiples]
 | `/bsbadmin info [player]` | Détails complets : propriétaire, membres, portée, foyers, réinitialisations, morts et plus. Sans nom, l'île sur laquelle vous vous tenez |
 | `/bsbadmin why <player>` | Enregistre pourquoi un joueur peut ou ne peut pas faire quelque chose. Voir [Outils d'Administration](AdminTools.md) |
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **Le serveur ne démarre pas après que j'ai modifié `distance-between-islands`.**
 Il ne peut pas changer une fois que les îles existent. Remettez l'ancienne valeur.
@@ -220,7 +220,7 @@ Ses blocs s'en vont quand le fichier de région est nettoyé, au prochain balaya
 **L'utilisation du disque continue de croître.**
 Assurez-vous que `deleted-sweep` est activé, et envisagez `/bsbadmin purge <days>` ou le balayage de l'âge pour les îles abandonnées.
 
-## Voir aussi
+## Voir aussi { #see-also }
 
 - [Guide du Joueur](../Player-Guide.md) : les commandes que vos joueurs utilisent
 - [Équipes et Rangs](Teams.md)

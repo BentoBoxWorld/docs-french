@@ -1,8 +1,8 @@
-# Autorisations Boxed
+# Autorisations Boxed { #boxed-permissions }
 
 Les autorisations de Boxed commencent par `boxed.`. Chaque autorisation est listée dans la [Référence des autorisations](../../BentoBox/Permissions.md) avec `[gamemode]` à la place de `boxed`. Pour les avantages VIP tels que des équipes plus grandes, des îles plus grandes et plus de maisons, consultez [Autorisations et Avantages VIP](../../BentoBox/Permissions-Guide.md).
 
-## Commandes du joueur : qui les a par défaut
+## Commandes du joueur : qui les a par défaut { #player-commands-who-has-them-by-default }
 
 Ces valeurs par défaut proviennent de Boxed `addon.yml`. **Tout le monde** signifie que tous les joueurs ont l'autorisation à moins que vous la leur retiriez; **Opérateurs** signifie que vous devez la donner aux joueurs avec votre plugin d'autorisations. Exécutez `/bentobox perms` dans la console pour voir les valeurs par défaut de votre serveur.
 
@@ -36,7 +36,7 @@ Ces valeurs par défaut proviennent de Boxed `addon.yml`. **Tout le monde** sign
 | `boxed.island.team.trust` | `team trust`, `team untrust` | Tout le monde |
 | `boxed.island.team.coop` | `team coop`, `team uncoop` | Tout le monde |
 
-## Autorisations uniquement dans Boxed
+## Autorisations uniquement dans Boxed { #permissions-only-in-boxed }
 
 | Autorisation | Allows | Par défaut |
 |---|---|---|

@@ -1,4 +1,4 @@
-# Commandes SkyGrid
+# Commandes SkyGrid { #skygrid-commands }
 
 | | Commande | Préfixe d'autorisation |
 |---|---|---|
@@ -7,7 +7,7 @@
 
 Vous pouvez renommer les deux commandes dans le `config.yml` du du mode de jeu.
 
-## Commandes standard
+## Commandes standard { #standard-commands }
 
 SkyGrid utilise les commandes standard du joueur et administrateur de BentoBox. Elles sont toutes listées, avec leurs autorisations, dans la [Référence des commandes](../../BentoBox/Commands.md) : remplacez `/[player_command]` par `/skygrid`, `/[admin_command]` par `/sgadmin` et `[gamemode]` par `skygrid`. Par exemple :
 
@@ -23,6 +23,6 @@ Pour voir ce qu'elles font, consultez le [Guide du Joueur](../../BentoBox/Player
 
 SkyGrid doesn't add any commands of its own.
 
-## Commandes des addons
+## Commandes des addons { #addon-commands }
 
 Les addons ajoutent des sous-commandes à `/skygrid` et `/sgadmin`, par exemple `/skygrid level` de [Level](../../addons/Level/index.md) ou `/skygrid challenges` de [Challenges](../../addons/Challenges/index.md). Consultez la page de chaque addon.

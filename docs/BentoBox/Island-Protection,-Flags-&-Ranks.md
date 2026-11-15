@@ -1,8 +1,8 @@
-# Protection de l'Île, Drapeaux et Rangs
+# Protection de l'Île, Drapeaux et Rangs { #island-protection-flags-ranks }
 
 [TOC]
 
-## Introduction
+## Introduction { #introduction }
 
 Tout ce qu'un joueur (ou l'environnement : pistons, créatures, feu, explosions…) peut faire dans un monde BentoBox est contrôlé par des **Drapeaux**. Chaque drapeau couvre un type d'action, comme casser des blocs, ouvrir des coffres ou faire du mal à des animaux. La plupart des drapeaux viennent de BentoBox. Des addons comme [Greenhouses](https://github.com/BentoBoxWorld/Greenhouses) peuvent en ajouter d'autres.
 
@@ -16,7 +16,7 @@ Il existe trois types de drapeau :
 | **Paramètre** | Un interrupteur activé/désactivé au niveau de l'île, par exemple *PVP* ou *Génération d'animaux*. | Le propriétaire de l'île. |
 | **Paramètre mondial** | Un interrupteur pour tout le monde du jeu, par exemple *Dégâts des Creepers*. | Administrateurs uniquement. |
 
-### Sur une île, en dehors d'une île, et les nouvelles îles
+### Sur une île, en dehors d'une île, et les nouvelles îles { #on-an-island-off-an-island-and-new-islands }
 
 La confusion la plus courante est qu'un drapeau de protection peut avoir **trois valeurs différentes**, selon où se tient le joueur et quelle île est concernée :
 
@@ -56,7 +56,7 @@ Les addons peuvent enregistrer plus de rangs entre ceux-ci.
 
 Les administrateurs peuvent voir ou modifier le rang d'un joueur avec `/[admin_command] getrank <player>` et `/[admin_command] setrank <player> <rank>`.
 
-## Panneau des Paramètres de l'Île
+## Panneau des Paramètres de l'Île { #island-settings-panel }
 
 Le **Panneau des Paramètres** est l'endroit où un propriétaire d'île configure son île. Ouvrez-le avec `/[player_command] settings` (permission `[gamemode].island.settings`). Tout le monde sur l'île peut le voir. Seul le propriétaire peut le modifier, ainsi que tout rang que le propriétaire autorise avec le drapeau **Modifier les paramètres** (la table de craft, haut).
 
@@ -66,7 +66,7 @@ Le **Panneau des Paramètres** est l'endroit où un propriétaire d'île configu
 
 Le panneau affiche l'île dans la zone de laquelle le joueur se tient, ou sa propre île s'il est ailleurs. Les administrateurs peuvent ouvrir l'île de n'importe quel joueur avec `/[admin_command] settings <player_name>`.
 
-### Onglet Protection
+### Onglet Protection { #protection-tab }
 
 L'onglet **Protection** est affiché en premier et répertorie les **drapeaux de protection** de l'île.
 
@@ -96,7 +96,7 @@ Cet onglet a également l'icône [Rangs de Commande](#command-ranks).
 
 Un joueur qui n'a pas d'île dans le monde et ne se tient pas dans la zone d'une autre île voit à la place un onglet **Protections Mondiales** en lecture seule. Il montre ce que n'importe qui peut faire en dehors de l'île, tel que défini par l'administrateur sur l'onglet [Protections Mondiales](#world-protections). C'est pour l'information uniquement et ne peut pas être modifié d'ici.
 
-### Mode d'affichage
+### Mode d'affichage { #display-mode }
 
 Selon le **mode d'affichage**, le Panneau des Paramètres affiche plus ou moins de drapeaux. Le mode est `BASIC`, `ADVANCED` ou `EXPERT`. Changez-le en cliquant sur le lingot dans le coin supérieur droit du panneau.
 
@@ -216,7 +216,7 @@ Exécutez `/[admin_command] settings` **sans arguments** tout en jouant dans le 
 
 Les modifications apportées dans ces onglets sont enregistrées dans le `config.yml` du mode de jeu immédiatement.
 
-### Paramètres Mondiaux
+### Paramètres Mondiaux { #world-settings }
 
 Le premier onglet répertorie les drapeaux de **paramètre mondial** : des interrupteurs qui s'appliquent au monde entier du jeu, sur les îles et en dehors, comme *Dégâts des Creepers*, *Redstone hors ligne* ou *Les visiteurs gardent l'inventaire*. Cliquez sur un drapeau pour l'activer ou le désactiver. Chacun a besoin de la permission `[gamemode].admin.world.settings.<FLAG_ID>`, que les opérateurs ont.
 
@@ -309,7 +309,7 @@ Les modifications s'appliquent uniquement aux îles créées **après** le chang
 
 Cet onglet **ne** contrôle pas ce que les joueurs peuvent faire en dehors des îles. Pour cela, utilisez [Protections Mondiales](#world-protections).
 
-### Modifier l'île d'un joueur
+### Modifier l'île d'un joueur { #changing-a-players-island }
 
 `/[admin_command] settings <player_name>` ouvre les onglets Protection et Paramètres de l'île de ce joueur, comme le propriétaire les verrait, donc un administrateur peut modifier n'importe quel drapeau. `/[admin_command] settings spawn-island` fait la même chose pour l'île de spawn.
 
@@ -327,11 +327,11 @@ Les drapeaux de protection ne sont appliqués que dans les mondes de jeu BentoBo
 !!! tip
     `[gamemode]` dans les permissions ci-dessous est le nom du mode de jeu en minuscules. Pour BSkyBlock, les nœuds commencent `bskyblock.mod…`, pour AcidIsland `acidisland.mod…`, etc.
 
-### Rangs d'île — le moyen intentionnel { #island-ranks—the-intended-way }
+### Rangs d'île — le moyen intentionnel { #island-ranks-the-intended-way }
 
 Le moyen normal et conçu de « contourner » un drapeau de protection est d'avoir un **rang** assez élevé sur l'île. Chaque drapeau de protection a un rang requis, et tout membre dont le rang est supérieur ou égal est autorisé à faire l'action. C'est pourquoi un propriétaire peut construire alors qu'un visiteur ne peut pas — ce n'est pas vraiment un contournement, juste le drapeau fonctionnant comme configuré. Voir la liste [Rangs](#ranks) ci-dessus.
 
-### Opérateurs
+### Opérateurs { #operators }
 
 Un opérateur de serveur (`/op`) est le contournement le plus large. Les Ops passent **chaque drapeau de protection** dans chaque monde BentoBox, peuvent entrer dans les îles verrouillées et bannies, et sont immunisés contre le bannissement ou l'expulsion.
 
@@ -340,7 +340,7 @@ Deux mises en garde importantes :
 - **Les Ops ne contournent pas les drapeaux de paramètres d'île.** Les drapeaux de type `SETTING` (bascules d'île comme *Permettre le PVP*, *Génération de créatures*, …) sont évalués avant la vérification d'opérateur, donc un op est sujet à eux exactement comme n'importe quel autre joueur. Le statut d'opérateur ne remplace que les drapeaux de *protection*.
 - **L'interrupteur administrateur ne peut pas complètement « déop » un joueur sur sa propre île.** Même avec l'interrupteur activé (voir ci-dessous), un op est toujours autorisé sur une île car la vérification de rang traite le statut d'opérateur comme toujours autorisé. Pour tester la protection en tant que vrai non-op, supprimez le statut d'opérateur.
 
-### Permissions de contournement de modérateur
+### Permissions de contournement de modérateur { #moderator-bypass-permissions }
 
 Pour le personnel qui ne doit *pas* être des opérateurs complets, la protection peut être contournée avec des permissions à la place. Celles-ci sont limitées par l'interrupteur administrateur (voir ci-dessous), donc un modérateur peut basculer son propre contournement pour vivre le monde comme un joueur normal le ferait.
 
@@ -348,11 +348,11 @@ Pour le personnel qui ne doit *pas* être des opérateurs complets, la protectio
 - `[gamemode].mod.bypass.<FLAG_ID>.everywhere` — contourner **un** drapeau nommé (par exemple `BREAK_BLOCKS`) partout dans le monde.
 - `[gamemode].mod.bypass.<FLAG_ID>.island` — contourner **un** drapeau nommé, mais seulement où le joueur serait autrement bloqué sur une île.
 
-### L'interrupteur administrateur « » — tester en tant que joueur normal
+### L'interrupteur administrateur « » — tester en tant que joueur normal { #the-admin-switch-testing-as-a-normal-player }
 
 La commande `/[admin_command] switch` (permission `[gamemode].mod.switch`) bascule les permissions de contournement d'un modérateur activées et désactivées. Par défaut, les permissions de contournement sont **actives** (le modérateur contourne la protection) ; exécuter la commande une fois bascule le contournement **off** pour qu'ils soient soumis à la protection comme un joueur ordinaire, et exécuter à nouveau le bascule sur. Cela affecte les permissions `mod.bypassprotect` et `mod.bypass.*` ci-dessus — cela **n'** éteint pas le statut d'opérateur brut.
 
-### Verrous, bannissements et expulsions
+### Verrous, bannissements et expulsions { #locks-bans-and-expels }
 
 Les verrous d'île, les bannissements et les expulsions ont leurs propres permissions de contournement, séparées du système de drapeaux :
 
@@ -363,20 +363,20 @@ Les verrous d'île, les bannissements et les expulsions ont leurs propres permis
 
 Toute entité portant les métadonnées Bukkit `NPC` (par exemple les PNJs Citizens) est également autorisée à travers le verrouillage, le bannissement, le PVP et les vérifications des visiteurs invulnérables, donc les PNJs de plugin ne sont pas piégés ou blessés par la protection de l'île.
 
-### Refroidissements et délais
+### Refroidissements et délais { #cooldowns-and-delays }
 
 Les refroidissements de commande et les délais de préparation de téléportation peuvent être ignorés avec :
 
 - `[gamemode].mod.bypasscooldowns` — ignorer les refroidissements de commande.
 - `[gamemode].mod.bypassdelays` — ignorer le délai de préparation de mouvement sur les commandes de téléportation à délai.
 
-### Ce qui n'est jamais protégé
+### Ce qui n'est jamais protégé { #what-is-never-protected }
 
 - **Mondes non-BentoBox.** La protection n'existe que dans les mondes de mode de jeu (et leur Nether/End lié standard). Les mondes par défaut du serveur et les mondes d'autres plugins ne sont jamais vérifiés.
 - **Les zones en dehors des îles suivent des règles différentes.** Quand un joueur est dans un monde de mode de jeu mais en dehors de la plage de protection de chaque île, les [Protections Mondiales](#world-protections) s'appliquent à la place des drapeaux d'une île.
 - **Les îles supprimées sont l'exception :** sur une île en attente de suppression, rien n'est autorisé par défaut — à part les opérateurs et les titulaires d'une permission `mod.bypassprotect` / `mod.bypass.<FLAG_ID>.everywhere`, dont le contournement est vérifié en premier.
 
-## Dépannage
+## Dépannage { #troubleshooting }
 
 **Les joueurs ne peuvent pas construire ou casser des blocs entre les îles.**
 Cette zone est en dehors de l'île, donc l'onglet [Protections Mondiales](#world-protections) s'applique. Activez les drapeaux dont vous avez besoin là-bas. Modifier les Défauts de l'Île ne servira à rien.

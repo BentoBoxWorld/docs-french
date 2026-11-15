@@ -1,4 +1,4 @@
-# Commandes AOneBlock
+# Commandes AOneBlock { #aoneblock-commands }
 
 | | Commande | Préfixe d'autorisation |
 |---|---|---|
@@ -7,7 +7,7 @@
 
 Vous pouvez renommer les deux commandes dans le `config.yml` du du mode de jeu.
 
-## Commandes standard
+## Commandes standard { #standard-commands }
 
 AOneBlock utilise les commandes standard du joueur et administrateur de BentoBox. Elles sont toutes listées, avec leurs autorisations, dans la [Référence des commandes](../../BentoBox/Commands.md) : remplacez `/[player_command]` par `/ob`, `/[admin_command]` par `/obadmin` et `[gamemode]` par `aoneblock`. Par exemple :
 
@@ -21,7 +21,7 @@ AOneBlock utilise les commandes standard du joueur et administrateur de BentoBox
 
 Pour voir ce qu'elles font, consultez le [Guide du Joueur](../../BentoBox/Player-Guide.md) et les Guides Administrateur, tels que [Équipes et Rangs](../../BentoBox/About/Teams.md) et [Îles](../../BentoBox/About/IslandManagement.md).
 
-## Commandes uniquement dans AOneBlock
+## Commandes uniquement dans AOneBlock { #commands-only-in-aoneblock }
 
 | Commande | Ce qu'il fait | Autorisation | Par défaut |
 |---|---|---|---|
@@ -38,6 +38,6 @@ Pour voir ce qu'elles font, consultez le [Guide du Joueur](../../BentoBox/Player
 
 The Les étiquettes des commandes du joueur AOneBlock (`count`, `phases`, `setCount`, `respawnBlock`, `bossbar`, `actionbar`) peuvent être renommées dans `config.yml` sous `aoneblock.command`. Les commandes de la barre de boss et de la barre d'action n'existent que lorsque ces fonctionnalités sont activées.
 
-## Commandes des addons
+## Commandes des addons { #addon-commands }
 
 Les addons ajoutent des sous-commandes à `/ob` et `/obadmin`, par exemple `/ob level` de [Level](../../addons/Level/index.md) ou `/ob challenges` de [Challenges](../../addons/Challenges/index.md). Consultez la page de chaque addon.

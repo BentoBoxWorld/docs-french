@@ -1,4 +1,4 @@
-# Commandes StrangerRealms
+# Commandes StrangerRealms { #strangerrealms-commands }
 
 | | Commande | Préfixe d'autorisation |
 |---|---|---|
@@ -7,7 +7,7 @@
 
 Vous pouvez renommer les deux commandes dans le `config.yml` du du mode de jeu.
 
-## Commandes standard
+## Commandes standard { #standard-commands }
 
 StrangerRealms utilise les commandes standard du joueur et administrateur de BentoBox. Elles sont toutes listées, avec leurs autorisations, dans la [Référence des commandes](../../BentoBox/Commands.md) : remplacez `/[player_command]` par `/st`, `/[admin_command]` par `/stranger` et `[gamemode]` par `strangerrealms`. Par exemple :
 
@@ -21,7 +21,7 @@ StrangerRealms utilise les commandes standard du joueur et administrateur de Ben
 
 Pour voir ce qu'elles font, consultez le [Guide du Joueur](../../BentoBox/Player-Guide.md) et les Guides Administrateur, tels que [Équipes et Rangs](../../BentoBox/About/Teams.md) et [Îles](../../BentoBox/About/IslandManagement.md).
 
-## Commandes uniquement dans StrangerRealms
+## Commandes uniquement dans StrangerRealms { #commands-only-in-strangerrealms }
 
 | Commande | Ce qu'il fait | Autorisation | Par défaut |
 |---|---|---|---|
@@ -32,6 +32,6 @@ Pour voir ce qu'elles font, consultez le [Guide du Joueur](../../BentoBox/Player
 
 Stranger Realms, les joueurs revendiquent des terres avec `/st claim` au lieu de créer une île, donc `/st create` n'est pas donné aux joueurs (`strangerrealms.island.create` n'est pas déclaré, ce qui le rend réservé aux opérateurs), et `/st` sans sous-commande envoie les nouveaux joueurs au spawn.
 
-## Commandes des addons
+## Commandes des addons { #addon-commands }
 
 Les addons ajoutent des sous-commandes à `/st` et `/stranger`, par exemple `/st level` de [Level](../../addons/Level/index.md) ou `/st challenges` de [Challenges](../../addons/Challenges/index.md). Consultez la page de chaque addon.
