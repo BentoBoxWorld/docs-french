@@ -12,7 +12,7 @@ Chaque mode de jeu est livré avec quelques bundles. Vous pouvez les modifier, a
 1. **Construisez-la.** Construisez l'île quelque part dans le monde du mode de jeu, loin des autres îles. Mettez au moins un bloc de **bedrock** dedans : le bloc de bedrock le plus élevé devient le centre de l'île, et BentoBox n'enregistrera pas un blueprint sans un.
 2. **Ajouter les panneaux (optionnel).** Placez une pancarte avec `[spawn_here]` sur la première ligne où les joueurs doivent apparaître, face à la direction qu'ils doivent regarder. Ajoutez une pancarte avec `[start]` sur la première ligne pour un message de bienvenue. Voir [Panneaux](#signs).
 3. **Sélectionnez-la.** Tenez-vous à un coin et exécutez `/bsbadmin bp pos1`, puis au coin opposé `/bsbadmin bp pos2`. Utilisez ceux-ci, pas la sélection de WorldEdit.
-4. **Copiez-la.** `/bsbadmin bp copy`. Ajoutez `air` si l'île sera collée dans l'eau ou la pierre (AcidIsland, CaveBlock, Poseidon), ainsi l'air autour est aussi collé. Ajoutez `biome` pour garder les biomes, ou `nowater` pour laisser de côté les blocs d'eau.
+4. **Copiez-la.** `/bsbadmin bp copy`. Ajoutez `air` si l'île sera collée dans l'eau ou la pierre (AcidIsland, CaveBlock, Poseidon), ainsi l'air autour est aussi collé. Ajoutez `biome` pour garder les biomes, ou `nowater` pour laisser de côté les blocs d'eau. Voir [Ce que font `air` et `nowater`](#what-air-and-nowater-do).
 5. **Vérifiez-la.** Allez quelque part vide et exécutez `/bsbadmin bp paste` pour voir ce que vous avez copié.
 6. **Enregistrez-la.** `/bsbadmin bp save <name>`, par exemple `/bsbadmin bp save vip_island`.
 7. **Offrez-la aux joueurs.** Ouvrez `/bsbadmin bp` et mettez le blueprint dans un bundle (section suivante).
@@ -23,6 +23,14 @@ Pour remplacer l'île par défaut du mode de jeu au lieu d'en ajouter une nouvel
     Le plaisir des modes de jeu d'îles est de grandir à partir de très peu. Commencez les joueurs avec juste assez de blocs et d'objets pour commencer.
 
 **Conversion de schematics WorldEdit :** les blueprints ne sont pas des schematics, mais vous pouvez coller un schematic avec WorldEdit, ajouter le bedrock et les panneaux, puis sélectionner, copier et enregistrer avec les commandes blueprint comme ci-dessus. Faites ceci pour chaque île Nether et End aussi.
+
+### Ce que font `air` et `nowater` { #what-air-and-nowater-do }
+
+Sans `air`, seuls les blocs que vous avez construits sont copiés. Quand l'île est collée, tous les autres emplacements de la zone restent tels qu'ils sont dans le monde : l'eau ou la pierre qui s'y trouve reste.
+
+Avec `air`, chaque emplacement de la zone est copié, donc toute la zone remplace ce qui se trouve dans le monde, air compris. Depuis BentoBox 3.23.8, le bloc simple le plus courant de la zone (généralement l'air, ou l'eau pour une île en mer) est enregistré une seule fois plutôt qu'une fois par emplacement : une grande copie avec `air` ne produit donc pas un gros fichier.
+
+`nowater` laisse l'eau de côté : partout où il y avait de l'eau, le monde reste tel quel au collage. Combiné avec `air`, la zone n'est plus copiée en entier, donc chaque bloc d'air est enregistré un par un et le fichier est plus gros. N'utilisez `air nowater` que si l'eau du monde doit rester, par exemple dans un océan.
 
 ## Bundles : les choix du menu Créer une Île { #bundles-the-choices-in-the-create-island-menu }
 
@@ -110,7 +118,10 @@ Ajoutez un bloc de bedrock à l'île, copiez à nouveau, puis enregistrez.
 Ajoutez une pancarte `[spawn_here]`, avec de l'air au-dessus pour le joueur.
 
 **L'île est entourée de lacunes d'eau (ou de pierre) qui ne devraient pas être là**, ou l'eau du monde s'écoule dedans.
-Copiez avec `air` afin que l'espace autour de l'île fasse partie du blueprint. Gardez la sélection serrée, car l'air rend le fichier plus grand.
+Copiez avec `air` afin que l'espace autour de l'île fasse partie du blueprint. Depuis la 3.23.8, l'air est enregistré une seule fois pour toute la zone : une sélection plus grande coûte donc peu.
+
+**Un bateau coule dans l'eau, ou un mob est coincé dans une dalle, après le collage.**
+Le blueprint a été copié avant BentoBox 3.23.8, qui n'enregistrait pas la hauteur d'une entité dans son bloc. Collez-le, puis copiez-le et enregistrez-le de nouveau.
 
 **Mon nouveau bundle ne s'affiche pas dans le menu Créer une Île.**
 Vérifiez qu'il a un blueprint Overworld, qu'il n'exige pas une permission que le joueur n'a pas, et, s'il a une limite d'utilisation, que le joueur ne l'a pas épuisée. Avec `hide-used-blueprints: true` dans le `config.yml` de BentoBox, les bundles utilisés sont masqués.

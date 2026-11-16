@@ -1,6 +1,6 @@
 # Format de Fichier Blueprint
 
-**Version de spécification 2**
+**Version de spécification 2.1**
 
 Cette page documente le format JSON sur disque qu'utilise BentoBox pour les blueprints d'île (fichiers `.blueprint`) et les bundles de blueprints (fichiers bundle `.json`). C'est le compagnon lisible par l'humain aux [JSON Schemas](https://github.com/BentoBoxWorld/BentoBox/tree/develop/schemas) lisibles par la machine livrés dans le dépôt BentoBox, qui peuvent être utilisés pour valider les fichiers dans les éditeurs ou CI.
 
@@ -13,6 +13,7 @@ Si vous voulez *faire* des blueprints dans le jeu, voir la page [Blueprints](Blu
 | 1 | 2019-06-09 | [1.5.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/1.5.0) | Version initiale, dérivée du format Schem de BentoBox |
 | 1.1 | 2026 | 2.x | Stockage changé de binaire zippé à JSON simple ; `.blueprint` est devenu l'extension primaire |
 | 2 | 2026-08-14 | 3.22.x | Spécification complète au niveau des champs générée à partir du code source ; JSON Schemas publiés |
+| 2.1 | 2026-11-16 | 3.23.8 | [Bloc de remplissage](#compact-blueprints-fill) facultatif (`fill`, `fillMin`, `fillMax`) ; les entités enregistrent leur hauteur dans le bloc (`y`) ; les tailles comptent les deux blocs de coin |
 
 ## Types de fichiers
 
@@ -30,7 +31,7 @@ Les blueprints sont écrits avec Gson. Ces règles s'appliquent partout et expli
 
 - Seuls les champs listés dans cette spécification sont émis ; les producteurs ne doivent pas ajouter d'autres clés.
 - **Vecteurs** (`org.bukkit.util.Vector`) sont un tableau JSON à 3 éléments de nombres : `[x, y, z]`. Les positions de bloc contiennent généralement des entiers, mais le type sous-jacent est double.
-- **Maps indexées par un Vecteur** utilisent la forme de clé de map complexe de Gson : un *tableau de paires* JSON — `[[<vecteur>, <valeur>], ...]` — **pas** un objet JSON. Cela s'applique à `blocks`, `attached` et `entities`.
+- **Maps indexées par un Vecteur** utilisent la forme de clé de map complexe de Gson : un *tableau de paires* JSON — `[[<vecteur>, <valeur>], ...]` — **pas** un objet JSON. Cela s'applique à `blocks`, `attached` et `entities`. Une map **vide** est écrite comme un objet vide `{}` : les lecteurs doivent donc accepter `[]` comme `{}` pour une map vide.
 - **Maps indexées par une énumération** (par exemple, la map `blueprints` d'un bundle) sont des objets JSON ordinaires avec le nom de l'énumération comme clé.
 - **Maps indexées par un entier** (slot d'inventaire → article) sont des objets JSON avec des clés entières stringifiées (`"0"`, `"13"`, …).
 - **ItemStacks** sont sérialisés en YAML Bukkit (via `ConfigurationSerializable`) et stockés comme une chaîne JSON *string*. Traitez la valeur comme un document YAML opaque analysable par `YamlConfiguration#loadFromString`.
@@ -50,9 +51,11 @@ L'objet au niveau supérieur d'un fichier `.blueprint`. Il décrit un volume de 
 | `icon` | string | Matériau d'icône : un nom `Material` Bukkit (`DIAMOND`), une clé vanilla (`minecraft:diamond`), ou une clé de modèle personnalisé de pack de ressources. Défaut `PAPER`. |
 | `description` | string[] | Lignes de lore affichées sous l'icône dans les interfaces de sélection. |
 | `bedrock` | Vector | Point d'ancrage. Quand collé, le blueprint `(0,0,0)` est traduit pour que `bedrock` atterrisse sur la cible de collage. S'il est omis, BentoBox en auto-crée un à `(xSize/2, ySize/2, zSize/2)` au moment du chargement. |
-| `xSize`, `ySize`, `zSize` | integer | Dimensions de la boîte englobante en blocs. |
+| `xSize`, `ySize`, `zSize` | integer | Taille de la zone copiée en blocs, en comptant les deux blocs de coin. Les blueprints copiés avant la 3.23.8 peuvent avoir un bloc de moins sur un axe. |
 | `sink` | boolean | Si true, le blueprint descend jusqu'à ce qu'il trouve une surface au moment du collage au lieu de coller à l'Y exact de l'ancre. |
-| `blocks` | Vector-keyed map | Blocs primaires, indexés par position relative à l'origine du blueprint (`0..size-1` sur chaque axe). Voir [BlueprintBlock](#blueprintblock). |
+| `blocks` | Vector-keyed map | Blocs primaires, indexés par position relative à l'origine du blueprint (`0..size-1` sur chaque axe). Voir [BlueprintBlock](#blueprintblock). Avec un `fill`, les positions de la boîte de remplissage absentes ici reçoivent le bloc de remplissage. |
+| `fill` | [BlueprintBlock](#blueprintblock) | Depuis la 3.23.8. Bloc collé à chaque position de `fillMin` à `fillMax` qui n'a pas d'entrée dans `blocks`. Absent signifie aucun remplissage. Voir [Blueprints compacts](#compact-blueprints-fill). |
+| `fillMin`, `fillMax` | Vector | Depuis la 3.23.8. Coins de la boîte de remplissage, inclus, relatifs à l'origine du blueprint. Présents en même temps que `fill`. |
 | `attached` | Vector-keyed map | Blocs collés **après** `blocks` parce qu'ils s'attachent à un support : torches, échelles, rails, lits, portes, panneaux, etc. Mêmes conventions de coordonnées que `blocks`. |
 | `entities` | Vector-keyed map of lists | Entités à apparaître par position de bloc. Plusieurs entités peuvent partager une clé ; les fins de décalage fin en bloc se trouvent sur [BlueprintEntity](#blueprintentity). |
 
@@ -78,6 +81,38 @@ Un exemple minimal :
   ]
 }
 ```
+
+### Blueprints compacts (remplissage) { #compact-blueprints-fill }
+
+Une position absente de `blocks` signifie normalement « laisser le monde tel quel ici ». Une copie faite avec `air` enregistre pourtant chaque position de sa boîte, et la plupart sont de l'air simple, ou de l'eau pour une île construite en mer.
+
+Depuis la 3.23.8, quand les `blocks` d'un blueprint couvrent **chaque** position de leur boîte englobante, BentoBox enregistre une seule fois le bloc *simple* le plus courant comme `fill`, avec les coins de la boîte dans `fillMin` et `fillMax`, et retire ces blocs de `blocks`. Un bloc simple n'a que `blockData` et éventuellement `biome` : pas de texte de panneau, d'inventaire, de générateur, de motifs de bannière ni d'identifiant ItemsAdder. Les blocs dont le biome diffère de celui du remplissage restent dans `blocks`.
+
+Pour coller un blueprint avec remplissage, placez le bloc de remplissage à chaque position de `fillMin` à `fillMax` qui n'a pas d'entrée dans `blocks`, puis collez `blocks`, `attached` et `entities` comme d'habitude. Le résultat est identique au blueprint non compacté.
+
+- Une copie qui omet des positions, faite sans `air` ou avec `air nowater`, ne peut pas utiliser de remplissage, car il écraserait les emplacements censés rester intacts. Elle est écrite sans remplissage.
+- Les blueprints sans remplissage sont lus exactement comme avant. BentoBox compacte en mémoire un ancien blueprint entièrement couvert quand il le charge, et écrit la forme compacte la prochaine fois qu'il l'enregistre.
+- Les versions de BentoBox antérieures à la 3.23.8 ignorent les champs de remplissage : un blueprint compact collé par un ancien BentoBox n'a donc pas son air ni son eau.
+
+```json
+{
+  "name": "sea-island",
+  "bedrock": [2.0, 1.0, 2.0],
+  "xSize": 5, "ySize": 4, "zSize": 5,
+  "fill": {"blockData": "minecraft:water[level=0]"},
+  "fillMin": [0.0, 0.0, 0.0],
+  "fillMax": [4.0, 3.0, 4.0],
+  "blocks": [
+    [[2.0, 1.0, 2.0], {"blockData": "minecraft:bedrock"}],
+    [[2.0, 2.0, 2.0], {"blockData": "minecraft:sand"}],
+    [[2.0, 3.0, 2.0], {"blockData": "minecraft:air"}]
+  ],
+  "attached": {},
+  "entities": {}
+}
+```
+
+Ici, chaque position de la boîte de 5 × 4 × 5 est de l'eau, sauf les trois blocs listés.
 
 ## BlueprintBlock
 
@@ -135,7 +170,7 @@ Une entité à faire apparaître. Seul `type` est obligatoire. Les champs non d�
 |---|---|---|
 | `type` | string | **Obligatoire.** Nom du type d'entité Bukkit (`VILLAGER`, `ARMOR_STAND`, `ITEM_FRAME`, …). |
 | `customName` | string | Nom d'affichage ; codes de couleur `§` hérités soutenus. |
-| `x`, `y`, `z` | number | Fin de décalage dans la cellule de position (généralement `0.0 ≤ v < 1.0`). |
+| `x`, `y`, `z` | number | Décalage dans la cellule de position (généralement `0.0 ≤ v < 1.0`). Les entités d'affichage utilisent les trois. Depuis la 3.23.8, les autres entités non accrochées enregistrent `y`, la hauteur à laquelle elles se trouvaient dans le bloc (un bateau qui flotte, un mob sur une dalle), et apparaissent à cette hauteur ; elles apparaissent toujours au centre horizontal de la cellule. `0` les fait apparaître au bas de la cellule. |
 | `glowing` | boolean | Effet de brillance. |
 | `gravity` | boolean | Si la gravité s'applique. |
 | `visualFire` | boolean | Rendre le feu indépendamment de `fireTicks`. |
