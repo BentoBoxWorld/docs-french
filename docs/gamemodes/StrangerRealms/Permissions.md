@@ -1,56 +1,47 @@
-# Permissions Stranger Realms
+# Autorisations StrangerRealms { #strangerrealms-permissions }
 
-| Permission | Description | Par défaut |
-| --- | --- | --- |
-| `strangerrealms.island` | Autoriser l'utilisation de la commande revendication | `true` |
-| `strangerrealms.claim` | Autoriser l'utilisation de la commande revendication | `true` |
-| `strangerrealms.unclaim` | Autoriser l'utilisation de la commande déprise | `true` |
-| `strangerrealms.create` | Autoriser la création de revendication | `false` |
-| `strangerrealms.island.home` | Autoriser la téléportation vers la revendication du joueur | `true` |
-| `strangerrealms.island.sethome` | Permettre au joueur d'utiliser la commande sethome | `true` |
-| `strangerrealms.island.info` | Permettre au joueur de vérifier les informations d'autres joueurs | `true` |
-| `strangerrealms.island.lock` | Autoriser le verrouillage de revendication | `true` |
-| `strangerrealms.island.near` | Les joueurs peuvent voir les noms des revendications voisines | `true` |
-| `strangerrealms.island.expel` | Autoriser l'expulsion de visiteurs | `true` |
-| `strangerrealms.island.ban` | Autoriser le bannissement de visiteurs | `true` |
-| `strangerrealms.island.settings` | Le joueur peut voir les paramètres du serveur | `true` |
-| `strangerrealms.island.language` | Le joueur peut sélectionner une langue | `true` |
-| `strangerrealms.island.name` | Le joueur peut définir le nom de sa revendication | `true` |
-| `strangerrealms.spawn` | Le joueur peut utiliser la commande spawn de revendication si le spawn existe | `true` |
-| `strangerrealms.island.reset` | Le joueur peut utiliser la commande réinitialisation ou redémarrage de revendication | `false` |
-| `strangerrealms.island.team` | Permettre à un joueur d'utiliser la commande d'équipe | `true` |
-| `strangerrealms.island.team.setowner` | Permettre à un joueur de changer le propriétaire de l'équipe | `true` |
-| `strangerrealms.island.team.invite` | Permettre à un joueur d'inviter d'autres | `true` |
-| `strangerrealms.island.team.reject` | Permettre à un joueur de rejeter les invitations | `true` |
-| `strangerrealms.island.team.leave` | Permettre à un joueur de quitter l'équipe | `true` |
-| `strangerrealms.island.team.kick` | Permettre à un joueur d'expulser des membres de l'équipe | `true` |
-| `strangerrealms.island.team.accept` | Permettre à un joueur d'accepter les invitations | `true` |
-| `strangerrealms.island.team.trust` | Permettre à un joueur d'utiliser les commandes d'approbation d'équipe | `true` |
-| `strangerrealms.island.team.coop` | Permettre à un joueur d'utiliser les commandes d'équipe coop | `true` |
-| `strangerrealms.island.team.promote` | Permettre à un joueur d'utiliser les commandes de promotion | `true` |
-| `strangerrealms.island.settings.*` | Autoriser l'utilisation des paramètres sur la revendication | `true` |
-| `strangerrealms.mod.info` | Permettre à un modérateur de voir les informations sur un joueur | `op` |
-| `strangerrealms.mod.clearreset` | Autoriser la suppression de la limite de réinitialisation de revendication | `false` |
-| `strangerrealms.mod.bypasscooldowns` | Autoriser le modérateur à ignorer les délais d'attente | `op` |
-| `strangerrealms.mod.bypassdelays` | Autoriser le modérateur à ignorer les délais | `op` |
-| `strangerrealms.mod.bypassprotect` | Autoriser le modérateur à ignorer la protection de revendication | `op` |
-| `strangerrealms.mod.bypassexpel` | Autoriser le modérateur à ignorer l'expulsion de revendication | `op` |
-| `strangerrealms.mod.switch` | Autoriser le modérateur à basculer la protection bypass on et off | `op` |
-| `strangerrealms.mod.lock` | Verrouille ou déverrouille une revendication | `op` |
-| `strangerrealms.mod.bypasslock` | Contourner un verrouillage de revendication | `op` |
-| `strangerrealms.mod.bypassban` | Contourner le bannissement de revendication | `op` |
-| `strangerrealms.mod.team` | Autoriser la modification des équipes via les commandes kick et add | `false` |
-| `strangerrealms.admin.tp` | Autoriser la téléportation à une revendication | `op` |
-| `strangerrealms.admin.clearresetall` | Autoriser la suppression de la limite de réinitialisation de revendication de tous les joueurs | `op` |
-| `strangerrealms.admin.reload` | Recharger le config.yml | `op` |
-| `strangerrealms.admin.delete` | Permettre à un joueur de supprimer complètement un joueur (y compris la revendication) | `op` |
-| `strangerrealms.admin.register` | Permettre à un joueur d'enregistrer la revendication la plus proche à un autre joueur. | `op` |
-| `strangerrealms.admin.unregister` | Supprimer un joueur d'une revendication sans supprimer les blocs de revendication. | `op` |
-| `strangerrealms.admin.setspawn` | Autoriser l'utilisation des outils de spawn | `op` |
-| `strangerrealms.admin.setrange` | Autoriser la définition de la portée de protection de revendication | `op` |
-| `strangerrealms.admin.settingsreset` | Réinitialiser tous les paramètres de protection de revendication aux paramètres par défaut | `op` |
-| `strangerrealms.admin.noban` | Le joueur ne peut pas être banni d'une revendication | `op` |
-| `strangerrealms.admin.noexpel` | Le joueur ne peut pas être expulsé d'une revendication | `op` |
-| `strangerrealms.admin.setlanguage` | Réinitialiser toutes les langues du joueur et définir la langue par défaut | `op` |
-| `strangerrealms.admin.getrank` | Obtenir le rang d'un joueur | `op` |
-| `strangerrealms.admin.setrank` | Définir le rang d'un joueur | `op` |
+Les autorisations de StrangerRealms commencent par `strangerrealms.`. Chaque autorisation est listée dans la [Référence des autorisations](../../BentoBox/Permissions.md) avec `[gamemode]` à la place de `strangerrealms`. Pour les avantages VIP tels que des équipes plus grandes, des îles plus grandes et plus de maisons, consultez [Autorisations et Avantages VIP](../../BentoBox/Permissions-Guide.md).
+
+## Commandes du joueur : qui les a par défaut { #player-commands-who-has-them-by-default }
+
+Ces valeurs par défaut proviennent de StrangerRealms `addon.yml`. **Tout le monde** signifie que tous les joueurs ont l'autorisation à moins que vous la leur retiriez; **Opérateurs** signifie que vous devez la donner aux joueurs avec votre plugin d'autorisations. Exécutez `/bentobox perms` dans la console pour voir les valeurs par défaut de votre serveur.
+
+| Autorisation | Commandes | Par défaut |
+|---|---|---|
+| `strangerrealms.island` | La commande du joueur elle-même | Tout le monde |
+| `strangerrealms.island.create` | `create` | Opérateurs (non déclaré) |
+| `strangerrealms.island.home` | `go` | Tout le monde |
+| `strangerrealms.island.homes` | `homes` | Tout le monde |
+| `strangerrealms.island.sethome` | `sethome` | Tout le monde |
+| `strangerrealms.island.deletehome` | `deletehome` | Tout le monde |
+| `strangerrealms.island.renamehome` | `renamehome` | Tout le monde |
+| `strangerrealms.island.info` | `info` | Tout le monde |
+| `strangerrealms.island.near` | `near` | Tout le monde |
+| `strangerrealms.island.reset` | `reset` | Personne |
+| `strangerrealms.island.name` | `setname`, `resetname` | Tout le monde |
+| `strangerrealms.island.language` | `language` | Tout le monde |
+| `strangerrealms.island.settings` | `settings` | Tout le monde |
+| `strangerrealms.island.lock` | `lock` | Tout le monde |
+| `strangerrealms.island.ban` | `ban`, `unban`, `banlist` | Tout le monde |
+| `strangerrealms.island.expel` | `expel` | Tout le monde |
+| `strangerrealms.island.team` | `team` | Tout le monde |
+| `strangerrealms.island.team.invite` | `team invite` | Tout le monde |
+| `strangerrealms.island.team.accept` | `team accept` | Tout le monde |
+| `strangerrealms.island.team.reject` | `team reject` | Tout le monde |
+| `strangerrealms.island.team.leave` | `team leave` | Tout le monde |
+| `strangerrealms.island.team.kick` | `team kick` | Tout le monde |
+| `strangerrealms.island.team.promote` | `team promote`, `team demote` | Tout le monde |
+| `strangerrealms.island.team.setowner` | `team setowner` | Tout le monde |
+| `strangerrealms.island.team.trust` | `team trust`, `team untrust` | Tout le monde |
+| `strangerrealms.island.team.coop` | `team coop`, `team uncoop` | Tout le monde |
+
+## Autorisations uniquement dans StrangerRealms { #permissions-only-in-strangerrealms }
+
+| Autorisation | Allows | Par défaut |
+|---|---|---|
+| `strangerrealms.claim` | `/st claim` | Tout le monde |
+| `strangerrealms.unclaim` | `/st unclaim` | Tout le monde |
+| `strangerrealms.spawn` | `/st spawn` | Tout le monde |
+| `strangerrealms.admin.worldborder` | `/stranger worldborder` | Opérateurs (non déclaré) |
+
+Les autorisations des administrateurs et modérateurs (`strangerrealms.admin.*`, `strangerrealms.mod.*`) sont pour les opérateurs par défaut. Voir [Autorisations du personnel](../../BentoBox/Permissions-Guide.md#staff-permissions).

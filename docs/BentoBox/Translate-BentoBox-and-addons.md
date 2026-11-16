@@ -1,63 +1,29 @@
-## Locales Disponibles
+# Traduire BentoBox { #translating-bentobox }
+
+Aidez à traduire BentoBox, ses modes de jeu et ses add-ons. Pour changer les messages sur votre propre serveur à la place, voir [Langues et Messages](About/Multilingual.md).
+
+## Locales disponibles { #available-locales }
 
 {{ translations("BentoBox") }}
 
-## Formatage MiniMessage
+## Comment aider { #how-to-help }
 
-BentoBox utilise [MiniMessage](https://docs.advntr.dev/minimessage/format.html) pour toutes les chaînes de locale. Cela signifie que vous pouvez utiliser les balises MiniMessage dans vos traductions pour appliquer un formatage de texte enrichi. Par exemple :
+Les traductions sont faites avec l'aide de l'IA, donc la plupart du travail est fait, mais l'IA fait des erreurs. La chose la plus utile que vous puissiez faire est de les corriger.
 
-```yaml
-my-message: "<green>Bienvenue sur l'île !</green>"
-my-message: "<bold><red>Attention !</red></bold> Quelque chose s'est passé."
-my-message: "<gradient:gold:yellow>Nom de l'île</gradient>"
-```
+1. Trouvez le fichier de locale dans le référentiel GitHub du projet, sous `src/main/resources/locales/` (par exemple `fr.yml`). Les liens ci-dessous vont à l'état de traduction de chaque projet.
+2. Corrigez le texte et ouvrez une demande de fusion. Pour ajouter une nouvelle langue, copiez `en-US.yml`, renommez-le au code de langue et traduisez-le.
+3. Ou signalez l'erreur sur [Discord](https://discord.bentobox.world) et nous la corrigerons.
 
-Les anciens codes de couleur `§` ou `&` sont toujours pris en charge pour la compatibilité ascendante et seront automatiquement convertis au format MiniMessage lors du chargement.
+L'[outil de traduction](https://download.bentobox.world/translate.html) s'exécute dans votre navigateur et peut aider avec des fichiers entiers. Les traducteurs reçoivent un badge communautaire spécial.
 
-## Balises de Livraison de Message
+Lors de la traduction :
 
-Les chaînes de locale peuvent contrôler la façon dont les messages sont livrés aux joueurs à l'aide de balises spéciales en ligne. Lorsqu'aucune balise de livraison n'est présente, le message est envoyé dans le chat (comportement par défaut).
+- **Ne traduisez rien entre crochets.** `[name]`, `[number]` et `[prefix_island]` sont remplis par BentoBox et doivent rester en anglais.
+- **Gardez les balises de formatage** comme `<green>` et les balises de livraison comme `[actionbar]`. Voir [Langues et Messages](About/Multilingual.md#colours-and-formatting).
+- **Testez-le sur un serveur** si vous le pouvez, pour vérifier que le texte s'adapte aux menus et aux titres.
+- **Pas de publicité, de jurons ou d'insultes.** Nous vérifiez chaque fichier avant de l'accepter.
 
-### `[actionbar]`
-
-Envoie le message en tant que message de **barre d'action** (le texte affiché au-dessus de la barre rapide).
-
-```yaml
-island-go: "[actionbar]Téléportation..."
-```
-
-### `[title]` et `[subtitle]`
-
-Envoie le message en tant que **titre** superposé à l'écran. `[title]` affiche le grand texte d'en-tête et `[subtitle]` affiche un texte plus petit en dessous. `[subtitle]` n'est pas un type de livraison autonome — il ne fonctionne que comme séparateur à l'intérieur d'un message `[title]`. Sans `[title]`, il retombe sur le chemin du chat.
-
-```yaml
-# Titre avec sous-titre
-island-go: "[title]Téléportation...[subtitle]Patientez une seconde."
-# Titre uniquement (titre vide, texte en sous-titre)
-scooping: "[title][subtitle]Vous avez ramassé la lave !"
-```
-
-### `[sound:nom:volume:pitch]`
-
-Joue un **son** pour le joueur. Le volume et le pitch sont optionnels (par défaut `1.0`). Utilisez les noms de son séparés par des underscores depuis la liste des sons Bukkit/Minecraft (par ex. `entity_experience_orb_pickup`). La balise de son peut être combinée avec n'importe quelle balise de type de livraison.
-
-```yaml
-island-go: "[sound:entity_experience_orb_pickup:1:1][title]Téléportation...[subtitle]Patientez une seconde."
-```
-
-!!! note
-    Les expéditeurs non-joueurs (par ex. la console) retomberont sur la sortie chat lorsque les balises de barre d'action ou de titre sont utilisées.
-
-## Directives
-
-* Nous avons maintenant un outil pour permettre les traductions de fichier sur [https://download.bentobox.world/translate.html](https://download.bentobox.world/translate.html). Cela s'exécute localement dans votre navigateur et peut aider la traduction. Soumettez de nouveaux fichiers en tant que PRs sur GitHub.
-* Les Traducteurs obtiennent un badge spécial !
-* Ne traduisez pas le texte à l'intérieur des crochets car ce sont des placeholders, par ex. [name] devrait rester en anglais
-* Testez vos traductions - essayez de vérifier tout ce que vous pouvez avant de la soumettre
-* N'incluez pas de publicité, de jurons ou de commentaires dérogatoires dans les traductions. Nous les vérifions avant d'accepter la PR.
-* N'hésitez pas à poser des questions sur Discord à propos des traductions.
-
-## Modes de jeu
+## Modes de Jeu { #game-modes }
 
 - [AcidIsland](../gamemodes/AcidIsland/index.md#translations)
 - [AOneBlock](../gamemodes/AOneBlock/index.md#translations)
@@ -70,7 +36,7 @@ island-go: "[sound:entity_experience_orb_pickup:1:1][title]Téléportation...[su
 - [Stranger Realms](../gamemodes/StrangerRealms/index.md#translations)
 - [TradeWinds](../gamemodes/TradeWinds/index.md#translations)
 
-## Compléments
+## Add-ons { #addons }
 
 - [Bank](../addons/Bank/index.md#translations)
 - [Biomes](../addons/Biomes/index.md#translations)

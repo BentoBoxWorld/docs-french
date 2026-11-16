@@ -62,7 +62,7 @@ PlayerEvent.builder()
 
 C'est purement additif — toutes les classes sont nouvelles et aucune API existante n'a changé, donc la 3.17.0 est compatible binairement avec les addons existants. L'[addon Inventory Switcher](../addons/InvSwitcher/index.md) utilise ces événements pour protéger les inventaires et soldes par monde lors des réinitialisations. Voir [Release 3.17.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.17.0).
 
-# Boîtes de dialogue modales
+# Boîtes de dialogue modales { #modal-dialogs }
 
 *Ajouté dans BentoBox 3.21.0.*
 

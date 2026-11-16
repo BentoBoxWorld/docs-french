@@ -203,7 +203,7 @@ barrier-offset: 0
     - Les admins peuvent définir la plage sur une île spécifique avec la commande admin de plage, par exemple `/bsbadmin range set <player> <number>`.
     - La plage ne peut jamais être plus grande que **la moitié de la distance entre les îles**, et cette distance est définie une fois à la création du monde et ne peut pas être modifiée ensuite.
 
-    Consultez [Plage d'Île et Espacement](../../BentoBox/About/IslandManagement.md#plage-dile-et-espacement) pour tous les détails.
+    Consultez [Plage d'Île et Espacement](../../BentoBox/About/IslandManagement.md#island-size-protection-range) pour tous les détails.
 
 ??? question "Puis-je faire la bordure un peu plus grande que la plage de l'île?"
     Oui ! Utilisez le paramètre `barrier-offset` dans `config.yml`. Il pousse la bordure vers l'extérieur du nombre de blocs que vous choisissez, afin que les joueurs puissent marcher un peu au-delà de leur zone protégée avant de heurter le mur.
