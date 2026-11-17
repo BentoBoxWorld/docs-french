@@ -139,32 +139,94 @@ Le type est défini par niveau de générateur, soit dans l'interface graphique 
 
 Depuis **2.8.0** les générateurs peuvent être plafonnés pour ne produire qu'un nombre défini de blocs dans une période donnée avant de passer en cooldown — utile pour décourager les fermes AFK entièrement automatisées. La fonctionnalité est **opt-in et désactivée par défaut** (une limite de `0`), donc les configurations existantes ne sont pas affectées jusqu'à ce que vous l'activiez. Quand un générateur est temporairement en cooldown, les joueurs reçoivent un message `generator-exhausted`.
 
+#### Où se trouvent les paramètres
+
+L'épuisement a deux parties, et elles sont définies à différents endroits :
+
+| Quoi | Où le modifier | Portée |
+|---|---|---|
+| **Limite** — combien de blocs par période | `exhaustion.limit` dans `config.yml`, **ou** par niveau avec le bouton **Exhaustion Limit** dans l'interface graphique Admin / `exhaustion-limit` dans le modèle | Défaut global, remplaçable par niveau |
+| **Période** — pendant combien de temps le comptage des blocs est collecté | `exhaustion.period` dans `config.yml` | Global uniquement |
+| **Cooldown** — combien de temps le générateur s'arrête après avoir atteint la limite | `exhaustion.cooldown` dans `config.yml` | Global uniquement |
+| **Limite de spam d'avertissement** | `exhaustion.notification-cooldown` dans `config.yml` | Global uniquement |
+
+Le bouton **Exhaustion Limit** dans le panneau d'édition du générateur (`/[admin_command] generator` → choisir un niveau) définit uniquement le comptage des blocs. **La période et le cooldown ne sont pas dans l'interface graphique** — changez-les dans le fichier de configuration de l'addon :
+
+```
+plugins/BentoBox/addons/MagicCobblestoneGenerator/config.yml
+```
+
+```yaml
+exhaustion:
+  # Blocs par défaut par période pour tous les niveaux. 0 ou moins = pas de limite.
+  limit: 0
+  # Durée de la période de comptage, en MINUTES.
+  period: 60
+  # Combien de temps un générateur reste en cooldown après avoir atteint la limite, en MINUTES.
+  cooldown: 1440
+  # Temps minimum entre deux messages d'avertissement, en SECONDES.
+  notification-cooldown: 60
+```
+
+Redémarrez le serveur après l'édition pour que les nouvelles valeurs soient chargées.
+
 === "exhaustion.limit"
     !!! summary "Description"
-        Le nombre par défaut de blocs qu'un générateur peut produire au cours d'une seule période d'épuisement. `0` ou moins désactive la limitation (la valeur par défaut). Chaque niveau de générateur peut remplacer ceci via la clé `exhaustion-limit` par niveau (voir ci-dessous).
+        Le nombre par défaut de blocs qu'un générateur peut produire au cours d'une seule période d'épuisement. `0` ou moins désactive la limitation (la valeur par défaut). Chaque niveau de générateur peut remplacer ceci (voir [Limite par niveau](#limite-par-niveau) ci-dessous).
 
         Défaut : `0`
 
 === "exhaustion.period"
     !!! summary "Description"
-        La durée de la période d'épuisement, en **minutes**. Le comptage des blocs se réinitialise à la fin de chaque période.
+        La durée de la période d'épuisement, en **minutes**. Le comptage des blocs se réinitialise à la fin de chaque période. S'applique à chaque niveau de générateur.
 
         Défaut : `60`
 
 === "exhaustion.cooldown"
     !!! summary "Description"
-        Combien de temps, en **minutes**, un générateur reste en cooldown après avoir atteint sa limite d'épuisement.
+        Combien de temps, en **minutes**, un générateur reste en cooldown après avoir atteint sa limite d'épuisement. S'applique à chaque niveau de générateur. Réglez-le à `0` pour ne pas avoir de cooldown supplémentaire : le générateur s'arrête simplement jusqu'à la fin de la période actuelle.
 
         Défaut : `1440` (24 heures)
 
 === "exhaustion.notification-cooldown"
     !!! summary "Description"
-        Le temps minimum, en **secondes**, entre deux messages d'avertissement d'épuisement affichés au même joueur.
+        Le temps minimum, en **secondes**, entre deux messages d'avertissement d'épuisement pour le même générateur sur la même île.
 
         Défaut : `60`
 
-!!! tip "Limite par niveau"
-    Chaque niveau de générateur peut remplacer la limite globale avec une clé `exhaustion-limit` dans le modèle de générateur (et dans l'interface graphique admin), de sorte que différents niveaux peuvent être étranglés indépendamment.
+#### Fonctionnement
+
+Chaque île compte les blocs séparément pour chaque niveau de générateur qu'elle a actif.
+
+1. Le premier bloc qu'un niveau crée démarre une **période** (d'une durée de `exhaustion.period` minutes).
+2. Chaque bloc généré ajoute 1 au comptage.
+3. Si le comptage atteint la limite **avant la fin de la période**, la tentative suivante met le niveau en **cooldown** pour `exhaustion.cooldown` minutes. Les membres de l'île reçoivent le message `generator-exhausted`, qui montre les minutes restantes.
+4. Pendant qu'un niveau est en cooldown, il ne remplace aucun bloc : la lave et l'eau créent du pavé, de la pierre ou du basalte vanilla simple.
+5. Quand le cooldown est terminé, une nouvelle période démarre et le comptage revient à 0. Si la période se termine sans que la limite soit atteinte, le comptage revient aussi à 0.
+
+!!! note "Avant 2.10.1"
+    Dans les versions antérieures à **2.10.1**, le comptage se réinitialisait uniquement quand la période se terminait, donc un cooldown plus court que la période n'avait aucun effet : le générateur restait arrêté jusqu'à la fin de la période.
+
+!!! example
+    Avec `limit: 10`, `period: 60`, `cooldown: 1440` : si une île crée 10 blocs en une heure, le générateur s'arrête ensuite pendant 24 heures. Pour laisser les joueurs créer 10 blocs par heure puis attendre simplement la fin de l'heure, réglez `cooldown: 0`. Pour une pause courte, réglez quelque chose comme `cooldown: 30`.
+
+!!! tip "Voir l'état actuel"
+    Les placeholders `[gamemode]_magiccobblestonegenerator_generator_exhaustion_status` (blocs faits / limite pour chaque générateur actif) et `[gamemode]_magiccobblestonegenerator_exhausted_generator_names` (générateurs en cooldown) montrent où en est une île.
+
+#### Limite par niveau
+
+Chaque niveau de générateur peut remplacer la limite globale de blocs, de sorte que différents niveaux peuvent être étranglés indépendamment :
+
+- **Interface graphique Admin :** `/[admin_command] generator` → choisir un niveau → **Exhaustion Limit** (icône d'horloge) → taper un nombre dans le chat.
+- **Modèle :** la clé `exhaustion-limit` pour le niveau dans `generatorTemplate.yml`.
+
+| Valeur | Signification |
+|---|---|
+| `-1` | Utiliser `exhaustion.limit` depuis `config.yml` (la valeur par défaut) |
+| `0` | Pas de limite pour ce niveau |
+| Tout nombre positif | Autant de blocs par période pour ce niveau |
+
+Seule la limite peut être définie par niveau. Chaque niveau utilise la même période et le même cooldown depuis `config.yml`.
 
 ### Plages de hauteur par bloc
 
@@ -276,7 +338,7 @@ Depuis **2.10.0**, un niveau de générateur peut produire des **blocs personnal
     ![déployé](resources/deployed.png){: loading=lazy }
 
 ??? question "Les joueurs utilisent un seau de lave sur l'océan pour générer des blocs. Comment puis-je arrêter cela ?"
-    C'est un générateur `STONE` qui fonctionne comme prévu : vanilla transforme l'eau en pierre chaque fois que la lave s'écoule dessus, donc un niveau `STONE` fonctionne sur n'importe quelle eau que le joueur peut atteindre, l'océan ouvert inclus. Soit arrêtez de distribuer les niveaux `STONE` et utilisez les types `COBBLESTONE` et/ou `BASALT` à la place, soit donnez à vos niveaux `STONE` une plage de hauteur qui exclut le niveau de la mer. Voir [Types de générateur](#types-de-générateur-quelle-mécanique-de-lave-remplace-un-niveau).
+    C'est un générateur `STONE` qui fonctionne comme prévu : vanilla transforme l'eau en pierre chaque fois que la lave s'écoule dessus, donc un niveau `STONE` fonctionne sur n'importe quelle eau que le joueur peut atteindre, l'océan ouvert inclus. Soit arrêtez de distribuer les niveaux `STONE` et utilisez les types `COBBLESTONE` et/ou `BASALT` à la place, soit donnez à vos niveaux `STONE` une plage de hauteur qui exclut le niveau de la mer. Voir [Types de générateur](#types-de-generateur-quelle-mecanique-de-lave-remplace-un-niveau).
 
 ??? question "Qu'est-ce que les trésors?"
     Les trésors sont des choses qui sont lâchées lors de la génération de bloc. Cela permet de donner une personnalisation supplémentaire pour chaque générateur.
@@ -356,6 +418,21 @@ Depuis **2.10.0**, un niveau de générateur peut produire des **blocs personnal
     ```
 
 ## Journal des modifications
+
+??? warning "Nouveautés dans v2.10.1 — correctifs, y compris perte de données lors de l'importation de base de données"
+    **Publié :** 17 novembre 2026
+
+    Une version de correction.
+
+    - 🔺 **L'importation de la base de données n'efface plus les générateurs en cas de mauvais fichier.** `/[admin_command] generator database import <file>` supprimait tous les niveaux de générateur d'un mode de jeu avant de charger le fichier, donc un nom mal tapé ou un fichier vide laissait le mode de jeu sans générateur. Le fichier est maintenant chargé en premier, et l'administrateur est averti dans le chat s'il n'est pas trouvé.
+    - ⚙️ **Le cooldown d'épuisement plus court que la période fonctionne maintenant.** Un cooldown expiré démarre maintenant une nouvelle période avec le comptage réinitialisé à 0. `cooldown: 0` signifie toujours « attendre jusqu'à la fin de la période ». Rien ne change avec les paramètres par défaut. Voir [Épuisement du générateur](#epuisement-du-generateur-limitation-du-debit).
+    - 🔡 **Le bouton Type de générateur expliqué.** Le bouton indique maintenant quelle mécanique de lave chaque type reconnaît. Tous les fichiers de locale traduits ont reçu les clés qui leur manquaient, et les traductions qui masquaient les lignes de plage de hauteur et de condition sont corrigées.
+    - 🐛 **Crashes corrigés** lors de l'achat d'un générateur sur une île de départ ou non possédée, et lors de l'activation d'un générateur avec `overwrite-on-active` alors qu'un générateur supprimé était actif.
+    - 🐛 **Contrôles de plage de hauteur.** La hauteur min ne peut plus être définie au-dessus de la hauteur max dans le panneau d'édition du générateur, et les messages d'erreur de plage de hauteur apparaissent maintenant.
+    - 🐛 **Les titres du panneau Admin** ne dépassent plus le bord de la fenêtre : les panneaux de générateur, bundle et île affichent uniquement le nom, coupé avec « … » si nécessaire.
+    - 🔡 **Remarque sur les locales :** BentoBox n'écrase pas les fichiers de locale qu'il a déjà copiés dans `plugins/BentoBox/locales/MagicCobblestoneGenerator/`. Renommez ou supprimez ce dossier (après avoir sauvegardé toute modification) pour récupérer le texte modifié.
+
+    [Release v2.10.1](https://github.com/BentoBoxWorld/MagicCobblestoneGenerator/releases/tag/2.10.1)
 
 ??? warning "Nouveautés dans v2.10.0 — blocs personnalisés, nécessite BentoBox 3.19.1"
     **Publié :** 11 juillet 2026
