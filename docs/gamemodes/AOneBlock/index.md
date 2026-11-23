@@ -39,6 +39,28 @@ Vous pouvez trouver le dernier fichier config : [config.yml](https://github.com/
 
     Défaut: `10` (remplaçant l'ancien hardcodé 50). Les configs existantes récupèrent le défaut automatiquement.
 
+!!! new "Depuis AOneBlock 1.29.0 — `island.phase-finales`"
+    Indique si les phases se terminent par un combat de boss. Une phase dont le fichier comporte une section `finale:` se termine par un boss qui doit être vaincu avant que le bloc magique ne passe à la phase suivante. Réglez-le sur `false` pour désactiver toutes les finales. Voir [Finales de phase](Phases.md#phase-finales-the-boss-that-ends-a-phase).
+
+    Par défaut : `true`. Il est ajouté automatiquement aux configs existantes.
+
+!!! new "Depuis AOneBlock 1.30.0 — `island.teams-disabled`"
+    Désactive le système d'équipe dans les mondes AOneBlock. Les joueurs ne peuvent pas inviter, accepter d'invitations, expulser, quitter l'équipe, promouvoir, rétrograder ni changer le propriétaire de l'île. La confiance et la coopération fonctionnent toujours. Après l'avoir activé, exécutez une fois `/obadmin team disbandall` pour retirer les membres d'équipe existants.
+
+    Par défaut : `false`. Il est ajouté automatiquement aux configs existantes.
+
+!!! new "Depuis AOneBlock 1.30.0 — `world.structure-settings`"
+    Active ou désactive individuellement des structures vanilla dans les mondes AOneBlock, en remplaçant la liste globale `world.disabled-structures` du `config.yml` de BentoBox. La clé est l'identifiant vanilla de la structure ; `false` la désactive et `true` la force. Les structures que vous ne listez pas suivent le paramètre de BentoBox. Le générateur de vide propre à AOneBlock ne place aucune structure : cela ne compte donc qu'avec `use-own-generator: true`.
+
+    ```yaml
+    world:
+      structure-settings:
+        monument: false
+        trial_chambers: false
+    ```
+
+    Par défaut : `{}`. Il est ajouté automatiquement aux configs existantes.
+
 ### L'index des phases — `phases_index.yml`
 
 !!! new "Ajouté dans AOneBlock 1.26.0"
@@ -505,7 +527,7 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
 ??? question "Quelles phases y a-t-il ?"
     Il y a 21 phases fournies, dans cet ordre : Plains, Underground, Winter, Ocean, Jungle, Swamp, Dungeon, Desert, The Nether, Plenty, Desolation, Deep Dark, The End, Lush Caves, Dripstone Caves, Mangrove Swamp, Meadow, Cherry Grove, Jagged Peaks, Sulfur Caves et Dappled Forest.
 
-    Chaque phase propose un ensemble de blocs, d'articles et de mobs appropriés pour l'environnement.
+    Chaque phase propose un ensemble de blocs, d'articles et de mobs appropriés pour l'environnement. Depuis la 1.29.0, chaque phase fournie se termine aussi par son propre boss ; voir [Finales de phase](Phases.md#phase-finales-the-boss-that-ends-a-phase).
 
     Sulfur Caves nécessite Minecraft 26.2 ou une version ultérieure, et Dappled Forest nécessite Minecraft 26.3 ou une version ultérieure. Sur les serveurs plus anciens, ils sont ignorés et ne prennent pas de blocs, donc la phase précédente s'étend jusqu'au point de bouclage à la place. Vous pouvez réordonner, désactiver et redimensionner les phases vous-même avec `/[admin_command] phases`, et ajouter vos propres fichiers de phase dans le dossier `phases`.
 
@@ -580,6 +602,11 @@ Par défaut, les addons du mode de jeu BentoBox sont livrés avec [l'ensemble de
 
     Sachez que le bloc magique est situé uniquement dans le monde principal.
 
+??? question "Que se passe-t-il à la fin d'une phase ?"
+    Depuis AOneBlock 1.29.0, quand le dernier bloc d'une phase est miné, le bloc magique se scelle et un boss surgit dessus. La phase suivante ne commence pas tant que le boss n'est pas mort. Si tout le monde meurt ou s'en va, le boss se retire, et frapper le bloc magique l'invoque de nouveau.
+
+    Les serveurs mis à niveau depuis une version plus ancienne n'ont pas de boss tant qu'un administrateur n'a pas ajouté de section `finale:` à leurs fichiers de phase. Voir [Finales de phase](Phases.md#phase-finales-the-boss-that-ends-a-phase).
+
 ??? question "Quel est l'objectif final ?"
     C'est ce que vous voulez que ce soit !
 
@@ -647,7 +674,7 @@ L'addon AOneBlock stocke les données dans un tableau de base de données sépar
         }
         ```
 
-### Événements
+### Événements { #events }
 
 AOneBlock a quelques événements personnalisés qui ne sont appelés que dans AOneBlock. Mais les événements du mode de jeu BentoBox sont toujours déclenchés dans AOneBlock.
 
@@ -752,6 +779,55 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
             Island island = event.getIsland();
             UUID playerUUID = event.getPlayerUUID();
             Block block = event.getBlock();
+        }
+        ```
+
+=== "PhaseFinaleStartEvent"
+    !!! summary "Description"
+        Ajouté dans AOneBlock 1.29.0. Cet événement est déclenché quand une [finale de phase](Phases.md#phase-finales-the-boss-that-ends-a-phase) est sur le point de commencer, avant que le boss n'apparaisse. Il est annulable : l'annuler supprime le combat, si bien qu'aucun boss n'apparaît et que l'île passe à la phase suivante.
+
+        Lien vers la classe : [PhaseFinaleStartEvent](https://github.com/BentoBoxWorld/AOneBlock/blob/develop/src/main/java/world/bentobox/aoneblock/events/PhaseFinaleStartEvent.java)
+
+    !!! question "Variables"
+        - `String phase` - le nom de la phase qui se termine.
+        - `PhaseFinale finale` - la définition de la finale dans le fichier de phase.
+        - `@NonNull Island island` - l'île où la finale se produit.
+        - `@Nullable UUID playerUUID` - le joueur qui a déclenché la finale. Peut être Null.
+        - `@NonNull Block block` - le bloc magique.
+
+    !!! example "Exemple de code"
+        ```java
+        @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+        public void onFinaleStart(PhaseFinaleStartEvent event) {
+            if (event.getPhase().equals("Plains")) {
+                // No boss at the end of Plains
+                event.setCancelled(true);
+            }
+        }
+        ```
+
+=== "PhaseFinaleEndEvent"
+    !!! summary "Description"
+        Ajouté dans AOneBlock 1.29.0. Cet événement est déclenché quand une finale de phase se termine, soit parce que le boss a été vaincu, soit parce qu'il est parti (tout le monde est mort ou s'en est allé, ou le boss a été retiré).
+
+        Lien vers la classe : [PhaseFinaleEndEvent](https://github.com/BentoBoxWorld/AOneBlock/blob/develop/src/main/java/world/bentobox/aoneblock/events/PhaseFinaleEndEvent.java)
+
+    !!! question "Variables"
+        - `String phase` - le nom de la phase qui se termine.
+        - `boolean defeated` - vrai si le boss a été vaincu, faux si le combat a été abandonné.
+        - `boolean firstTime` - vrai si c'est la première fois que l'île vainc ce boss.
+        - `@NonNull Island island` - l'île où la finale s'est produite.
+        - `@Nullable UUID playerUUID` - le joueur qui a tué le boss. Peut être Null.
+        - `@NonNull Block block` - le bloc magique.
+
+    !!! example "Exemple de code"
+        ```java
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onFinaleEnd(PhaseFinaleEndEvent event) {
+            if (event.isDefeated() && event.isFirstTime()) {
+                String phase = event.getPhase();
+                Island island = event.getIsland();
+            }
         }
         ```
 
@@ -921,3 +997,41 @@ AOneBlock a quelques événements personnalisés qui ne sont appelés que dans A
     🔺 **Dappled Forest est ajoutée à votre ordre de phase au premier démarrage** (journal : `Phase index: added new phase Dappled Forest`) et ses fichiers sont copiés dans `phases/`. Votre ordre, vos longueurs et vos drapeaux activés existants ne changent pas. Si vous ne le voulez pas, désactivez-le dans `/[admin_command] phases`.
 
     [Release v1.28.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.28.0)
+
+!!! warning "Nouveautés dans v1.29.0 — finales de phase (les serveurs existants doivent les ajouter à la main)"
+    **Publié :** 14 novembre 2026
+
+    Compatibilité : API BentoBox 3.22.0+ · Minecraft 26.x ou 1.21.5+ (Sulfur Caves nécessite 26.2+, Dappled Forest nécessite 26.3+) · Java 25.
+
+    - ⚔️ **Finales de phase.** Chaque phase fournie se termine désormais par un combat de boss. Quand le dernier bloc d'une phase est miné, le bloc magique se scelle et un boss surgit dessus ; la phase suivante ne commence pas tant que le boss n'est pas mort. Chacune des 21 phases fournies a son propre boss, de The Colossus (un géant) à la fin de Plains jusqu'au Warden à la fin de Deep Dark. Voir [Finales de phase](Phases.md#phase-finales-the-boss-that-ends-a-phase) pour les règles et toutes les options.
+    - ⚙️ **Nouvelle option de config `island.phase-finales`** (`true` par défaut). Réglez-la sur `false` pour désactiver toutes les finales. Elle est ajoutée automatiquement au `config.yml`.
+    - 🛠️ **Pour les développeurs :** `PhaseFinaleStartEvent` (annulable ; l'annuler supprime le combat) et `PhaseFinaleEndEvent` sont déclenchés au début et à la fin de chaque combat. Voir [Événements](#events).
+
+    🔺 **Les serveurs existants n'obtiennent pas les boss automatiquement.** Vos fichiers de phase appartiennent à votre serveur et une mise à niveau ne les écrase jamais : ils n'ont donc pas de section `finale:`. Pour ajouter les boss, copiez la section `finale:` de chaque [fichier de phase fourni](https://github.com/BentoBoxWorld/AOneBlock/tree/master/src/main/resources/phases) dans votre propre fichier dans `plugins/BentoBox/addons/AOneBlock/phases/` et redémarrez. Les nouvelles installations les ont dès le départ.
+
+    🔡 **Cinq nouveaux messages** sous `aoneblock.finale` dans `en-US.yml`. Supprimez `plugins/BentoBox/locales/AOneBlock/en-US.yml` pour le régénérer, ou ajoutez les clés à la main si vous l'avez personnalisé. Les autres langues ne sont pas encore traduites et affichent le texte anglais.
+
+    Les finales sont ignorées en difficulté Paisible, car le boss ne pourrait pas apparaître. La vie, les dégâts et les récompenses des boss sont des réglages initiaux et seront ajustés au fil des parties.
+
+    [Release v1.29.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.29.0)
+
+!!! warning "Nouveautés dans v1.30.0 — boss MythicMobs, nécessite BentoBox 3.23.0"
+    **Publié :** 22 novembre 2026
+
+    Compatibilité : API BentoBox 3.23.0+ · Minecraft 26.x ou 1.21.5+ (Sulfur Caves nécessite 26.2+, Dappled Forest nécessite 26.3+) · Java 25 · MythicMobs facultatif.
+
+    - 💀 **Boss et acolytes MythicMobs pour les finales.** La section `finale:` d'une phase peut désigner un mob MythicMobs avec `mythic-boss:` et ajouter des `mythic-minions:`, au niveau `mythic-level:`. Les règles de combat habituelles s'appliquent, et les compétences, l'IA et les drops propres au mob fonctionnent toujours. `boss:` devient une solution de repli facultative, et `health: 0` signifie désormais « la vie propre au mob ». Rien ne change pour les phases existantes. Voir [Boss et acolytes MythicMobs](Phases.md#mythicmobs-bosses-and-minions).
+    - ⚙️ **Nouvelle option de config `island.teams-disabled`** (`false` par défaut) : désactive le système d'équipe dans les mondes AOneBlock. La confiance et la coopération fonctionnent toujours.
+    - ⚙️ **Nouvelle option de config `world.structure-settings`** (`{}` par défaut) : active ou désactive individuellement des structures vanilla, en remplaçant la liste globale de BentoBox. Voir [config.yml](#configyml) pour les deux.
+    - 🏠 **Maisons pour tout le monde.** `aoneblock.island.homes`, `aoneblock.island.renamehome` et `aoneblock.island.deletehome` sont désormais accordées par défaut à tous les joueurs au lieu des seuls opérateurs. Renommer et supprimer restent limités par le rang sur l'île. Refusez explicitement ces permissions dans votre plugin de permissions pour les réserver aux opérateurs.
+    - **`/ob phases` pour les opérateurs.** `aoneblock.phases` n'était accordée par défaut à personne, si bien que même les opérateurs devaient se la voir attribuer. Elle est désormais accordée par défaut aux opérateurs.
+    - ⚙️ **Nouveaux paramètres par défaut pour les nouvelles installations.** Huit paramètres liés aux dangers sont masqués aux joueurs (`TNT_DAMAGE`, `BLOCK_EXPLODE_DAMAGE`, `FIRE_BURNING`, `FIRE_IGNITE`, `FIRE_SPREAD`, `LEAF_DECAY`, `ENDERMAN_TELEPORT`, `SHULKER_TELEPORT`). Dix actions inoffensives sont autorisées en dehors des îles (`ITEM_DROP`, `ITEM_PICKUP`, `EXPERIENCE_PICKUP`, `HURT_MONSTERS`, `FISHING`, `BOAT`, `RIDING`, `ELYTRA`, `ENDER_PEARL`, `EXPERIENCE_BOTTLE_THROWING`). `EXPERIENCE_PICKUP` sur les îles passe de Membre à Visiteur, et `PISTON_PUSH` est activé : les pistons ne peuvent donc pas pousser de blocs hors d'une île.
+    - 🐛 **Les drapeaux d'AOneBlock n'apparaissent plus que dans AOneBlock.** Des drapeaux comme Magic Block Protection apparaissaient dans les panneaux de paramètres de tous les modes de jeu, où ils ne faisaient rien.
+
+    🔺 **Mettez d'abord BentoBox à jour vers la 3.23.0 ou une version ultérieure.** Cette version ne se charge pas sur un BentoBox plus ancien, et le serveur doit tourner sous Java 25.
+
+    ⚙️ **Les nouveaux paramètres par défaut ne s'appliquent pas aux serveurs existants.** Votre `config.yml` n'est pas écrasé. Pour les utiliser, copiez les entrées `world.flags`, `world.default-island-flags` et `world.hidden-flags` du [config.yml fourni](https://github.com/BentoBoxWorld/AOneBlock/blob/master/src/main/resources/config.yml) dans le vôtre, ou modifiez-les dans les panneaux de paramètres d'administration. Les deux nouvelles options de config sont ajoutées automatiquement avec des valeurs par défaut qui ne changent rien.
+
+    Aucun changement de locale.
+
+    [Release v1.30.0](https://github.com/BentoBoxWorld/AOneBlock/releases/tag/1.30.0)

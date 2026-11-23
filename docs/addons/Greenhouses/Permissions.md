@@ -10,4 +10,6 @@
 | [gamemode].greenhouses.admin.tp     | Permet de se téléporter à une serre (depuis la 1.10.0)                                                                                              | op          |
 | [gamemode].greenhouses.admin.verify | Permet de revérifier les serres par rapport à leur recette (depuis la 1.10.0)                                                                       | op          |
 | [gamemode].greenhouses.admin.reload | Permet de recharger biomes.yml et la base de données des serres (depuis la 1.10.0)                                                                  | op          |
+| [gamemode].greenhouses.admin.build | Permet de construire des serres de test (depuis la 1.11.0)                                                                                          | op          |
+| [gamemode].greenhouses.admin.edit  | Permet de modifier les recettes de serres en jeu (depuis la 1.11.0)                                                                                 | op          |
 | greenhouses.biome.nether            | Donne accès aux biomes du Nether. Les permissions par biome sont définies dans `biomes.yml` - voir la [page Greenhouses](index.md#permissions).       | true        |

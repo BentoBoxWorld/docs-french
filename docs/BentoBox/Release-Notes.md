@@ -2,7 +2,57 @@
 
 Points forts des versions récentes de BentoBox pour les administrateurs de serveur. Pour chaque changement, voir les [versions GitHub](https://github.com/BentoBoxWorld/BentoBox/releases). Les modes de jeu et les add-ons listent leurs propres changements en bas de leurs pages.
 
-!!! note "Nouveautés dans v3.23.6 — types d'entités toujours autorisés & correctif du chargement des blueprints"
+!!! note "Nouveautés dans v3.24.0 — blueprints plus petits, collage plus rapide, expiration des invitations et PVP en dehors des îles"
+    **Publié :** 22 novembre 2026
+
+    Une version apportant de nouvelles fonctionnalités. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🔺 **Blueprints plus petits.** Un blueprint enregistre désormais son air (ou son eau) une seule fois comme « remplissage » au lieu d'une fois par bloc, donc les fichiers de blueprint sont beaucoup plus petits et se chargent plus rapidement. Les anciens blueprints se chargent comme avant et ne sont convertis que lorsqu'ils sont de nouveau enregistrés. Voir [Blueprints](Blueprints.md) et le [format de fichier](Blueprint-Format.md#compact-blueprints-fill).
+    - ⚙️ **Collage d'îles plus rapide.** Le collage et la copie s'exécutent désormais pendant `island.paste-time-budget` millisecondes à chaque tick (10 par défaut) au lieu de placer un seul lot par tick, si bien que les grandes îles apparaissent beaucoup plus tôt quand le serveur a du temps disponible. Voir [Vitesse de collage](Blueprints.md#pasting-speed).
+    - ⚙️ **Les véhicules sont renvoyés des îles verrouillées et bannies.** Un joueur qui entre en bateau, en wagonnet ou sur une monture dans une île où il n'a pas le droit d'entrer est renvoyé avec son véhicule au lieu d'en être éjecté et de se retrouver bloqué. Une île verrouillée affiche brièvement sa bordure au joueur refoulé. Voir [Verrous, bannissements et expulsions](Island-Protection,-Flags-&-Ranks.md#locks-bans-and-expels).
+    - ⚙️🔡 **Retrait et expiration des invitations d'équipe.** `/island team uninvite <player>` retire une invitation d'équipe, de confiance ou de coopération, et les invitations expirent désormais après 24 heures par défaut. Voir [Équipes](About/Teams.md#what-players-can-do).
+    - 🔡 **PVP en dehors des îles.** Un nouveau paramètre mondial, `PVP_OUTSIDE_ISLANDS`, désactivé par défaut, autorise le PVP là où il n'y a pas d'île. Voir [Paramètres Mondiaux](Island-Protection,-Flags-&-Ranks.md#what-each-world-setting-does).
+    - 🔡 **Dégâts de creeper aux blocs par île.** Un nouveau paramètre d'île, `CREEPER_BLOCK_DAMAGE`, masqué tant qu'un admin ne l'affiche pas. Voir [Onglet Paramètres](Island-Protection,-Flags-&-Ranks.md#settings-tab).
+    - **Boutons COMMAND et CLOSE dans tous les menus.** Les modèles de menu peuvent comporter un bouton qui exécute une commande en tant que joueur ou qui ferme le menu, dans BentoBox et dans tous les addons. Voir [Personnalisation des Menus](../Tutorials/generic/Customizable-GUI.md#command-and-close-buttons).
+    - **Placeholders de liste de visiteurs.** `%[gamemode]_island_visitors_list%` et `%[gamemode]_visited_island_visitors_list%` donnent les noms des joueurs qui visitent une île. Voir [Placeholders](Placeholders.md).
+    - 🔡 **Formulaires de dialogue, panneaux paginés et sélecteurs de valeur** pour les développeurs d'addons. Voir [Documentation du Développeur](Developer-Documentation.md#dialog-forms).
+    - **Noms de MythicMobs conservés.** Un mob MythicMobs qu'un addon fait apparaître sans nom conserve le nom d'affichage défini dans sa config MythicMobs.
+    - 🐛 **Les objets avec composants de données** (comme les modificateurs d'attribut) ne sont plus remplacés par de l'air lors de leur relecture depuis la base de données.
+    - 🐛 **Le nettoyage automatique (housekeeping) ne bloque plus le serveur.** Il n'enregistre que les mondes qu'il purge, un par tick, et ne fait rien sur le thread principal quand il n'y a rien à purger.
+    - 🐛 **Corrections de protection.** Lancer des bouteilles d'expérience vérifie `EXPERIENCE_BOTTLE_THROWING` ; poser des objets sur des blocs vérifie le bloc cliqué ; la vérification de bannissement tient compte de l'équipe de l'île visée par le bannissement ; les événements de changement de rang indiquent le bon joueur et le bon rang précédent.
+    - 🐛 **Un bundle de blueprints `default` manquant ou cassé** est signalé au démarrage, avec le nom du fichier à corriger.
+    - 🐛 Également corrigés : la taille des copies de blueprints et les bateaux qui coulent après un collage ; les données de blocs Slimefun laissées par une purge (pas encore testé sur un vrai serveur Slimefun) ; l'ancien nom de matériau `GRASS` est désormais chargé comme `SHORT_GRASS` ; un message d'erreur trompeur « Could not hook with Vault » au démarrage.
+
+    🔺 **Les blueprints enregistrés par cette version ne sont pas destinés aux anciens serveurs.** Un blueprint enregistré par la 3.24.0 se charge toujours dans un ancien BentoBox, mais il est collé sans son remplissage d'air ou d'eau. Ne partagez pas de blueprints nouvellement enregistrés avec des serveurs sous la 3.23.7 ou une version antérieure.
+
+    🔺 **Les invitations d'équipe expirent désormais.** Les invitations ouvertes au moment de la mise à niveau disposent d'une période d'expiration complète à compter de leur première vérification. Réglez `island.invite-expiry-hours` sur `0` pour que les invitations restent ouvertes indéfiniment, comme avant.
+
+    ⚙️ **Note sur la configuration :** quatre paramètres sont ajoutés sous `island` dans `config.yml`. Chacun prend sa valeur par défaut si vous ne faites rien.
+
+    | Paramètre | Par défaut | Ce qu'il fait |
+    | --- | --- | --- |
+    | `invite-expiry-hours` | `24` | Nombre d'heures pendant lesquelles une invitation d'équipe, de confiance ou de coopération reste ouverte. Avec `0`, elle n'expire jamais. |
+    | `locked-border.show` | `true` | Afficher la bordure d'une île verrouillée au joueur qui en est refoulé. |
+    | `locked-border.color` | `RED` | Couleur de cette bordure : `RED`, `GREEN` ou `BLUE`. |
+    | `paste-time-budget` | `10` | Millisecondes par tick pour le collage et la copie de blueprints. Baissez-le si la création d'îles cause du lag ; `0` reproduit l'ancien comportement. |
+
+    🔡 **Note sur les locales :** nouvelles clés pour la commande uninvite, les drapeaux `CREEPER_BLOCK_DAMAGE` et `PVP_OUTSIDE_ISLANDS` et les sélecteurs de valeur (`panels.picker`). Elles sont ajoutées automatiquement aux fichiers de locale existants et sont traduites dans toutes les langues fournies.
+
+    [Release v3.24.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.24.0)
+
+??? note "Nouveautés dans v3.23.7 — couleurs des rangs avec les anciens fichiers de locale & indications de clic"
+    **Publié :** 11 novembre 2026
+
+    Une petite version de correction. Aucun changement de `config.yml` ou de modèle de panneau. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.
+
+    - 🔺 **Les drapeaux de protection semblaient impossibles à modifier.** Sur les serveurs dont les fichiers de locale ont été écrits à l'origine par BentoBox 3.12 ou une version antérieure, tous les rangs de l'info-bulle d'un drapeau de protection s'affichaient dans le même cyan : les rangs autorisés, bloqués et minimaux paraissaient identiques et un clic semblait sans effet. Avec les anciens fichiers de locale, les rangs s'affichent de nouveau en vert, rouge et vert foncé. Cela a également affecté le filtre de rang du menu d'équipe et le panneau des Rangs de Commande.
+    - 🔡 **Indications de clic rétablies dans neuf langues.** Le tchèque, l'allemand, l'espagnol, le français, l'italien, le japonais, le letton, le polonais et le turc n'avaient pas les indications « Clic gauche / Clic droit » sur les drapeaux de protection ni les indications « Cliquer pour basculer / ouvrir » sur les paramètres. Les mises en page italiennes et la ligne turque du rang bloqué sont également corrigées.
+
+    🔡 **Rafraîchissez vos fichiers de locale** si vous avez effectué une mise à niveau depuis une ancienne version de BentoBox. BentoBox n'écrase jamais le texte de locale existant : un serveur mis à niveau au fil de nombreuses versions conserve donc les formulations de sa première installation. Voir [Langues et Messages](About/Multilingual.md#troubleshooting) pour la marche à suivre.
+
+    [Release v3.23.7](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.23.7)
+
+??? note "Nouveautés dans v3.23.6 — types d'entités toujours autorisés & correctif du chargement des blueprints"
     **Publié :** 7 novembre 2026
 
     Aucun changement de `config.yml`. Compatibilité : Paper Minecraft 1.21.5 – 26.3, Java 25+.

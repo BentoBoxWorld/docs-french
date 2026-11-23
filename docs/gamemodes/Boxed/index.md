@@ -89,6 +89,34 @@ Chaque joueur aura sa propre terre à explorer jusqu'à la limite de la valeur d
 *Graine du monde*
 La graine du monde est ce qui est utilisé pour générer les terres. Je recommande de conserver cette valeur. Si vous la changez, la terre peut être très différente.
 
+Options ajoutées dans Boxed 3.5.0 :
+
+??? note "boxed.structure-time-budget"
+    Millisecondes par tick que le placement des structures vanilla (villages, épaves, etc.) dans les boîtes peut utiliser. Les structures sont placées une par une jusqu'à épuisement de ce temps, si bien qu'une nouvelle boîte reçoit ses structures en quelques secondes quand le serveur a du temps disponible. Un tick dure 50 ms. Baissez cette valeur si le placement des structures cause du lag. `0` place une structure par tick.
+
+    Une structure n'est placée qu'une fois que tous les chunks qu'elle pourrait toucher sont chargés : une structure proche du bord d'une boîte apparaît donc quand un joueur s'en approche pour la première fois, et non juste après la création de la boîte.
+
+    Par défaut : `10`
+
+??? note "world.structure-settings"
+    Désactive ou active individuellement des structures vanilla dans les mondes Boxed. Cela couvre la génération du monde et les recherches de structures : `/locate`, les yeux de l'Ender, les cartes d'exploration et au trésor, les dauphins et les échanges des cartographes. La clé est l'identifiant vanilla de la structure et la valeur est `false` pour désactiver la structure, ou `true` pour la forcer même si la liste globale `world.disabled-structures` de BentoBox la désactive. Les structures non listées suivent la liste globale de BentoBox.
+
+    ```yaml
+    structure-settings:
+      monument: false
+      trial_chambers: false
+    ```
+
+    Par défaut : `{}`
+
+??? note "area.teams-disabled"
+    Désactive le système d'équipe dans les mondes Boxed. Avec `true`, les joueurs ne peuvent pas inviter, accepter d'invitations d'équipe, expulser, quitter l'équipe, promouvoir, rétrograder ni changer le propriétaire. La confiance et la coopération fonctionnent toujours. Après l'avoir activé, exécutez une fois `/boxadmin team disbandall` pour dissoudre les équipes existantes. Voir [Désactiver les équipes](../../BentoBox/About/Teams.md#turning-teams-off).
+
+    Par défaut : `false`
+
+!!! tip "Si la création d'une boîte cause du lag"
+    Essayez la prégénération de chunks de BentoBox : `island.pregeneration.enabled: true` dans le `config.yml` de BentoBox (BentoBox 3.14.0 et versions ultérieures). Elle génère en arrière-plan les chunks des prochaines boîtes, avant que quiconque en ait besoin.
+
 ### Blueprint
 
 Il y a un blueprint "island" qui est utilisé pour générer l'arbre, le coffre et les blocs en dessous jusqu'à y = 5. La hauteur de la surface par défaut est d'environ y = 65, donc le blueprint doit faire environ 60 blocs de haut. Si vous créez de bons blueprints, veuillez les partager !
@@ -138,6 +166,24 @@ Les commandes peuvent être trouvées [ici](Commands).
 Les placeholders peuvent être trouvés [ici](Placeholders).
 
 ## Journal des modifications
+
+!!! warning "Nouveautés dans v3.5.0 — nécessite Java 25 et BentoBox 3.23.0"
+    **Publié :** 21 novembre 2026
+
+    Compatibilité : BentoBox 3.23.0 ou version ultérieure · Paper 1.21.5 – 26.3 · Java 25.
+
+    - 🔺 **Java 25 requis.** Boxed est désormais compilé pour Java 25 et BentoBox 3.23. Il ne se chargera pas sur une version plus ancienne de Java, même sur les serveurs Minecraft 1.21.x.
+    - ⚙️ **Placement des structures plus fluide dans les nouvelles boîtes.** Les villages, épaves, ruines et autres structures d'une nouvelle boîte étaient auparavant placés au rythme d'un toutes les 3 secondes, soit environ 3½ minutes par boîte. Ils sont désormais placés dans un budget de temps par tick, `boxed.structure-time-budget` (`10` ms par défaut), et apparaissent en quelques secondes. Ils ne forcent plus le serveur à générer des chunks pendant un tick : une structure attend que tous les chunks qu'elle pourrait toucher soient chargés, si bien qu'une structure proche du bord d'une boîte apparaît quand un joueur s'en approche pour la première fois.
+    - 🔺 **Les structures ne sont plus placées deux fois.** Après un redémarrage, des structures pouvaient être placées de nouveau par-dessus la boîte d'un joueur, écrasant des constructions et faisant apparaître des mobs supplémentaires. C'est corrigé, et les listes enregistrées par les anciennes versions sont nettoyées automatiquement.
+    - ⚙️ **Désactivez les équipes** avec la nouvelle option `area.teams-disabled` (`false` par défaut). La confiance et la coopération fonctionnent toujours.
+    - ⚙️ **Contrôlez les structures vanilla** avec la nouvelle option `world.structure-settings`, qui désactive des structures individuelles, ou les force, dans les mondes Boxed.
+    - 🔺 **Les joueurs peuvent lister, renommer et supprimer leurs maisons.** `boxed.island.homes`, `boxed.island.renamehome` et `boxed.island.deletehome` n'étaient pas déclarées, si bien que seuls les opérateurs les avaient. Elles sont désormais accordées par défaut à tout le monde. Refusez-les explicitement dans votre plugin de permissions si vous ne le souhaitez pas.
+    - 🔺 **`/boxadmin place` utilise `boxed.admin.place`** (opérateurs par défaut). Elle vérifiait auparavant le nœud non déclaré `boxed.boxed.commands.boxadmin.place`. Si vous l'aviez accordé à des membres du staff qui ne sont pas opérateurs, accordez-leur `boxed.admin.place` à la place.
+    - 🐛 Une structure qui n'a pas pu être chargée ne bloque plus toutes les structures suivantes jusqu'à un redémarrage, et un nom de structure manquant dans `structures.yml` ne fait plus ignorer toutes les structures listées après lui.
+
+    Les nouvelles options sont ajoutées au `config.yml` avec leurs valeurs par défaut ; voir [config.yml](#configyml).
+
+    [Release v3.5.0](https://github.com/BentoBoxWorld/Boxed/releases/tag/3.5.0)
 
 ??? note "Nouveautés dans v3.4.1"
     **Publié :** 25 septembre 2026

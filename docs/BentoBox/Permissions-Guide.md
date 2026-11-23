@@ -23,7 +23,7 @@ Les add-ons ajoutent leurs propres autorisations. Elles sont listées sur la pag
 Exécutez **`/bentobox perms`** dans la console. Elle imprime chaque autorisation de commande BentoBox et mode de jeu avec sa valeur par défaut (`TRUE` pour tout le monde, `OP` pour les opérateurs, `FALSE` pour personne), dans un format que vous pouvez coller dans un plugin d'autorisations.
 
 !!! warning "Certaines commandes de joueur ne sont que pour les opérateurs par défaut"
-    Dans BSkyBlock, AOneBlock et AcidIsland, `island.deletehome` et `island.renamehome` ne sont que pour les opérateurs par défaut. Dans AOneBlock et AcidIsland, il en va de même pour `island.homes`. Si vous donnez aux joueurs plus d'une maison, donnez-leur aussi celles-ci :
+    Dans BSkyBlock et AcidIsland, `island.deletehome` et `island.renamehome` ne sont que pour les opérateurs par défaut. Dans AcidIsland, il en va de même pour `island.homes`. Si vous donnez aux joueurs plus d'une maison, donnez-leur aussi celles-ci :
 
     ```
     /lp group default permission set bskyblock.island.homes true

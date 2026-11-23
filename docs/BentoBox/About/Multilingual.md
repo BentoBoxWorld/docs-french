@@ -136,5 +136,8 @@ La clé manque dans la langue du joueur, la langue par défaut du serveur et l'a
 **Après une mise à jour, un message a toujours l'ancien libellé.**
 Votre fichier conserve l'ancien texte. Supprimez cette ligne ou le fichier entier et exécutez `/bentobox reload locales`.
 
+**Tous les rangs de l'info-bulle d'un drapeau de protection ont la même couleur, ou les drapeaux n'affichent pas les indications « Clic gauche / Clic droit ».**
+Les fichiers de locale ont été écrits à l'origine par une ancienne version de BentoBox et contiennent encore l'ancien texte. BentoBox 3.23.7 affiche de nouveau correctement les couleurs des rangs avec les anciens fichiers, mais seuls des fichiers neufs comportent les indications de clic et toutes les corrections de formulation ultérieures. Pour les rafraîchir : arrêtez le serveur, renommez `plugins/BentoBox/locales/BentoBox/` (par exemple en `BentoBox-old`), démarrez le serveur pour que les fichiers actuels soient écrits, puis reportez-y vos propres modifications. La même méthode fonctionne pour le dossier d'un add-on dans `plugins/BentoBox/locales/<AddonName>/`.
+
 **Le fichier YAML ne se charge pas après édition.**
 Généralement un guillemet manquant ou une mauvaise indentation. Mettez les messages contenant `:` ou `#` entre guillemets, et vérifiez la console pour le numéro de ligne.

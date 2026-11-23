@@ -58,7 +58,7 @@ Cet exemple s'applique quand vous êtes dans le monde BSkyBlock. Pour AcidIsland
 
 Cette version de Greenhouses est un addon pour BentoBox et ne fonctionne pas de manière autonome!
 
-1. BentoBox - assurez-vous d'utiliser la dernière version!
+1. BentoBox - assurez-vous d'utiliser la dernière version ! Greenhouses 1.11.0 nécessite BentoBox 3.24.0 ou une version ultérieure, Paper 1.21.11 à 26.3 et Java 25.
 
 ## Installation et configuration
 
@@ -71,6 +71,13 @@ Cette version de Greenhouses est un addon pour BentoBox et ne fonctionne pas de 
 7. Configurez le **biomes.yml** si vous le souhaitez (avancé).
 8. Tapez **/bsbadmin greenhouses reload** dans le jeu pour recharger la configuration ou redémarrez le serveur.
 9. Fait!
+
+Une option de `config.yml` a été ajoutée dans Greenhouses 1.11.0 :
+
+??? note "sample-ticks"
+    Ajoutée dans Greenhouses 1.11.0. Fréquence, en ticks serveur (20 = 1 seconde), à laquelle des emplacements aléatoires de chaque serre sont choisis pour l'apparition des mobs et la conversion des blocs. Des valeurs plus basses répartissent la charge plus uniformément. Cela ne change pas les taux globaux, définis par `mobtick` et `blocktick` : en moyenne, chaque emplacement a toujours une chance par `mobtick` ou `blocktick`, si bien que les mobs arrivent progressivement plutôt que tous en même temps.
+
+    Par défaut : `20`
 
 Pour construire votre première serre, construisez une boîte de verre et tapez **/is greenhouses make** pour voir quel type de serre vous obtenez. Tapez **/is greenhouses** pour voir les recettes.
 
@@ -105,14 +112,75 @@ Enregistrées sous la commande admin de votre mode de jeu, par exemple `/bsbadmi
 | `tp <id>` | Vous téléporte au milieu du sol de la serre. Alias : `teleport`. |
 | `verify [id]` | Revérifie une serre ou toutes les serres par rapport à leur recette et signale ce qui manque. Alias : `check`. |
 | `reload` | Relit `biomes.yml`, puis recharge les serres depuis la base de données. |
+| `edit [recipe]` | Ouvre l'[éditeur de recette](#in-game-recipe-editor), ou l'éditeur d'une recette. Depuis la 1.11.0. |
+| `build <recipe> [x y z] [WxDxH] [keep\|clear]` | Construit une [serre de test](#test-greenhouse-builder) pour une recette, autour de vous ou centrée sur le point du sol indiqué. Depuis la 1.11.0. |
 
 - Les identifiants proviennent de `list` et peuvent être abrégés en n'importe quel préfixe ne correspondant qu'à **une seule** serre. Un préfixe ambigu est traité comme une absence de correspondance plutôt que comme une supposition, car la suppression d'une mauvaise serre est irréversible.
-- Tout fonctionne depuis la console du serveur, sauf `tp`.
+- Tout fonctionne depuis la console du serveur, sauf `tp`, `edit` et `build`.
 - Les enregistrements de serres qui ne peuvent pas être chargés — chevauchement, recette inconnue, monde absent, aucun emplacement — sont conservés en mémoire avec la raison au lieu d'être silencieusement ignorés. C'est ce qui les rend listables et supprimables.
 - Les enregistrements ne sont jamais supprimés automatiquement. Retirer la serre d'un joueur sans qu'on le demande serait pire qu'un avertissement récurrent.
 
 !!! tip "Serres qui se chevauchent"
     Si deux serres enregistrées se chevauchent, l'une est ignorée au démarrage et nommée dans le journal, avec l'enregistrement qu'elle chevauche. Utilisez `/bsbadmin greenhouses list` pour voir les enregistrements ignorés et pourquoi, puis `/bsbadmin greenhouses delete <id>` pour retirer celui que vous ne voulez pas. Aucune modification de base de données et aucun redémarrage nécessaires.
+
+### Hub d'administration { #admin-hub }
+
+*Ajouté dans Greenhouses 1.11.0.*
+
+Exécuter `/bsbadmin greenhouses` sans argument ouvre une interface graphique qui donne accès à tous les outils d'administration. Depuis la console, la commande affiche toujours l'aide. Le hub comporte ces boutons :
+
+- **Recettes** ouvre l'éditeur de recettes.
+- **Serres** ouvre le navigateur de serres.
+- **Construire une serre de test** construit une serre de test à l'endroit où vous vous trouvez.
+- **Vérifier toutes les serres** revérifie chaque serre.
+- **Recharger** effectue le rechargement, après confirmation.
+
+Chaque bouton n'apparaît que si vous avez la permission de la sous-commande correspondante, et il exécute la même commande que celle que vous taperiez : les vérifications de permission et les messages sont donc identiques.
+
+Le navigateur liste toutes les serres, y compris celles qui n'ont pas pu être chargées, et peut être filtré par propriétaire. Dans le navigateur :
+
+| Clic | Effet |
+|---|---|
+| Clic gauche | Téléporte à la serre |
+| Clic droit | La vérifie |
+| Maj+clic | Affiche ses détails |
+| ++q++ | La supprime, après une boîte de dialogue de confirmation |
+
+### Éditeur de recettes en jeu { #in-game-recipe-editor }
+
+*Ajouté dans Greenhouses 1.11.0.*
+
+`/bsbadmin greenhouses edit [recipe]` (permission `[gamemode].greenhouses.admin.edit`) crée, modifie, duplique et supprime des recettes de biome sans toucher à `biomes.yml` ni redémarrer. Vous pouvez modifier chaque partie d'une recette :
+
+- icône, nom et description ;
+- biome, priorité et permission ;
+- couverture d'eau, de lave et de glace ;
+- [limites de mobs par habitat](#mob-limits-per-habitat) ;
+- blocs, plantes et mobs requis (variantes comprises) et conversions de blocs.
+
+Les blocs peuvent être choisis dans une liste avec recherche ou en cliquant sur un objet de votre inventaire.
+
+Quand vous enregistrez :
+
+- La recette est d'abord vérifiée.
+- `biomes.yml` est sauvegardé dans `backups/`, et les 10 dernières sauvegardes sont conservées.
+- Seule la recette modifiée est réécrite, et les commentaires sont conservés.
+- Les serres appliquent immédiatement les nouvelles règles, sans redémarrage.
+
+Les modifications non enregistrées de chaque admin sont conservées jusqu'à ce qu'il les enregistre ou les abandonne. Si un autre admin enregistre la même recette pendant que vous la modifiez, vous pouvez écraser sa version ou repartir de celle-ci. Supprimer une recette ne supprime jamais de serres : les serres qui l'utilisaient apparaissent alors comme non chargées.
+
+### Constructeur de serre de test { #test-greenhouse-builder }
+
+*Ajouté dans Greenhouses 1.11.0.*
+
+`/bsbadmin greenhouses build <recipe> [x y z] [WxDxH] [keep|clear]` (permission `[gamemode].greenhouses.admin.build`) construit une serre fonctionnelle pour une recette et l'enregistre :
+
+- des murs de verre ;
+- une porte d'un style adapté au biome, du côté vers lequel vous regardez ;
+- un entonnoir dans le toit, rempli de poudre d'os ;
+- les blocs, l'eau et la lave dont la recette a besoin (les serres océaniques sont inondées, et celles du Nether reçoivent de la lave).
+
+`keep` construit autour de ce qui se trouve déjà là, comme un arbre. `clear` vide d'abord l'espace, après confirmation. Les coordonnées `~ ~ ~` fonctionnent.
 
 ## Personnaliser les spawns de mobs (exemple : Wither Skeletons) { #personnaliser-les-spawns-de-mobs-exemple-wither-skeletons }
 
@@ -141,9 +209,31 @@ Appliquez le changement avec **/bsbadmin greenhouses reload** (ou l'équivalent 
 
 Choses à garder à l'esprit :
 
-* **Toutes les chances dans une recette doivent ajouter jusqu'à 100 ou moins.** Si une nouvelle entrée pousse le total au-delà de 100, ce mob est ignoré et une erreur est enregistrée au chargement (`Mob chances add up to > 100% in NETHER biome recipe! Skipping ...`).
+* **Toutes les chances dans une recette doivent ajouter jusqu'à 100 ou moins.** Si une nouvelle entrée pousse le total au-delà de 100, ce mob est ignoré et une erreur est enregistrée au chargement (`Mob chances add up to > 100% in NETHER biome recipe! Skipping ...`). Avant la 1.11.0, une erreur d'arrondi pouvait faire rejeter des chances totalisant exactement 100.
 * La génération est également limitée par les valeurs `moblimit` et `maxmobs` de la recette, et par l'intervalle de tick de mob dans `config.yml` — donc un pourcentage bas peut sembler rare en pratique.
 * Le `ENTITY_TYPE` doit être un nom [Bukkit EntityType](https://jd.papermc.io/paper/1.21.5/org/bukkit/entity/EntityType.html) valide ; les noms inconnus sont ignorés avec un avertissement.
+* Sur Minecraft 26.x, le mooshroom est `MOOSHROOM`, pas `MUSHROOM_COW`. Renommez toutes les entrées `MUSHROOM_COW` dans votre `biomes.yml`.
+* Depuis la 1.11.0, les mêmes changements peuvent être effectués en jeu avec l'[éditeur de recettes](#in-game-recipe-editor).
+
+### Limites de mobs par habitat { #mob-limits-per-habitat }
+
+*Ajouté dans Greenhouses 1.11.0.*
+
+`moblimit` est le nombre de blocs de sol dont chaque mob a besoin, ce qui n'est pas la bonne mesure pour un océan profond, un lac de lave ou des mobs volants. Une recette peut définir trois clés facultatives supplémentaires dans `biomes.yml`. Chacune compte ses propres mobs, et chaque valeur est le nombre de blocs par mob :
+
+| Clé | Mobs comptés | Espace de référence |
+|---|---|---|
+| `moblimit-water` | Mobs qui apparaissent sur l'eau | Blocs d'eau |
+| `moblimit-lava` | Mobs qui apparaissent sur la lave | Blocs de lave |
+| `moblimit-air` | Mobs volants : allays, chauves-souris, abeilles, ghasts, perroquets, phantoms et vex | Le volume intérieur de la serre |
+
+Les mobs terrestres continuent d'utiliser `moblimit`, et `maxmobs` plafonne toujours le total. Si une limite n'est pas indiquée, ces mobs partagent `moblimit` avec les mobs terrestres, si bien que les recettes sans les nouvelles clés se comportent comme avant. Le `biomes.yml` fourni définit :
+
+- `moblimit-water` : plages, plage enneigée et océan (9), et rivière (1) ;
+- `moblimit-lava` : nether et forêt biscornue (9) ;
+- `moblimit-air` : jungle et grottes de spéléothèmes (27), et vallée des âmes (64).
+
+`moblimit` est exact depuis la 1.11.0 : 81 blocs à 9 blocs par mob donnent 9 mobs, et non 10. Les apparitions naturelles (vanilla) à l'intérieur d'une serre sont aussi annulées depuis la 1.11.0 : seuls les mobs propres à la recette apparaissent.
 
 ## Permissions
 
@@ -171,13 +261,36 @@ La permission peut être n'importe quoi que vous aimez, par exemple, une permiss
      description: Donne accès aux commandes admin
      default: op
 
-Depuis la 1.10.0, chaque sous-commande admin possède également son propre nœud — `greenhouses.admin.list`, `.info`, `.delete`, `.tp`, `.verify` et `.reload` — tous avec `op` par défaut. Les opérateurs n'ont rien à faire, mais si vous accordez l'accès admin via un plugin de permissions, vous voudrez les ajouter. Ils étaient totalement absents de `addon.yml` avant cette version, ce qui explique pourquoi seul l'accès op fonctionnait.
+Depuis la 1.10.0, chaque sous-commande admin possède également son propre nœud — `greenhouses.admin.list`, `.info`, `.delete`, `.tp`, `.verify` et `.reload` — tous avec `op` par défaut. La 1.11.0 ajoute `.edit` et `.build`. Les opérateurs n'ont rien à faire, mais si vous accordez l'accès admin via un plugin de permissions, vous voudrez les ajouter. Ils étaient totalement absents de `addon.yml` avant cette version, ce qui explique pourquoi seul l'accès op fonctionnait.
 
 ## Traductions
 
 {{ translations("Greenhouses") }}
 
-!!! warning "Nouveautés dans v1.10.2 — correction d'un plantage sur Paper 26.2"
+!!! warning "Nouveautés dans v1.11.0 — hub d'administration et éditeur de recettes ; nécessite BentoBox 3.24.0"
+    **Publié :** 22 novembre 2026
+
+    Compatibilité : API BentoBox 3.24.0 ou version ultérieure · Paper 1.21.11 à 26.3 · Java 25.
+
+    - 🔡 **Hub d'administration.** `/[admin_command] greenhouses` ouvre désormais une interface graphique qui donne accès à tous les outils d'administration : modifier les recettes, parcourir les serres, construire des serres de test, toutes les vérifier et recharger. Voir [Hub d'administration](#admin-hub).
+    - 🔡 **Éditeur de recettes en jeu.** `/[admin_command] greenhouses edit [recipe]` crée, modifie, duplique et supprime des recettes de biome sans toucher à `biomes.yml` ni redémarrer. Voir [Éditeur de recettes en jeu](#in-game-recipe-editor).
+    - 🔡 **Constructeur de serre de test.** `/[admin_command] greenhouses build <recipe>` construit, à l'endroit où vous vous trouvez, une serre fonctionnelle pour n'importe quelle recette. Voir [Constructeur de serre de test](#test-greenhouse-builder).
+    - ⚙️ **Apparition des mobs et conversion des blocs plus régulières.** Les deux parcouraient auparavant chaque bloc de chaque serre en un seul tick, si bien qu'une serre atteignait d'un coup sa limite de mobs. Elles s'exécutent désormais tous les `sample-ticks` ticks (nouveau paramètre, `20` par défaut) sur un échantillon aléatoire d'emplacements. Les taux moyens sont inchangés, et les mobs sont comptés dans la zone propre à chaque serre plutôt que dans le monde entier.
+    - **Limites de mobs distinctes pour l'eau, la lave et l'air.** Nouvelles clés de recette facultatives `moblimit-water`, `moblimit-lava` et `moblimit-air`. Voir [Limites de mobs par habitat](#mob-limits-per-habitat).
+    - 🐛 **Les apparitions naturelles à l'intérieur des serres sont bloquées.** La protection contre les apparitions ne reconnaissait que les blocs des murs et du toit, si bien que les serres de taïga se remplissaient de loups, et celles du Nether de ghasts, de cubes de magma et de piglins zombifiés.
+    - 🐛 `moblimit` autorisait un mob de trop ; les plantes ne sont désormais placées que là où elles peuvent survivre ; les chances totalisant exactement 100 % ne sont plus rejetées.
+    - 🔡 **Descriptions de recettes et couleurs MiniMessage** dans le panneau des recettes, traduites dans les 22 langues.
+    - Nouvelles permissions `[gamemode].greenhouses.admin.edit` et `[gamemode].greenhouses.admin.build`, toutes deux `op` par défaut.
+
+    🔺 **Nécessite BentoBox 3.24.0 et Paper 1.21.11+.** L'éditeur de recettes et le hub d'administration utilisent la nouvelle API de dialogues et de panneaux paginés de BentoBox ; les versions plus anciennes de BentoBox refusent donc de charger cet addon. Mettez d'abord BentoBox à jour.
+
+    🔺 **`biomes.yml` n'est pas remplacé.** Le fichier livré a changé : les recettes ont des descriptions et des noms MiniMessage, les limites de mobs par habitat sont définies, et `MUSHROOM_COW` est maintenant `MOOSHROOM`. Votre fichier est conservé tel quel. Pour utiliser les nouvelles valeurs par défaut, fusionnez vous-même les changements ou renommez votre fichier pour qu'un nouveau soit généré. Dans les deux cas, renommez toutes les entrées `MUSHROOM_COW` en `MOOSHROOM`, car l'ancien nom n'est pas valide en 26.x.
+
+    🔡 **Fichiers de locale.** Pour bénéficier de toutes les corrections de texte, supprimez `plugins/BentoBox/locales/Greenhouses/` avant de démarrer le serveur. BentoBox ajoute de nouvelles clés de locale aux fichiers existants, mais ne met pas à jour les clés qui ont changé.
+
+    [Release v1.11.0](https://github.com/BentoBoxWorld/Greenhouses/releases/tag/1.11.0)
+
+??? warning "Nouveautés dans v1.10.2 — correction d'un plantage sur Paper 26.2"
     **Publié :** 2026-09-06
 
     Compatibilité : API BentoBox 2.7.1 · Minecraft 1.21.5+ · Java 21. Aucun changement de config ou de locale.
