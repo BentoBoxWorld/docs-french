@@ -158,6 +158,8 @@ L'addon introduit 1 drapeau de paramètres BentoBox :
 ??? question "J'ai un bug, où devrais-je le signaler ?"
     Veuillez l'ajouter à la liste [ici](https://github.com/BentoBoxWorld/CaveBlock/issues).
 
+??? question "Les niveaux des îles valent 0, sont énormes ou augmentent à mesure que les joueurs explorent. Pourquoi ?"
+    CaveBlock est un monde plein : l'addon [Level](../../addons/Level/index.md) a donc besoin que le terrain naturel vaille 0. Utilisez Level 2.31.0 ou une version ultérieure, copiez la section `caveblock-world` depuis son `blockconfig.yml` par défaut, et ajoutez `CaveBlock` à `zero-disabled-game-modes` dans le `config.yml` de Level. Les nouvelles installations de Level ont déjà ces valeurs de blocs. Voir [Nouveautés dans Level 2.31.0](../../addons/Level/index.md#changelog).
 
 ## Journal des modifications
 

@@ -36,6 +36,8 @@ Vous avez deux façons de laisser les amis vous aider.
 1. Invitez-les : `/island team invite <name>`. Ils doivent être en ligne.
 2. Ils acceptent avec `/island team accept` (ou cliquez sur **Accepter** si une fenêtre pop-up apparaît).
 
+Vous avez changé d'avis ? `/island team uninvite <name>` annule l'invitation. Une invitation restée sans réponse expire d'elle-même, au bout d'un jour sur la plupart des serveurs.
+
 !!! warning "Rejoindre l'île de quelqu'un d'autre"
     Quand vous acceptez une invitation d'équipe, vous **perdez généralement votre propre île**. On vous demandera de confirmer d'abord. Selon le serveur, votre inventaire peut aussi être vidé.
 

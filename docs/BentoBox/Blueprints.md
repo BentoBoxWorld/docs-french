@@ -28,7 +28,7 @@ Pour remplacer l'île par défaut du mode de jeu au lieu d'en ajouter une nouvel
 
 Sans `air`, seuls les blocs que vous avez construits sont copiés. Quand l'île est collée, tous les autres emplacements de la zone restent tels qu'ils sont dans le monde : l'eau ou la pierre qui s'y trouve reste.
 
-Avec `air`, chaque emplacement de la zone est copié, donc toute la zone remplace ce qui se trouve dans le monde, air compris. Depuis BentoBox 3.23.8, le bloc simple le plus courant de la zone (généralement l'air, ou l'eau pour une île en mer) est enregistré une seule fois plutôt qu'une fois par emplacement : une grande copie avec `air` ne produit donc pas un gros fichier.
+Avec `air`, chaque emplacement de la zone est copié, donc toute la zone remplace ce qui se trouve dans le monde, air compris. Depuis BentoBox 3.24.0, le bloc simple le plus courant de la zone (généralement l'air, ou l'eau pour une île en mer) est enregistré une seule fois plutôt qu'une fois par emplacement : une grande copie avec `air` ne produit donc pas un gros fichier.
 
 `nowater` laisse l'eau de côté : partout où il y avait de l'eau, le monde reste tel quel au collage. Combiné avec `air`, la zone n'est plus copiée en entier, donc chaque bloc d'air est enregistré un par un et le fichier est plus gros. N'utilisez `air nowater` que si l'eau du monde doit rester, par exemple dans un océan.
 
@@ -107,7 +107,14 @@ Vous pouvez copier ces fichiers entre serveurs, les garder sous contrôle de ver
 
 ## Vitesse de collage { #pasting-speed }
 
-La copie et le collage se produisent un peu à la fois, donc les grandes îles ne gèlent pas le serveur ; une grande île peut prendre quelques secondes. Si la création d'îles cause du lag, baissez `paste-speed` (blocs par tick) dans le `config.yml` de BentoBox.
+La copie et le collage se produisent un peu à la fois, donc les grandes îles ne gèlent pas le serveur ; une grande île peut prendre quelques secondes. Deux paramètres sous `island` dans le `config.yml` de BentoBox contrôlent cela :
+
+| Paramètre | Par défaut | Ce qu'il fait |
+|---|---|---|
+| `paste-time-budget` | `10` | Millisecondes de chaque tick que le collage et la copie peuvent utiliser. Un tick dure 50 ms. BentoBox continue de placer des lots jusqu'à épuisement de ce temps, si bien que les grandes îles se collent beaucoup plus vite quand le serveur a du temps disponible. `0` place un lot par tick, comme avant la 3.24.0. |
+| `paste-speed` | `64` | Nombre de blocs par lot. |
+
+Si la création d'îles cause du lag, baissez d'abord `paste-time-budget`. `paste-time-budget` nécessite BentoBox 3.24.0 ou une version ultérieure ; les versions antérieures placent un lot de `paste-speed` blocs par tick.
 
 ## Dépannage { #troubleshooting }
 
@@ -118,13 +125,16 @@ Ajoutez un bloc de bedrock à l'île, copiez à nouveau, puis enregistrez.
 Ajoutez une pancarte `[spawn_here]`, avec de l'air au-dessus pour le joueur.
 
 **L'île est entourée de lacunes d'eau (ou de pierre) qui ne devraient pas être là**, ou l'eau du monde s'écoule dedans.
-Copiez avec `air` afin que l'espace autour de l'île fasse partie du blueprint. Depuis la 3.23.8, l'air est enregistré une seule fois pour toute la zone : une sélection plus grande coûte donc peu.
+Copiez avec `air` afin que l'espace autour de l'île fasse partie du blueprint. Depuis la 3.24.0, l'air est enregistré une seule fois pour toute la zone : une sélection plus grande coûte donc peu.
 
 **Un bateau coule dans l'eau, ou un mob est coincé dans une dalle, après le collage.**
-Le blueprint a été copié avant BentoBox 3.23.8, qui n'enregistrait pas la hauteur d'une entité dans son bloc. Collez-le, puis copiez-le et enregistrez-le de nouveau.
+Le blueprint a été copié avant BentoBox 3.24.0, qui n'enregistrait pas la hauteur d'une entité dans son bloc. Collez-le, puis copiez-le et enregistrez-le de nouveau.
 
 **Mon nouveau bundle ne s'affiche pas dans le menu Créer une Île.**
 Vérifiez qu'il a un blueprint Overworld, qu'il n'exige pas une permission que le joueur n'a pas, et, s'il a une limite d'utilisation, que le joueur ne l'a pas épuisée. Avec `hide-used-blueprints: true` dans le `config.yml` de BentoBox, les bundles utilisés sont masqués.
+
+**La console signale un bundle `default` manquant ou cassé au démarrage.**
+Depuis la 3.24.0, BentoBox vérifie le bundle `default` de chaque mode de jeu au chargement et indique le fichier à corriger, au lieu de laisser les joueurs avec une île vide. Restaurez le fichier de bundle indiqué, ou corrigez le blueprint vers lequel pointe le bundle. S'il n'y a pas de bundle `default` et qu'il existe exactement un autre bundle, c'est celui-ci qui est utilisé.
 
 **La pancarte de bienvenue affiche `[start]`.**
 Le texte `[start]` vient du fichier de locale du mode de jeu. Vérifiez que `<gamemode>.sign.line0` à `line3` existent dedans.

@@ -264,6 +264,7 @@ Le moyen le plus facile de changer tout cela est en jeu avec `/[admin_command] p
   end-commands: [ ... ]
   end-commands-first-time: [ ... ]
   requirements: { ... }
+  finale: { ... }             # optional boss that ends the phase (1.29.0+)
 ```
 
 === "name"
@@ -297,7 +298,7 @@ Le moyen le plus facile de changer tout cela est en jeu avec `/[admin_command] p
 
 ---
 
-## Commandes lors du changement de phase
+## Commandes lors du changement de phase { #commands-on-phase-change }
 
 Les commandes s'exécutent en tant que **console** sauf si elles sont préfixées par `[SUDO]`, auquel cas elles s'exécutent en tant que joueur qui les a déclenchées.
 
@@ -327,6 +328,122 @@ start-commands:
 end-commands-first-time:
 - 'broadcast &c&l[!] &b[player] &fhas completed the &d&n[phase]&f phase for the first time.'
 ```
+
+---
+
+## Finales de phase — le boss qui termine une phase { #phase-finales-the-boss-that-ends-a-phase }
+
+*Ajouté dans AOneBlock 1.29.0.*
+
+Une phase dotée d'une section `finale:` se termine par un combat de boss. Quand le dernier bloc de la phase est miné, le bloc magique se scelle et le boss apparaît dessus. La phase ne change pas tant que le boss n'est pas mort. Une phase sans section `finale:` se termine comme elle l'a toujours fait.
+
+```yaml
+  finale:
+    boss: GIANT
+    name: '<dark_green>The Colossus'
+    health: 100
+    scale: 0.5
+    damage: 4
+    speed: 0.25
+    minions:
+      ZOMBIE: 2
+    drops:
+      IRON_INGOT: 8
+      BREAD: 8
+```
+
+### Déroulement d'un combat
+
+- **L'avertissement.** Pendant les 20 derniers blocs de la phase, un battement de cœur retentit, de plus en plus aigu, et une cloche sonne à cinq blocs de la fin. La barre de phase affiche le nom du boss dès qu'il est en attente.
+- **Le combat.** Le boss apparaît sur le bloc magique au son d'une corne de raid et dans un éclair. Le bloc magique ne peut pas être miné tant que le boss n'est pas mort, et la barre de phase cède la place à la barre de vie du boss.
+- **Équitable pour l'île.** Seuls les joueurs peuvent blesser le boss : corps à corps, projectiles et animaux de compagnie. Le boss et ses acolytes ne peuvent ni casser, ni brûler, ni faire exploser de blocs, et le boss est ramené s'il quitte l'île.
+- **Projections hors de l'île.** Les joueurs peuvent toujours être projetés hors de l'île. Un boss projeté dans le vide revient au bloc magique, sauf si `void-respawn` vaut `false`.
+- **Défaite.** Si tout le monde meurt ou s'en va, le boss se retire au bout d'une dizaine de secondes. Frapper le bloc magique l'invoque de nouveau. Chaque combat perdu rend la tentative suivante 10 % plus facile, jusqu'à la moitié de la vie.
+- **Équipes.** La vie du boss augmente de 50 % pour chaque joueur supplémentaire présent sur l'île, jusqu'à quatre joueurs.
+- **Récompenses.** Le boss lâche ses `drops`, puis les `commands` s'exécutent à chaque victoire et les `first-time-commands` uniquement la première fois que l'île le bat.
+
+Les finales sont ignorées en difficulté Paisible, car le boss ne pourrait pas apparaître.
+
+### Options
+
+| Option | Effet | Par défaut |
+|---|---|---|
+| `boss` | `EntityType` du boss. `GIANT` n'a pas d'IA dans le jeu vanilla ; AOneBlock lui en donne une, ce qui nécessite Paper. Avec `mythic-boss`, c'est la solution de repli facultative | Obligatoire, sauf si `mythic-boss` est défini |
+| `mythic-boss` | Un type de mob [MythicMobs](#mythicmobs-bosses-and-minions) à utiliser comme boss à la place (1.30.0+) | Aucun |
+| `mythic-level` | Niveau du boss MythicMobs et des `mythic-minions` (1.30.0+) | `1` |
+| `name` | Nom d'affichage. MiniMessage ou anciens codes `&`. Définissez-le aussi pour un `mythic-boss`, sinon la barre de boss affiche son identifiant de type | Le nom du mob |
+| `health` | Vie maximale de base. `0` conserve la vie propre au mob (1.30.0+). La limite du serveur est de 1024, sauf si vous augmentez `settings.attribute.maxHealth` dans `spigot.yml` | `100`, ou `0` pour un `mythic-boss` |
+| `scale` | Multiplicateur de taille. `1` est la taille normale | `1`, ou la taille propre au mob pour un `mythic-boss` |
+| `damage` | Dégâts d'attaque. Omettez-le ou utilisez `0` pour garder ceux du mob | Ceux du mob |
+| `speed` | Vitesse de déplacement. Omettez-le ou utilisez `0` pour garder celle du mob | Celle du mob |
+| `void-respawn` | `true` : un boss projeté dans le vide revient au bloc magique. `false` : le vide le tue, et cela compte comme une victoire | `true` |
+| `warning` | Nombre de blocs avant la fin auquel l'avertissement commence. `0` pour aucun avertissement | `20` |
+| `minions` | Mobs qui apparaissent avec le boss, sous la forme `TYPE: count` | Aucun |
+| `mythic-minions` | Mobs MythicMobs qui apparaissent avec le boss, sous la forme `type: count`. Ils utilisent `mythic-level` (1.30.0+) | Aucun |
+| `drops` | Objets lâchés à la mort du boss, sous la forme `MATERIAL: amount` | Aucun |
+| `commands` | Commandes exécutées chaque fois que le boss est vaincu. Mêmes préfixes et placeholders que [`end-commands`](#commands-on-phase-change) | Aucun |
+| `first-time-commands` | Commandes exécutées seulement la première fois que l'île vainc le boss | Aucun |
+
+Le fichier [`0_plains.yml`](https://github.com/BentoBoxWorld/AOneBlock/blob/master/src/main/resources/phases/0_plains.yml) fourni documente chaque option dans ses commentaires. La copie de votre serveur conserve les commentaires avec lesquels elle a été créée : consultez donc le fichier fourni pour les options ajoutées dans les versions ultérieures.
+
+### Boss et acolytes MythicMobs { #mythicmobs-bosses-and-minions }
+
+*Ajouté dans AOneBlock 1.30.0.*
+
+Si le plugin MythicMobs est installé, une finale peut utiliser l'un de vos mobs MythicMobs comme boss, et des mobs MythicMobs comme acolytes. BentoBox se connecte automatiquement à MythicMobs ; il n'y a rien à activer.
+
+```yaml
+  finale:
+    mythic-boss: SkeletonKing      # MythicMobs mob type
+    mythic-level: 3                # optional, default 1
+    boss: WITHER_SKELETON          # optional fallback if the MythicMob can't spawn
+    name: '<gold>The Skeleton King'
+    mythic-minions:                # MythicMobs type: count
+      SkeletalMinion: 3
+    minions:                       # vanilla minions still work too
+      ZOMBIE: 2
+    drops:
+      DIAMOND: 4
+```
+
+- **Mêmes règles de combat.** Un boss MythicMobs est maintenu sur l'île, a une barre de boss, ne subit de dégâts que de la part des joueurs, gagne de la vie pour chaque joueur supplémentaire et en perd après un combat perdu. Ses compétences, son IA et ses drops MythicMobs fonctionnent toujours. Les `drops` et les commandes de la finale sont également donnés.
+- **Santé et taille.** Le boss conserve la santé et la taille de sa config MythicMobs sauf si le fichier de phase définit `health` ou `scale`.
+- **Acolytes.** `mythic-minions` fonctionne avec un boss vanilla ou un boss MythicMobs. Comme les acolytes vanilla, ils ne peuvent pas modifier les blocs et sont supprimés à la fin du combat. Pour l'instant, ils affichent leur identifiant de type en guise de nom.
+- **Solution de repli.** Si MythicMobs n'est pas installé ou ne connaît pas le mob, le type `boss` est utilisé. Sans `boss`, la phase passe à la suivante sans combat. Un type d'acolyte inconnu est signalé dans le journal et ignoré.
+
+### Activer et désactiver les finales { #turning-finales-on-and-off }
+
+- **Toutes les finales :** réglez `island.phase-finales: false` dans le `config.yml` d'AOneBlock.
+- **Une phase :** supprimez la section `finale:` du fichier de cette phase.
+
+!!! warning "Les serveurs mis à niveau depuis une version antérieure à la 1.29.0 n'ont pas de boss"
+    Une mise à niveau n'écrase jamais les fichiers de phase de `plugins/BentoBox/addons/AOneBlock/phases/` : ils n'ont donc pas de section `finale:`. Copiez la section `finale:` de chaque [fichier de phase fourni](https://github.com/BentoBoxWorld/AOneBlock/tree/master/src/main/resources/phases) dans votre propre fichier et redémarrez. Les nouvelles installations les ont dès le départ.
+
+### Les boss fournis
+
+| Phase | Boss | Mob |
+|---|---|---|
+| Plains | The Colossus | Giant |
+| Underground | The Broodmother | Spider |
+| Winter | The Frostbitten | Stray |
+| Ocean | The Drowned King | Drowned |
+| Jungle | The Temple Guardian | Iron golem |
+| Swamp | The Bog Witch | Witch |
+| Dungeon | The Jailer | Wither skeleton |
+| Desert | The Pharaoh | Husk |
+| The Nether | The Warlord | Piglin brute |
+| Plenty | The Harvest Beast | Ravager |
+| Desolation | The Last Titan | Giant |
+| Deep Dark | The Warden | Warden |
+| The End | The Void Walker | Enderman |
+| Lush Caves | The Mossback | Bogged |
+| Dripstone Caves | The Burrower | Silverfish |
+| Mangrove Swamp | The Mire Lurker | Cave spider |
+| Meadow | The Summoner | Evoker |
+| Cherry Grove | The Petal Phantom | Illusioner |
+| Jagged Peaks | The Gale | Breeze |
+| Sulfur Caves | Brimstone | Blaze |
+| Dappled Forest | The Woodcutter | Vindicator |
 
 ---
 
@@ -369,9 +486,27 @@ custom-blocks:
     mob: ZOMBIE
     underlying-block: STONE
     probability: 5
+  - type: mob-data
+    data: breeze{Glowing:1b,attributes:[{id:scale,base:2f}]}
+    underlying-block: STONE
+    probability: 15
   - type: itemsadder
     id: mypack:ruby_ore
     probability: 10
+  - type: mythic-mob
+    mob: SkeletalKnight      # MythicMob type id (required)
+    level: 3                 # optional, default 1
+    power: 1.0               # optional, default 0
+    display-name: "Boss"     # optional
+    stance: ""               # optional
+    underlying-block: STONE  # optional
+    probability: 5
+  - type: nexo
+    id: custom_block
+    probability: 10
+  - type: craftengine
+    id: craftengine:custom_block
+    probability: 25
 ```
 
 | `type` | Ce qu'il fait | Nécessite |
@@ -463,6 +598,7 @@ Les fichiers de coffre sont lus élément par élément, donc un article que vot
 | `Phase name trying to be set to X but already set to Y. Duplicate phase file?` | Deux fichiers utilisent la même clé de section de niveau supérieur |
 | Une phase ne semble jamais | Elle est `enabled: false` dans `phases_index.yml`, ou son `requiredMinecraftVersion` est plus récent que le serveur |
 | Les coffres sont vides | La clé de niveau supérieur du fichier coffre ne correspond pas à celle du fichier de phase, ou ses articles n'ont pas pu se charger — exécutez `/[admin_command] sanity` |
+| Une phase se termine sans boss | Le fichier de phase n'a pas de section `finale:` (les serveurs mis à niveau depuis une version antérieure à la 1.29.0 doivent [les ajouter](#turning-finales-on-and-off)), `island.phase-finales` vaut `false`, ou le monde est en difficulté Paisible. Avec `mythic-boss` et sans repli `boss`, MythicMobs n'est pas installé ou ne connaît pas ce type de mob |
 | Les modifications ne font rien | Le module n'a pas été rechargé, ou vous avez modifié le fichier dans `src/main/resources` dans le jar au lieu de `plugins/BentoBox/addons/AOneBlock/phases/` |
 
 Regardez le journal du serveur au démarrage. Chaque fichier de phase chargé est enregistré, tout comme chaque bloc, mob et article rejeté, et chaque changement que le réconciliateur d'index effectue (les lignes commençant par `Phase index:`).

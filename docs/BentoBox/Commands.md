@@ -72,6 +72,7 @@ La commande `/bentobox` (alias `/bbox`) gère BentoBox lui-même.
 | `/[player_command] team setowner <player>` | Transférer la propriété de votre île à un membre | `[gamemode].island.team.setowner` |
 | `/[player_command] team trust <player>` | Donner un rang de confiance à un joueur sur votre île | `[gamemode].island.team.trust` |
 | `/[player_command] team uncoop <player>` | Supprimer un rang coop d'un joueur | `[gamemode].island.team.coop` |
+| `/[player_command] team uninvite <player>` | Retirer une invitation d'équipe, de confiance ou de coopération en attente (BentoBox 3.24.0+) | `[gamemode].island.team.invite` |
 | `/[player_command] team untrust <player>` | Supprimer le rang de confiance d'un joueur | `[gamemode].island.team.trust` |
 | `/[player_command] unban <player>` | Débannir un joueur de votre île | `[gamemode].island.ban` |
 

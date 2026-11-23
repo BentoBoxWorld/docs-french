@@ -97,3 +97,61 @@ new DialogBuilder()
     Vérifiez `Dialogs.isSupported()` et conservez votre comportement précédent en chat ou en panneau pour les serveurs plus anciens, exactement comme le fait le cœur. Les gestionnaires de clic des boutons s'exécutent sur le thread principal, ils peuvent donc utiliser directement l'API Bukkit.
 
 Voir [Release 3.21.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.21.0).
+
+## Formulaires de dialogue { #dialog-forms }
+
+*Ajouté dans BentoBox 3.24.0.*
+
+Un dialogue peut comporter des champs de saisie. Ajoutez-les avec `DialogBuilder.input(DialogField)` et lisez ce que le joueur a saisi dans le `DialogResponse` transmis à un bouton de validation.
+
+| Classe | Rôle |
+| --- | --- |
+| `DialogField` | Un champ : `DialogField.text(...)`, `number(...)`, `toggle(...)` ou `choice(...)`. Chacun a une clé, qui ne peut contenir que des lettres, des chiffres et des tirets bas, et qui doit être unique dans le dialogue |
+| `DialogButton.submit(...)` | Un bouton dont le gestionnaire est un `BiConsumer<User, DialogResponse>` |
+| `DialogResponse` | Les valeurs, par clé de champ : `getText`, `getNumber`, `getInt`, `getBoolean`, `getChoice`. Chacune retourne un `Optional`, vide si ce champ n'existe pas ou si la valeur est d'un autre type |
+
+```java
+new DialogBuilder()
+    .title(user, "myaddon.edit.title")
+    .input(DialogField.text(user, "name", "myaddon.edit.name", current.getName()).maxLength(32))
+    .input(DialogField.number(user, "chance", "myaddon.edit.chance", 0, 100, current.getChance()).step(0.5f))
+    .input(DialogField.toggle(user, "enabled", "myaddon.edit.enabled", current.isEnabled()))
+    .button(DialogButton.submit(user, "general.buttons.save", (u, response) -> {
+        current.setName(response.getText("name").orElse(""));
+        current.setChance(response.getNumber("chance").orElse(0f));
+        current.setEnabled(response.getBoolean("enabled").orElse(false));
+    }))
+    .build()
+    .show(user);
+```
+
+`DialogBuilder` dispose aussi désormais de `body(ItemStack, Component)` pour afficher un objet dans le corps du dialogue, de `notice(DialogButton)` pour un message avec un seul bouton, et de `afterAction(AfterAction)` pour choisir ce que fait le client après un clic. L'API de dialogue existante est inchangée.
+
+# Panneaux paginés et sélecteurs de valeur
+
+*Ajoutés dans BentoBox 3.24.0.*
+
+Deux ajouts à l'API des panneaux (`world.bentobox.bentobox.api.panels`) pour les listes qui ne tiennent pas dans un seul inventaire.
+
+**`PagedPanelBuilder`** construit un `PagedPanel` : une liste de longueur quelconque, affichée page par page. La rangée du bas est la rangée de contrôle. Son premier et son dernier emplacement contiennent les boutons précédent et suivant lorsqu'il existe une page vers laquelle aller, et les sept emplacements intermédiaires accueillent vos propres contrôles fixes, comme Retour ou Ajouter. Changer de page rafraîchit l'inventaire ouvert sur place.
+
+```java
+PagedPanelBuilder b = new PagedPanelBuilder().user(user).name(user.getTranslation("myaddon.list.title"));
+things.forEach(t -> b.item(toPanelItem(t)));
+b.control(4, backButton).build();
+```
+
+**`PickerPanel<T>`** est un panneau paginé permettant de choisir une valeur. `PickerPanel.materials(user)`, `entities(user)` et `biomes(user)` sont fournis prêts à l'emploi ; `PickerPanel.of(...)` accepte n'importe quelle collection. Un sélecteur peut avoir un bouton Rechercher, qui demande un texte dans un dialogue et est masqué sur les serveurs sans dialogues, et peut permettre au joueur de choisir un objet en cliquant dessus dans son propre inventaire. Ses textes se trouvent dans les fichiers de locale de BentoBox sous `panels.picker`.
+
+```java
+PickerPanel.materials(user)
+    .title(user.getTranslation("myaddon.pick-block"))
+    .filter(Material::isBlock)
+    .onPick(m -> { recipe.setIcon(m); openEditor(user); })
+    .onCancel(() -> openEditor(user))
+    .open();
+```
+
+Les panneaux à modèle (templated panels) reconnaissent aussi, sans aucun code, deux types de boutons, `COMMAND` et `CLOSE` ; voir [Boutons COMMAND et CLOSE](../Tutorials/generic/Customizable-GUI.md#command-and-close-buttons). Un panneau qui enregistre son propre type du même nom conserve son propre comportement.
+
+Voir [Release 3.24.0](https://github.com/BentoBoxWorld/BentoBox/releases/tag/3.24.0).

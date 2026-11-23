@@ -88,6 +88,8 @@ L'onglet **Paramètres** répertorie les **drapeaux de paramètres** de l'île :
 
 Chaque paramètre a également besoin de la permission `[gamemode].settings.<FLAG_ID>` (ou `[gamemode].settings.*`). Cela permet à un serveur de retirer complètement un paramètre aux joueurs, par exemple pour les empêcher de désactiver le PVP. Certains paramètres, comme le PVP, ont un refroidissement entre les changements.
 
+Depuis BentoBox 3.24.0, il existe aussi un paramètre **Dégâts de creeper aux blocs** (`CREEPER_BLOCK_DAMAGE`), qui permet à un propriétaire d'empêcher les creepers de casser des blocs sur son île. L'explosion a toujours lieu et blesse toujours les joueurs et les mobs. Il est [masqué](#hide-flags) par défaut : les joueurs ne le voient pas tant qu'un opérateur ne l'a pas affiché. Si le paramètre mondial *Explosions de creeper* (`CREEPER_DAMAGE`) est désactivé, les creepers ne cassent aucun bloc nulle part, quelle que soit la valeur de ce paramètre.
+
 Cet onglet a également l'icône [Rangs de Commande](#command-ranks).
 
 ### Vue des Protections Mondiales { #world-protection-view }
@@ -253,6 +255,7 @@ Ce sont les paramètres mondiaux que la plupart des serveurs voudront examiner. 
 | **Croissance des plantes hors ligne** | Arrêter la croissance des cultures et des plantes sur une île quand aucun membre de l'équipe n'est en ligne, même si un visiteur charge les chunks. | Désactivé |
 | **Redstone hors ligne** | Désactiver les circuits Redstone sur une île quand aucun membre de l'équipe n'est en ligne. | Désactivé |
 | **Piston en dehors de la limite** | Arrêter les pistons de pousser des blocs au-delà de la limite de protection de l'île — un exploit courant pour griever les îles adjacentes. | Activé |
+| **PVP en dehors des îles** | Autoriser le PVP dans les parties du monde où il n'y a pas d'île. Sur une île, c'est toujours le paramètre PVP de l'île qui décide. Nécessite BentoBox 3.24.0 ou une version ultérieure ; auparavant, le PVP était toujours désactivé là où il n'y avait pas d'île. | Désactivé |
 | **Supprimer les créatures au moment de la téléportation** | Supprimer les créatures hostiles de la zone quand un joueur se téléporte à son foyer d'île, en prévenant les décès par surprise à l'arrivée. | Activé |
 | **Protection du type de générateur** | Empêcher les joueurs de changer le type de créature des blocs de générateur à l'aide d'œufs de génération. Utile quand les générateurs sont donnés comme récompenses. | Activé |
 | **Limite de croissance des arbres** | Empêcher les arbres de croître au-delà de la limite de protection de l'île. Sans cela, les arbres peuvent empiéter sur d'autres îles ou créer des blocs inaccessibles. | Activé |
@@ -360,6 +363,15 @@ Les verrous d'île, les bannissements et les expulsions ont leurs propres permis
 - `[gamemode].mod.bypassban` — entrer une île dont vous êtes banni.
 - `[gamemode].mod.bypassexpel` et `[gamemode].admin.noexpel` — ne peut pas être expulsé.
 - `[gamemode].admin.noban` — ne peut pas être banni.
+
+Un joueur qui entre en bateau, en wagonnet ou sur une monture dans une île verrouillée pour lui ou dont il est banni est renvoyé **avec son véhicule**, au lieu d'en être éjecté. Si l'un des passagers n'a pas le droit d'entrer, le véhicule n'entre pas. Un joueur refoulé d'une île verrouillée voit aussi la bordure de l'île pendant quelques secondes, pour savoir où elle commence. Lui seul la voit. Les deux nécessitent BentoBox 3.24.0 ou une version ultérieure. La bordure se règle dans le `config.yml` de BentoBox :
+
+```yaml
+island:
+  locked-border:
+    show: true    # false désactive la bordure
+    color: RED    # RED, GREEN ou BLUE
+```
 
 Toute entité portant les métadonnées Bukkit `NPC` (par exemple les PNJs Citizens) est également autorisée à travers le verrouillage, le bannissement, le PVP et les vérifications des visiteurs invulnérables, donc les PNJs de plugin ne sont pas piégés ou blessés par la protection de l'île.
 

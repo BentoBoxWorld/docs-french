@@ -66,6 +66,20 @@ Cette section définit un certain nombre de paramètres généraux pour le modul
 
     Par défaut : `true`
 
+??? note "zero-disabled-game-modes"
+    Une liste de modes de jeu dans lesquels les niveaux des îles ne sont pas mis à zéro. Depuis Level 2.31.0.
+
+    La mise à zéro convient aux mondes vides (void), où les seuls blocs au départ sont ceux de l'île de départ. Dans les mondes à terrain généré, comme CaveBlock, donnez une valeur de 0 aux blocs naturels de ce monde dans [`blockconfig.yml`](#blockconfigyml) et ajoutez le mode de jeu à cette liste.
+
+    Les îles d'un mode de jeu listé ne sont pas mises à zéro lors de leur création ou de leur réinitialisation, et tout décompte initial déjà enregistré pour elles est ignoré (il n'est pas supprimé). La commande d'admin qui définit le niveau initial d'une île n'est pas enregistrée pour ces modes de jeu. Sans effet si `zero-new-island-levels` vaut `false`.
+
+    ```yaml
+    zero-disabled-game-modes:
+    - CaveBlock
+    ```
+
+    Par défaut : `[]`
+
 ??? note "donations-only"
     Si true, l'analyse des blocs de l'île est entièrement ignorée et le niveau de l'île est calculé uniquement à partir des blocs donnés via `/island donate`. Cela supprime le coût CPU de l'analyse de l'île à chaque recalcul.
 
@@ -226,6 +240,8 @@ Cette section définit les valeurs des blocs et les limites pour ceux-ci.
     ```
 
     Dans cet exemple, AcidIsland utilisera les mêmes valeurs que BSkyBlock pour tous les blocs sauf le sable, la pierre de sable et la glace.
+
+    Depuis Level 2.31.0, le fichier par défaut attribue une valeur de 0 au terrain naturel, aux minerais, aux décorations de grottes, à l'obsidienne et aux générateurs apparus naturellement dans `caveblock-world`, ainsi qu'à l'obsidienne dans `acidisland_world`. Level n'écrase jamais un `blockconfig.yml` existant : les serveurs mis à niveau doivent donc copier eux-mêmes ces sections depuis le [fichier par défaut](https://github.com/BentoBoxWorld/Level/blob/master/src/main/resources/blockconfig.yml). Voir [Nouveautés dans v2.31.0](#changelog).
 
 ### Interfaces graphiques personnalisables
 
@@ -458,7 +474,7 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
 
 
 
-## Journal des modifications
+## Journal des modifications { #changelog }
 
 ??? note "Nouveautés dans v2.23.0"
     **Publié :** 21 février 2026
@@ -572,6 +588,30 @@ Vous pouvez trouver plus d'informations sur le fonctionnement des interfaces gra
     - Compilé et testé avec Paper 26.3 ; Minecraft 26.2 et 26.3 sont indiqués comme pris en charge.
 
     [Release v2.30.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.30.0)
+
+!!! warning "Nouveautés dans v2.31.0 — les serveurs CaveBlock doivent modifier blockconfig.yml"
+    **Publié :** 22 novembre 2026
+
+    Compatibilité : BentoBox API 3.16.0 (3.23.3+ requis pour les commandes de morts), Minecraft 1.21.x et 26.1.x – 26.3, Java 21.
+
+    - ⚡ **Les analyses de Level ne génèrent plus de chunks.** Une analyse ignore tout chunk qui n'a jamais été généré. Auparavant, la première analyse d'une nouvelle île CaveBlock tentait de générer toute sa zone de 2000 × 2000 blocs, dépassait le `calculation-timeout` de 5 minutes et bloquait l'analyse de toutes les autres îles. [#464](https://github.com/BentoBoxWorld/Level/pull/464)
+    - ⚡ **Les chunks sont chargés en parallèle,** 100 à la fois. Sur un serveur de test, l'analyse de 2 927 chunks générés est passée de plus d'une minute à environ 10 secondes. [#465](https://github.com/BentoBoxWorld/Level/pull/465)
+    - ⚙️ **Nouveau paramètre `zero-disabled-game-modes`** (vide par défaut) désactive la mise à zéro pour les modes de jeu que vous listez. Voir [config.yml](#configyml).
+    - 🔺 **Nouvelles valeurs de blocs par défaut.** Dans `caveblock-world`, le terrain naturel, tous les minerais, les décorations de grottes, les colonnes de bulles, les générateurs apparus naturellement et l'obsidienne valent 0. Dans `acidisland_world`, l'obsidienne vaut 0. Les blocs issus de structures générées, comme les puits de mine, conservent leur valeur. Ces valeurs ne sont écrites que dans un **nouveau** `blockconfig.yml`.
+    - 🐛 Un joueur qui demande son propre niveau pendant le délai d'attente est refusé avant l'exécution de la commande : la demande n'est donc plus comptabilisée comme une erreur d'arguments incorrects.
+
+    🔺 **Si vous utilisez CaveBlock, modifiez `plugins/BentoBox/addons/Level/blockconfig.yml` avant que les joueurs n'exécutent `/cb level` :**
+
+    1. Remplacez la section `caveblock-world` sous `worlds:` par celle du [blockconfig.yml par défaut](https://github.com/BentoBoxWorld/Level/blob/master/src/main/resources/blockconfig.yml). Avec la plage de protection par défaut de 1000, les analyses ne pouvaient pas se terminer avant cette version : les îles affichent donc le niveau 0. Elles se terminent désormais et, avec les anciennes valeurs, elles comptent tout le terrain naturel de la grotte.
+    2. Ajoutez `CaveBlock` à `zero-disabled-game-modes` dans `config.yml`. Les îles mises à zéro avec les anciennes valeurs ont un décompte initial qui inclut le terrain naturel, ce qui tirerait les niveaux vers le bas une fois que ce terrain vaudra 0.
+
+    Les niveaux CaveBlock et le top dix changeront dans tous les cas. L'ardoise des abîmes, les minerais, l'obsidienne et les autres blocs listés ne rapportent rien dans CaveBlock, y compris ceux posés par un joueur. Avec la mise à zéro désactivée, les blocs des structures générées déjà dans une grotte (rails, planches, barrières, coffres) commencent à compter.
+
+    **AcidIsland (facultatif) :** ajoutez `obsidian: 0` sous `acidisland_world`. Les îles perdent 10 points pour chaque bloc d'obsidienne qu'elles contiennent.
+
+    Les autres modes de jeu ne sont pas affectés.
+
+    [Release v2.31.0](https://github.com/BentoBoxWorld/Level/releases/tag/2.31.0)
 
 ??? note "Nouveautés dans v2.28.1"
     **Publié :** 29 juillet 2026

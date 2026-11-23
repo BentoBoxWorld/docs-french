@@ -183,6 +183,28 @@ Chaque action a un nom, un type de clic et une infobulle :
 - Le nom de l'action (`kick`, `setowner`) est ce que le menu fait. Utilisez les noms déjà dans le fichier par défaut. Vous pouvez changer quel clic déclenche une action, ou supprimer une action que vous ne voulez pas que les joueurs utilisent du menu.
 - Les infobulles sont ajoutées sous la description, dans l'ordre où les actions sont énumérées.
 
+### Boutons COMMAND et CLOSE { #command-and-close-buttons }
+
+Deux types de boutons fonctionnent dans **tous** les menus dotés d'un modèle, dans BentoBox comme dans les addons. Ils nécessitent BentoBox 3.24.0 ou une version ultérieure.
+
+| Type | Ce qu'il fait |
+|---|---|
+| `COMMAND` | Ferme le menu et exécute `data.command` en tant que joueur ayant cliqué, avec ses propres permissions. `[player]` dans la commande est remplacé par son nom. Le `/` initial est facultatif. |
+| `CLOSE` | Ferme le menu. |
+
+Par exemple, un bouton qui ramène à un menu d'un autre plugin :
+
+```yaml
+      9:
+        icon: OAK_DOOR
+        title: "Retour au menu"
+        data:
+          type: COMMAND
+          command: "menu open main"
+```
+
+Sans `actions`, n'importe quel clic fonctionne. Si vous listez des `actions`, seuls ces types de clic fonctionnent, et leurs infobulles sont ajoutées sous la description. Un bouton `COMMAND` sans `data.command` est ignoré et un avertissement est consigné dans le journal. Un menu qui a déjà son propre type de bouton du même nom conserve son propre comportement : dans le menu des rangs de commande, `COMMAND` reste une commande de la liste.
+
 ### Types de boutons dans les menus de BentoBox { #button-types-in-bentoboxs-menus }
 
 | Menu | Types de boutons (`data: type:`) |

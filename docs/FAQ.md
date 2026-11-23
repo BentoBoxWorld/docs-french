@@ -526,7 +526,7 @@ Le collage de l'île ou la génération des chunks sont les principales causes d
 
 Tout d'abord, la vitesse de collage peut être trop élevée pour votre serveur.
 Essayez de la baisser.
-Regardez dans le `config.yml` de BentoBox pour ce paramètre :
+Regardez dans le `config.yml` de BentoBox pour ces paramètres. Sur BentoBox 3.24.0 et versions ultérieures, baissez d'abord `paste-time-budget` :
 
 ```yaml
 # Nombre de blocs à coller par tick lors du collage de blueprints.
@@ -534,6 +534,11 @@ Regardez dans le `config.yml` de BentoBox pour ce paramètre :
 # Au contraire, des valeurs plus grandes rendront le collage plus rapide, mais ce bénéfice est rapidement sévèrement impacté par
 # le nombre de chunks qui doivent être chargés pour accomplir le processus, ce qui fait souvent figer le serveur.
 paste-speed: 64
+# Millisecondes par tick que le collage et la copie de blueprints peuvent utiliser. Les blocs sont collés par lots de
+# paste-speed jusqu'à épuisement de ce temps, si bien que les grandes îles se collent beaucoup plus vite quand le serveur a du temps disponible.
+# Un tick dure 50 ms. Baissez cette valeur si la création d'îles cause du lag. 0 colle un seul lot par tick (l'ancien comportement).
+# Ajouté dans la 3.24.0.
+paste-time-budget: 10
 ```
 
 Si vous exécutez les timings, la tâche `BlueprintPaster` devrait idéalement prendre longtemps, tout en prenant un faible pourcentage du temps d'un tick.

@@ -45,6 +45,7 @@ Les joueurs ouvrent le menu d'équipe avec `/island team`. À partir du menu, il
 |---|---|
 | `/island team` | Ouvre le menu d'équipe |
 | `/island team invite <player>` | Invite un joueur en ligne à rejoindre l'équipe |
+| `/island team uninvite <player>` | Retire une invitation d'équipe, de confiance ou de coopération en attente |
 | `/island team accept` | Accepte une invitation en attente (équipe, confiance ou coopération) |
 | `/island team reject` | Rejette une invitation en attente |
 | `/island team leave` | Quitte l'équipe. Le propriétaire ne peut pas partir ; il doit d'abord donner l'île |
@@ -58,6 +59,8 @@ Les joueurs ouvrent le menu d'équipe avec `/island team`. À partir du menu, il
 | `/island team uncoop <player>` | Retire le rang de Coopération |
 
 Un joueur ne peut avoir qu'**une** invitation en attente à la fois. Une nouvelle invitation remplace l'ancienne.
+
+Une invitation qui n'est ni acceptée ni refusée **expire au bout de 24 heures** par défaut (voir [Expiration des invitations, refroidissements et confirmations](#expiration-des-invitations-refroidissements-et-confirmations)). D'ici là, elle peut être retirée avec `/island team uninvite <player>`. Le joueur qui a envoyé l'invitation peut toujours la retirer ; tout autre membre de l'île doit avoir le rang autorisé à inviter. La commande utilise la même permission que `team invite`. Les deux nécessitent BentoBox 3.24.0 ou une version ultérieure.
 
 Sur Minecraft 26 et versions ultérieures, un joueur qui reçoit une invitation d'équipe voit un dialogue **Accepter / Refuser**, il n'a donc pas besoin de taper la commande. Les commandes sensibles comme `kick` et `leave` demandent également une confirmation dans un dialogue. Les deux peuvent être désactivés dans le `config.yml` de BentoBox (`island.dialogs.team-invites` et `island.dialogs.confirmations`).
 
@@ -146,12 +149,13 @@ island:
 
 Celles-ci s'exécutent depuis la console sauf si la commande commence par `[SUDO]`, qui l'exécute en tant que joueur.
 
-### Refroidissements d'invitation et confirmations { #invite-cooldowns-and-confirmations }
+### Expiration des invitations, refroidissements et confirmations { #expiration-des-invitations-refroidissements-et-confirmations }
 
 Ceux-ci sont dans le `config.yml` **de BentoBox** (dans `plugins/BentoBox/`), et s'appliquent à tous les modes de jeu :
 
 ```yaml
 island:
+  invite-expiry-hours: 24   # nombre d'heures pendant lesquelles une invitation d'équipe, de confiance ou de coopération reste ouverte ; 0 = n'expire jamais
   cooldown:
     time:
       invite: 60   # minutes avant qu'un joueur expulsé ou parti puisse être réinvité à cette île
@@ -166,6 +170,8 @@ island:
 ```
 
 Le refroidissement d'invitation empêche les joueurs de rejoindre, terminer les défis, partir et de rejoindre à plusieurs reprises.
+
+`invite-expiry-hours` a été ajouté dans BentoBox 3.24.0 ; avant cela, les invitations n'expiraient pas. Les invitations ouvertes au moment de la mise à niveau disposent d'une période d'expiration complète à compter de leur première vérification. Réglez-le sur `0` pour que les invitations restent ouvertes, comme avant.
 
 ### Désactiver les équipes { #turning-teams-off }
 
@@ -208,7 +214,7 @@ La valeur décide où le rang s'assied. `700` est entre Membre (500) et Sous-pro
 La limite inclut le propriétaire. Vérifiez `max-team-size` et si le propriétaire a une permission `team.maxsize`. Le propriétaire doit se connecter une fois pour qu'une nouvelle autorisation s'applique.
 
 **Un joueur ne peut pas être invité.**
-Il peut déjà être dans une équipe (il doit d'abord partir), avoir déjà une invitation en attente, ou être dans le refroidissement d'invitation après avoir quitté ou été expulsé de cette île.
+Il peut déjà être dans une équipe (il doit d'abord partir), avoir déjà une invitation en attente, ou être dans le refroidissement d'invitation après avoir quitté ou été expulsé de cette île. Une invitation en attente de votre île peut être retirée avec `/island team uninvite <player>` ; sinon elle expire après `invite-expiry-hours`.
 
 **Les joueurs en coopération perdent continuellement leur rang.**
 C'est ainsi que fonctionne la coopération : elle se termine quand aucun membre d'équipe n'est en ligne. Utilisez la confiance à la place pour les joueurs qui doivent conserver l'accès.
